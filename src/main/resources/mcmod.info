@@ -1,0 +1,14 @@
+[
+{
+  "modid": "testmod",
+  "name": "Test Mod",
+  "description": "Another Test Mod?",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "authorList": ["Aeronica"],
+  "credits": "The Forge and FML Team, The Modding Community",
+  "screenshots": [],
+  "dependencies": []
+}
+]
