@@ -21,7 +21,9 @@ import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.BlockLog;
+import net.minecraft.block.IGrowable;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
@@ -33,6 +35,7 @@ import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
+import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.fml.common.IWorldGenerator;
 import tld.testmod.Main;
 import tld.testmod.ModLogger;
@@ -47,24 +50,28 @@ public class WorldGenStageRegal implements IWorldGenerator
     {
         if(!(world instanceof WorldServer))
             return;
+        
         WorldServer sWorld = (WorldServer) world;
-
+        
         int x = chunkX * 16 + random.nextInt(16);
         int z = chunkZ * 16 + random.nextInt(16);
 
         BlockPos xzPos = new BlockPos(x, 1, z);
         Biome biome = world.getBiomeForCoordsBody(xzPos);
-//        if(biome == Biomes.PLAINS || biome == Biomes.DEFAULT) {
-            if(random.nextInt(2) == 0) {
-                generateStageAt(sWorld, random, x, z);
-            }
-//        }       
+        if(biome != Biomes.HELL && biome != Biomes.VOID)
+        {
+//            if(random.nextInt(2) == 0) {
+                for (int rotation = 0; rotation < Rotation.values().length; rotation++)
+                if (generateStageAt(sWorld, rotation, random, x, z))
+                    break;
+//            }
+        }       
     }
 
     @SuppressWarnings("static-access")
-    public static void generateStageAt(WorldServer world, Random random, int xIn, int zIn)
+    public static boolean generateStageAt(WorldServer world, int rotation, Random random, int xIn, int zIn)
     {
-        final PlacementSettings settings = new PlacementSettings().setRotation(Rotation.values()[random.nextInt(Rotation.values().length)]);
+        final PlacementSettings settings = new PlacementSettings().setRotation(Rotation.values()[rotation]);
         final Template template = world.getSaveHandler().getStructureTemplateManager().getTemplate(world.getMinecraftServer(), STAGE_REGAL);      
 
         int i = xIn + random.nextInt(16);
@@ -77,37 +84,50 @@ public class WorldGenStageRegal implements IWorldGenerator
         
         for(int y = 0; y < size.getY(); y++)
             for(int x = 0; x < size.getX(); x++)
-                for(int z = 0; z < size.getZ(); z++) {
+                for(int z = 0; z < size.getZ(); z++)
+                {
                     BlockPos checkPos = pos.add(template.transformedBlockPos(settings, new BlockPos(x, y, z)));
                     IBlockState checkState = world.getBlockState(checkPos);
                     IBlockState checkStateDown = world.getBlockState(checkPos.down());
                     if(!(checkState.getBlock() instanceof BlockAir))
                     {
                         ModLogger.info("stage_regal OBSTRUCTED");
-                        return; // Obstructed, can't generate here
+                        return false; // Obstructed, can't generate here
                     }
                     if(y == 0 && (checkStateDown.getBlock() instanceof BlockAir))
                     {
-                        airCount++;
+                        airCount++; // Air under structure
                     }
-                    if(y == 0 && ((((airCount * 100F) / horizontalArea) / 100F > 0.80F) || (checkStateDown.getBlock() instanceof BlockLiquid) || (checkStateDown.getBlock() instanceof BlockLeaves) || (checkStateDown.getBlock() instanceof BlockLog)))
+                    if(y == 0 && ( airCount * 100F / horizontalArea / 100F > 0.90F))
                     {
-                        ModLogger.info("stage_regal: airCount %d, area: %d, percent: %f, block: %s", airCount, horizontalArea, ((airCount * 100F) / horizontalArea) / 100F, checkStateDown.getBlock().getRegistryName()); 
-                        return; // No spawning in trees, or on water!!
+                        ModLogger.info("stage_regal TOO MUCH AIR UNDERNEATH: airCount %d, area: %d, percent: %f", airCount, horizontalArea, ((airCount * 100F) / horizontalArea) / 100F); 
+                        return false; // No spawning over mostly air
+                    }
+                    if(y == 0 && ((checkStateDown.getBlock() instanceof BlockLiquid) ||
+                            (checkStateDown.getBlock() instanceof BlockLeaves) ||
+                            (checkStateDown.getBlock() instanceof BlockLog)) )
+                    {
+                        ModLogger.info("stage_regal NOT ON TREES OR WATER: block: %s", checkStateDown.getBlock().getRegistryName()); 
+                        return false; // No spawning in trees, or on water!!
                     }
                 }
-        ModLogger.info("*** Stage_Regal ***: airCount %d, area: %d, percent: %f", airCount, horizontalArea, ((airCount * 100F) / horizontalArea) / 100F);
+        ModLogger.info("*** Stage_Regal ***: position %s", pos.toString());
         template.addBlocksToWorld(world, pos, settings);      
 
         // Fill in below the structure with stone
-        for(int y = pos.getY()-1 ; y > 0 ; y--)
+        for(int z = 0; z < size.getZ(); z++)
             for(int x = 0; x < size.getX(); x++)
-                for(int z = 0; z < size.getZ(); z++) {
+                for (int y = pos.getY()-1 ; y > 0 ; y--)
+                {
                     BlockPos checkPos = pos.add(template.transformedBlockPos(settings, new BlockPos(x, -y, z)));
                     IBlockState checkState = world.getBlockState(checkPos);
-                    world.setBlockToAir(checkPos);
-                    world.setBlockState(checkPos, Blocks.STONE.getDefaultState());  
+                    if(checkState.getBlock().canPlaceBlockAt(world, checkPos) || !checkState.getBlock().isCollidable()
+                            || (checkState.getBlock() instanceof BlockAir) || checkState.getBlock().isPassable(world, checkPos)
+                            || (checkState.getBlock() instanceof IGrowable) || (checkState.getBlock() instanceof IPlantable)) 
+                        world.setBlockState(checkPos, Blocks.STONE.getDefaultState());  
                 }
+        
+        return true;
     }
   
 }
