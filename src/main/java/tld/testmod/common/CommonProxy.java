@@ -23,14 +23,17 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.server.FMLServerHandler;
+import tld.testmod.common.world.WorldGenStageRegal;
 
 public class CommonProxy
 {
 	
     public void preInit(FMLPreInitializationEvent event)
     {
+        GameRegistry.registerWorldGenerator(new WorldGenStageRegal(), -10000);
 	}
 
     public void init(FMLInitializationEvent event)
