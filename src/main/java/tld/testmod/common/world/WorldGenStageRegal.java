@@ -25,6 +25,7 @@ import net.minecraft.block.IGrowable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.Mirror;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
@@ -40,11 +41,19 @@ import net.minecraftforge.fml.common.IWorldGenerator;
 import tld.testmod.Main;
 import tld.testmod.ModLogger;
 
+/**
+ * {@link IWorldGenerator}
+ * @see <a ref="https://www.reddit.com/r/feedthebeast/comments/5x0twz/investigating_extreme_worldgen_lag/">Reddit - investigating_extreme_worldgen_lag</a>
+ * 
+ */
 public class WorldGenStageRegal implements IWorldGenerator
 {
 
     public static final ResourceLocation STAGE_REGAL = new ResourceLocation(Main.prependModID("stage_regal"));
     
+    /**
+     * {@link #generate(Random, int, int, World, IChunkGenerator, IChunkProvider)}
+     */
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider)
     {
@@ -52,9 +61,9 @@ public class WorldGenStageRegal implements IWorldGenerator
             return;
         
         WorldServer sWorld = (WorldServer) world;
-        
-        int x = chunkX * 16 + random.nextInt(16);
-        int z = chunkZ * 16 + random.nextInt(16);
+        // https://www.reddit.com/r/feedthebeast/comments/5x0twz/investigating_extreme_worldgen_lag/
+        int x = chunkX * 16 + 8; // The all important offset of +8
+        int z = chunkZ * 16 + 8; // The all important offset of +8
 
         BlockPos xzPos = new BlockPos(x, 1, z);
         Biome biome = world.getBiomeForCoordsBody(xzPos);
@@ -75,12 +84,14 @@ public class WorldGenStageRegal implements IWorldGenerator
     {
         final PlacementSettings settings = new PlacementSettings().setRotation(Rotation.values()[rotation]);
         final Template template = world.getSaveHandler().getStructureTemplateManager().getTemplate(world.getMinecraftServer(), STAGE_REGAL);      
-
-        int i = xIn; // + random.nextInt(16);
-        int k = zIn; // + random.nextInt(16);
+                    
+        int i = xIn; // - template.getSize().getX()/2; // + random.nextInt(16);
+        int k = zIn; // - template.getSize().getZ()/2; // + random.nextInt(16); 
+        
         int j = world.getHeight(i, k);
         int airCount = 0;
-        BlockPos pos = new BlockPos(i,j,k);
+        
+        BlockPos zeroPos = template.getZeroPositionWithTransform(new BlockPos(i,j,k), Mirror.NONE, settings.getRotation());
         BlockPos size = template.getSize();
         int horizontalArea = size.getX() * size.getZ();
         
@@ -88,7 +99,7 @@ public class WorldGenStageRegal implements IWorldGenerator
             for(int x = 0; x < size.getX(); x++)
                 for(int z = 0; z < size.getZ(); z++)
                 {
-                    BlockPos checkPos = pos.add(template.transformedBlockPos(settings, new BlockPos(x, y, z)));
+                    BlockPos checkPos = zeroPos.add(template.transformedBlockPos(settings, new BlockPos(x, y, z)));
                     IBlockState checkState = world.getBlockState(checkPos);
                     IBlockState checkStateDown = world.getBlockState(checkPos.down());
                     if(!(checkState.getBlock() instanceof BlockAir))
@@ -113,17 +124,17 @@ public class WorldGenStageRegal implements IWorldGenerator
                         return false; // No spawning in trees, or on water!!
                     }
                 }
-        if(StructureHelper.canPlaceStage(pos))
+        if(StructureHelper.canPlaceStage(zeroPos))
         {
-            ModLogger.info("*** Stage_Regal ***: position %s", pos.toString());
-            template.addBlocksToWorld(world, pos, settings);
+            ModLogger.info("*** Stage_Regal ***: position %s", zeroPos.toString());
+            template.addBlocksToWorld(world, zeroPos, settings);
 
             // Fill in below the structure with stone
             for(int z = 0; z < size.getZ(); z++)
                 for(int x = 0; x < size.getX(); x++)
-                    for (int y = pos.getY()-1 ; y > 0 ; y--)
+                    for (int y = zeroPos.getY()-1 ; y > 0 ; y--)
                     {
-                        BlockPos checkPos = pos.add(template.transformedBlockPos(settings, new BlockPos(x, -y, z)));
+                        BlockPos checkPos = zeroPos.add(template.transformedBlockPos(settings, new BlockPos(x, -y, z)));
                         IBlockState checkState = world.getBlockState(checkPos);
                         if(checkState.getBlock().canPlaceBlockAt(world, checkPos) || !checkState.getBlock().isCollidable()
                                 || (checkState.getBlock() instanceof BlockAir) || checkState.getBlock().isPassable(world, checkPos)
