@@ -38,6 +38,7 @@ public class StructureHelper
     public static boolean canPlaceStage(BlockPos posIn)
     {
         boolean result = true;
+        int comparisons = 0;
         if(stagePosQueue.isEmpty())
         {
             stagePosQueue.add(posIn);
@@ -50,7 +51,7 @@ public class StructureHelper
             {
                 BlockPos pos = i.next();
                 int distance = Math.abs((int) posIn.getDistance(pos.getX(), pos.getY(), pos.getZ()));
-                
+                comparisons++;
                 if(distance < MIN_DISTANCE)
                 {
                     ModLogger.info("canPlaceStage: NO! too close distance %d, ", distance);
@@ -59,7 +60,7 @@ public class StructureHelper
             }
             if (result)
             {
-                ModLogger.info("canPlaceStage: YES! Number of comparisons: %d", stagePosQueue.size());                
+                ModLogger.info("canPlaceStage: YES! Number of comparisons: %d, queue size: %d", comparisons, stagePosQueue.size());                
                 stagePosQueue.add(posIn);
                 return true;
             }
