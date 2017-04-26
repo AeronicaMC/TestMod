@@ -58,7 +58,9 @@ public class WorldGenStageRegal implements IWorldGenerator
 
         BlockPos xzPos = new BlockPos(x, 1, z);
         Biome biome = world.getBiomeForCoordsBody(xzPos);
-        if(biome != Biomes.HELL && biome != Biomes.VOID)
+        if(biome != Biomes.HELL && biome != Biomes.VOID && biome != Biomes.ROOFED_FOREST
+                && biome != Biomes.MUSHROOM_ISLAND && biome != Biomes.MUSHROOM_ISLAND_SHORE
+                && biome != Biomes.RIVER && biome != Biomes.BEACH)
         {
 //            if(random.nextInt(2) == 0) {
                 for (int rotation = 0; rotation < Rotation.values().length; rotation++)
@@ -74,8 +76,8 @@ public class WorldGenStageRegal implements IWorldGenerator
         final PlacementSettings settings = new PlacementSettings().setRotation(Rotation.values()[rotation]);
         final Template template = world.getSaveHandler().getStructureTemplateManager().getTemplate(world.getMinecraftServer(), STAGE_REGAL);      
 
-        int i = xIn + random.nextInt(16);
-        int k = zIn + random.nextInt(16);
+        int i = xIn; // + random.nextInt(16);
+        int k = zIn; // + random.nextInt(16);
         int j = world.getHeight(i, k);
         int airCount = 0;
         BlockPos pos = new BlockPos(i,j,k);
@@ -91,7 +93,7 @@ public class WorldGenStageRegal implements IWorldGenerator
                     IBlockState checkStateDown = world.getBlockState(checkPos.down());
                     if(!(checkState.getBlock() instanceof BlockAir))
                     {
-                        ModLogger.info("stage_regal OBSTRUCTED");
+                        // ModLogger.info("stage_regal OBSTRUCTED");
                         return false; // Obstructed, can't generate here
                     }
                     if(y == 0 && (checkStateDown.getBlock() instanceof BlockAir))
@@ -100,34 +102,41 @@ public class WorldGenStageRegal implements IWorldGenerator
                     }
                     if(y == 0 && ( airCount * 100F / horizontalArea / 100F > 0.90F))
                     {
-                        ModLogger.info("stage_regal TOO MUCH AIR UNDERNEATH: airCount %d, area: %d, percent: %f", airCount, horizontalArea, ((airCount * 100F) / horizontalArea) / 100F); 
+                        // ModLogger.info("stage_regal TOO MUCH AIR UNDERNEATH: airCount %d, area: %d, percent: %f", airCount, horizontalArea, ((airCount * 100F) / horizontalArea) / 100F); 
                         return false; // No spawning over mostly air
                     }
                     if(y == 0 && ((checkStateDown.getBlock() instanceof BlockLiquid) ||
                             (checkStateDown.getBlock() instanceof BlockLeaves) ||
                             (checkStateDown.getBlock() instanceof BlockLog)) )
                     {
-                        ModLogger.info("stage_regal NOT ON TREES OR WATER: block: %s", checkStateDown.getBlock().getRegistryName()); 
+                        // ModLogger.info("stage_regal NOT ON TREES OR WATER: block: %s", checkStateDown.getBlock().getRegistryName()); 
                         return false; // No spawning in trees, or on water!!
                     }
                 }
-        ModLogger.info("*** Stage_Regal ***: position %s", pos.toString());
-        template.addBlocksToWorld(world, pos, settings);      
+        if(StructureHelper.canPlaceStage(pos))
+        {
+            ModLogger.info("*** Stage_Regal ***: position %s", pos.toString());
+            template.addBlocksToWorld(world, pos, settings);
 
-        // Fill in below the structure with stone
-        for(int z = 0; z < size.getZ(); z++)
-            for(int x = 0; x < size.getX(); x++)
-                for (int y = pos.getY()-1 ; y > 0 ; y--)
-                {
-                    BlockPos checkPos = pos.add(template.transformedBlockPos(settings, new BlockPos(x, -y, z)));
-                    IBlockState checkState = world.getBlockState(checkPos);
-                    if(checkState.getBlock().canPlaceBlockAt(world, checkPos) || !checkState.getBlock().isCollidable()
-                            || (checkState.getBlock() instanceof BlockAir) || checkState.getBlock().isPassable(world, checkPos)
-                            || (checkState.getBlock() instanceof IGrowable) || (checkState.getBlock() instanceof IPlantable)) 
-                        world.setBlockState(checkPos, Blocks.STONE.getDefaultState());  
-                }
-        
-        return true;
+            // Fill in below the structure with stone
+            for(int z = 0; z < size.getZ(); z++)
+                for(int x = 0; x < size.getX(); x++)
+                    for (int y = pos.getY()-1 ; y > 0 ; y--)
+                    {
+                        BlockPos checkPos = pos.add(template.transformedBlockPos(settings, new BlockPos(x, -y, z)));
+                        IBlockState checkState = world.getBlockState(checkPos);
+                        if(checkState.getBlock().canPlaceBlockAt(world, checkPos) || !checkState.getBlock().isCollidable()
+                                || (checkState.getBlock() instanceof BlockAir) || checkState.getBlock().isPassable(world, checkPos)
+                                || (checkState.getBlock() instanceof IGrowable) || (checkState.getBlock() instanceof IPlantable)) 
+                            world.setBlockState(checkPos, Blocks.STONE.getDefaultState());  
+                    }
+            return true;
+        }
+        else
+        {
+            ModLogger.info("stage_regal TOO CLOSE TOGETHER");
+            return false;
+        }
     }
   
 }
