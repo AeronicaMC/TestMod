@@ -1,27 +1,30 @@
+/**
+ * Copyright {2016} Paul Boese aka Aeronica
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package tld.testmod.common.world;
 
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Random;
 
 import net.minecraft.block.BlockAir;
-import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentFireAspect;
 import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.ItemArrow;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityLockableLoot;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
@@ -33,12 +36,10 @@ import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
-import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.fml.common.IWorldGenerator;
 import tld.testmod.Main;
 import tld.testmod.ModLogger;
-import tld.testmod.common.entity.living.EntityTestSkeleton;
 
 /**
  * {@link IWorldGenerator}
@@ -140,7 +141,6 @@ public class WorldGenStageRegal implements IWorldGenerator
                                 || (checkState.getBlock() instanceof IGrowable) || (checkState.getBlock() instanceof IPlantable)) 
                             world.setBlockState(checkPos, Blocks.STONE.getDefaultState());  
                     }
-            replaceDataBlocks(world, zeroPos, random, template, settings);
             return true;
         }
         else
@@ -150,53 +150,4 @@ public class WorldGenStageRegal implements IWorldGenerator
         }
     }
   
-    private static void replaceDataBlocks(World worldIn, BlockPos posIn, Random randomIn, Template templateIn, PlacementSettings settingsIn)
-    {
-        Map<BlockPos, String> dataBlocks = templateIn.getDataBlocks(posIn, settingsIn);
-        for(Entry<BlockPos, String> entry : dataBlocks.entrySet()) {
-            String[] tokens = entry.getValue().split(" ");
-            if(tokens.length == 0)
-                return;
-
-            BlockPos dataPos = entry.getKey();
-            EntityTestSkeleton skeleton;
-
-            ModLogger.info("stage_regal dataEntry: %s", entry);
-            switch(tokens[0])
-            {
-            case "skeleton":
-                skeleton = new EntityTestSkeleton(worldIn);
-                skeleton.setPosition(dataPos.getX() + 0.5, dataPos.getY() + 0.1, dataPos.getZ() + 0.5);
-                skeleton.setItemStackToSlot(EntityEquipmentSlot.CHEST, new ItemStack(Items.GOLDEN_CHESTPLATE));
-                skeleton.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(Items.GOLDEN_HELMET));
-                skeleton.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.BOW));
-                skeleton.setArrowCountInEntity(64);
-                skeleton.setHomePosAndDistance(dataPos.add(0.5,0,0.5), 10);
-                worldIn.spawnEntity(skeleton);
-                ModLogger.info("stage_regal Skeleton: %s", skeleton);
-                break;
-            case "loot":
-                float chance = tokens.length == 3 ? 1F : 0.75F;
-
-                if(randomIn.nextFloat() <= chance)
-                {
-                    String chestOrientation = tokens[1];
-                    EnumFacing chestFacing = settingsIn.getRotation().rotate(EnumFacing.byName(chestOrientation));
-                    IBlockState chestState = Blocks.CHEST.getDefaultState().withProperty(BlockChest.FACING, chestFacing);
-                    worldIn.setBlockState(dataPos, chestState);
-
-                    TileEntity tile = worldIn.getTileEntity(dataPos);
-                    if(tile != null && tile instanceof TileEntityLockableLoot)
-                        ((TileEntityLockableLoot) tile).setLootTable(LootTableList.CHESTS_SIMPLE_DUNGEON, randomIn.nextLong());
-                }
-                else
-                {
-                    IBlockState state = worldIn.getBlockState(dataPos.add(1,0,0));
-                    ModLogger.info("stage_regal BlockCarpet state: %s", state);
-                    worldIn.setBlockState(dataPos, state);
-                }
-                break;
-            }
-        }   
-    }
 }

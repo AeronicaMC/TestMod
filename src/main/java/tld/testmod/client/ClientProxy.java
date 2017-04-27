@@ -2,22 +2,16 @@ package tld.testmod.client;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.client.registry.IRenderFactory;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
-import tld.testmod.client.render.RenderTestSkeleton;
 import tld.testmod.common.CommonProxy;
-import tld.testmod.common.entity.living.EntityTestSkeleton;
 
 public class ClientProxy extends CommonProxy
 {
@@ -26,12 +20,6 @@ public class ClientProxy extends CommonProxy
     public void preInit(FMLPreInitializationEvent event)
     {
         super.preInit(event);
-        RenderingRegistry.registerEntityRenderingHandler(EntityTestSkeleton.class, new IRenderFactory<EntityTestSkeleton>() {
-            @Override
-            public Render<? super EntityTestSkeleton> createRenderFor(RenderManager manager) {
-                return new RenderTestSkeleton(manager);
-            }
-        });
     }
 
     @Override
