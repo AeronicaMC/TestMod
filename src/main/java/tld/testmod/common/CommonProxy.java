@@ -33,7 +33,7 @@ public class CommonProxy
 	
     public void preInit(FMLPreInitializationEvent event)
     {
-        GameRegistry.registerWorldGenerator(new WorldGenStageRegal(), 1000);
+        GameRegistry.registerWorldGenerator(new WorldGenStageRegal(), 0);
 	}
 
     public void init(FMLInitializationEvent event)
