@@ -6,7 +6,9 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 import tld.testmod.common.CommonProxy;
+import tld.testmod.common.entity.living.EntityOneTenTwoSkeleton;
 
 @Mod(modid = Main.MODID, name = Main.MODNAME, version = Main.VERSION)
 public class Main
@@ -32,6 +34,7 @@ public class Main
     public void init(FMLInitializationEvent event)
     {
         proxy.init(event);
+        EntityRegistry.registerModEntity(EntityOneTenTwoSkeleton.class, prependModID("test_skeleton"), 0, this, 64, 1, true, 0x000000, 0xE6BA50);
     }
 
     @EventHandler
