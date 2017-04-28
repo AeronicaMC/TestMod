@@ -4,8 +4,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.entity.RenderSkeleton;
-import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
@@ -17,8 +15,9 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
+import tld.testmod.client.render.RenderTestSkeleton;
 import tld.testmod.common.CommonProxy;
-import tld.testmod.common.entity.living.EntityOneTenTwoSkeleton;
+import tld.testmod.common.entity.living.EntityTestSkeleton;
 
 public class ClientProxy extends CommonProxy
 {
@@ -28,10 +27,10 @@ public class ClientProxy extends CommonProxy
     {
         super.preInit(event);
         // Render out entity class using the vanilla model and renderer.
-        RenderingRegistry.registerEntityRenderingHandler(EntityOneTenTwoSkeleton.class, new IRenderFactory<EntitySkeleton>() {
+        RenderingRegistry.registerEntityRenderingHandler(EntityTestSkeleton.class, new IRenderFactory<EntityTestSkeleton>() {
             @Override
-            public Render<? super EntitySkeleton> createRenderFor(RenderManager manager) {
-                return new RenderSkeleton(manager);
+            public Render<? super EntityTestSkeleton> createRenderFor(RenderManager manager) {
+                return new RenderTestSkeleton(manager);
             }
         });
     }
