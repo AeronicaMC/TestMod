@@ -20,6 +20,8 @@ import java.util.Iterator;
 import com.google.common.collect.EvictingQueue;
 
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraft.world.gen.structure.StructureBoundingBox;
 import tld.testmod.ModLogger;
 
 public class StructureHelper
@@ -67,5 +69,35 @@ public class StructureHelper
         }
         
         return false;
+    }
+    
+    public static int getAverageGroundLevel(World worldIn, StructureBoundingBox boundingBox, StructureBoundingBox structurebb)
+    {
+        int i = 0;
+        int j = 0;
+        BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
+
+        for (int k = boundingBox.minZ; k <= boundingBox.maxZ; ++k)
+        {
+            for (int l = boundingBox.minX; l <= boundingBox.maxX; ++l)
+            {
+                blockpos$mutableblockpos.setPos(l, 64, k);
+
+                if (structurebb.isVecInside(blockpos$mutableblockpos))
+                {
+                    i += Math.max(worldIn.getTopSolidOrLiquidBlock(blockpos$mutableblockpos).getY(), worldIn.provider.getAverageGroundLevel() - 1);
+                    ++j;
+                }
+            }
+        }
+
+        if (j == 0)
+        {
+            return -1;
+        }
+        else
+        {
+            return i / j;
+        }
     }
 }

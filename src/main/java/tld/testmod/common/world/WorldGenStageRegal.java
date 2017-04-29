@@ -5,19 +5,19 @@ import java.util.Map.Entry;
 import java.util.Random;
 
 import net.minecraft.block.BlockAir;
+import net.minecraft.block.BlockCarpet;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockLeaves;
-import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.BlockLog;
+import net.minecraft.block.BlockPlanks;
+import net.minecraft.block.BlockSlab;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentFireAspect;
 import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.ItemArrow;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityLockableLoot;
@@ -26,11 +26,14 @@ import net.minecraft.util.Mirror;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
 import net.minecraft.world.storage.loot.LootTableList;
@@ -70,11 +73,15 @@ public class WorldGenStageRegal implements IWorldGenerator
                 && biome != Biomes.MUSHROOM_ISLAND && biome != Biomes.MUSHROOM_ISLAND_SHORE
                 && biome != Biomes.RIVER && biome != Biomes.BEACH)
         {
-//            if(random.nextInt(2) == 0) {
+            if(random.nextInt(5) == 0) {
                 for (int rotation = 0; rotation < Rotation.values().length; rotation++)
                 if (generateStageAt(sWorld, rotation, random, x, z))
+                {
+                    Chunk chunk = chunkProvider.getLoadedChunk(chunkX, chunkZ);
+                    chunk.resetRelightChecks();
                     break;
-//            }
+                }
+            }
         }       
     }
 
@@ -90,8 +97,14 @@ public class WorldGenStageRegal implements IWorldGenerator
         int j = world.getHeight(i, k);
         int airCount = 0;
         
+
         BlockPos zeroPos = template.getZeroPositionWithTransform(new BlockPos(i,j,k), Mirror.NONE, settings.getRotation());
         BlockPos size = template.getSize();
+        
+        int agl = StructureHelper.getAverageGroundLevel(world, new StructureBoundingBox(new Vec3i(i-8, 64, k-8), new Vec3i(i+8, 128, k+8)),
+                new StructureBoundingBox(new Vec3i(i-size.getX()/2, 64, k-size.getZ()/2), new Vec3i(i+size.getX()/2, 64, k+size.getZ()/2)));
+        zeroPos = new BlockPos(i-size.getX()/2,agl,k-size.getZ()/2);
+        
         int horizontalArea = size.getX() * size.getZ();
         
         for(int y = 0; y < size.getY(); y++)
@@ -106,18 +119,11 @@ public class WorldGenStageRegal implements IWorldGenerator
                         // ModLogger.info("stage_regal OBSTRUCTED");
                         return false; // Obstructed, can't generate here
                     }
-                    if(y == 0 && (checkStateDown.getBlock() instanceof BlockAir))
-                    {
-                        airCount++; // Air under structure
-                    }
-                    if(y == 0 && ( airCount * 100F / horizontalArea / 100F > 0.90F))
-                    {
-                        // ModLogger.info("stage_regal TOO MUCH AIR UNDERNEATH: airCount %d, area: %d, percent: %f", airCount, horizontalArea, ((airCount * 100F) / horizontalArea) / 100F); 
-                        return false; // No spawning over mostly air
-                    }
-                    if(y == 0 && ((checkStateDown.getBlock() instanceof BlockLiquid) ||
+                    if(y == 0 && (checkStateDown.getMaterial().isLiquid() ||
                             (checkStateDown.getBlock() instanceof BlockLeaves) ||
-                            (checkStateDown.getBlock() instanceof BlockLog)) )
+                            (checkStateDown.getBlock() instanceof BlockLog) ||
+                            (checkStateDown.getBlock() instanceof BlockPlanks) ||
+                            (checkStateDown.getBlock() instanceof BlockSlab)) )
                     {
                         // ModLogger.info("stage_regal NOT ON TREES OR WATER: block: %s", checkStateDown.getBlock().getRegistryName()); 
                         return false; // No spawning in trees, or on water!!
@@ -171,7 +177,7 @@ public class WorldGenStageRegal implements IWorldGenerator
                 skeleton.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(Items.GOLDEN_HELMET));
                 skeleton.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.BOW));
                 skeleton.setArrowCountInEntity(64);
-                skeleton.setHomePosAndDistance(dataPos.add(0.5,0,0.5), 10);
+                skeleton.setHomePosAndDistance(dataPos.add(0.5,0,0.5), 25);
                 worldIn.spawnEntity(skeleton);
                 ModLogger.info("stage_regal Skeleton: %s", skeleton);
                 break;
@@ -191,9 +197,7 @@ public class WorldGenStageRegal implements IWorldGenerator
                 }
                 else
                 {
-                    IBlockState state = worldIn.getBlockState(dataPos.add(1,0,0));
-                    ModLogger.info("stage_regal BlockCarpet state: %s", state);
-                    worldIn.setBlockState(dataPos, state);
+                    worldIn.setBlockState(dataPos, Blocks.CARPET.getDefaultState().withProperty(BlockCarpet.COLOR, EnumDyeColor.RED));
                 }
                 break;
             }
