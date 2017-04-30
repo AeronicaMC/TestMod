@@ -30,7 +30,6 @@ import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -68,19 +67,15 @@ public class WorldGenStageRegal implements IWorldGenerator
         int z = chunkZ * 16 + 8; // The all important offset of +8
 
         BlockPos xzPos = new BlockPos(x, 1, z);
-        Biome biome = world.getBiomeForCoordsBody(xzPos);
+        Biome biome = sWorld.getBiomeForCoordsBody(xzPos);
         if(biome != Biomes.HELL && biome != Biomes.VOID && biome != Biomes.ROOFED_FOREST
                 && biome != Biomes.MUSHROOM_ISLAND && biome != Biomes.MUSHROOM_ISLAND_SHORE
-                && biome != Biomes.RIVER && biome != Biomes.BEACH)
+                && biome != Biomes.RIVER && biome != Biomes.BEACH && sWorld.getVillageCollection().getNearestVillage(xzPos, 100) == null)
         {
-            if(random.nextInt(5) == 0) {
+            if(random.nextInt(2) == 0) {
                 for (int rotation = 0; rotation < Rotation.values().length; rotation++)
-                if (generateStageAt(sWorld, rotation, random, x, z))
-                {
-                    Chunk chunk = chunkProvider.getLoadedChunk(chunkX, chunkZ);
-                    chunk.resetRelightChecks();
-                    break;
-                }
+                    generateStageAt(sWorld, rotation, random, x, z)
+                        ;
             }
         }       
     }
@@ -94,24 +89,22 @@ public class WorldGenStageRegal implements IWorldGenerator
         int i = xIn; // - template.getSize().getX()/2; // + random.nextInt(16);
         int k = zIn; // - template.getSize().getZ()/2; // + random.nextInt(16); 
         
-        int j = world.getHeight(i, k);
         int airCount = 0;
         
-
-        BlockPos zeroPos = template.getZeroPositionWithTransform(new BlockPos(i,j,k), Mirror.NONE, settings.getRotation());
-        BlockPos size = template.getSize();
+        BlockPos size = template.transformedSize(Rotation.values()[rotation]);
         
         int agl = StructureHelper.getAverageGroundLevel(world, new StructureBoundingBox(new Vec3i(i-8, 64, k-8), new Vec3i(i+8, 128, k+8)),
                 new StructureBoundingBox(new Vec3i(i-size.getX()/2, 64, k-size.getZ()/2), new Vec3i(i+size.getX()/2, 64, k+size.getZ()/2)));
-        zeroPos = new BlockPos(i-size.getX()/2,agl,k-size.getZ()/2);
+        BlockPos zeroPos = template.getZeroPositionWithTransform(new BlockPos(i,agl,k).add(-size.getX()/2, 0, -size.getZ()/2), Mirror.NONE, settings.getRotation());
         
         int horizontalArea = size.getX() * size.getZ();
         
-        for(int y = 0; y < size.getY(); y++)
-            for(int x = 0; x < size.getX(); x++)
-                for(int z = 0; z < size.getZ(); z++)
+        BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
+        for(int y = 0; y < template.getSize().getY(); y++)
+            for(int x = 0; x < template.getSize().getX(); x++)
+                for(int z = 0; z < template.getSize().getZ(); z++)
                 {
-                    BlockPos checkPos = zeroPos.add(template.transformedBlockPos(settings, new BlockPos(x, y, z)));
+                    BlockPos checkPos = template.transformedBlockPos(settings, blockpos$mutableblockpos.setPos(x, y, z)).add(zeroPos);
                     IBlockState checkState = world.getBlockState(checkPos);
                     IBlockState checkStateDown = world.getBlockState(checkPos.down());
                     if(!(checkState.getBlock() instanceof BlockAir))
@@ -120,9 +113,10 @@ public class WorldGenStageRegal implements IWorldGenerator
                         return false; // Obstructed, can't generate here
                     }
                     if(y == 0 && (checkStateDown.getMaterial().isLiquid() ||
-                            (checkStateDown.getBlock() instanceof BlockLeaves) ||
-                            (checkStateDown.getBlock() instanceof BlockLog) ||
-                            (checkStateDown.getBlock() instanceof BlockPlanks) ||
+                            checkState.getBlock().isFoliage(world, checkPos.down()) ||                            
+//                            (checkStateDown.getBlock() instanceof BlockLeaves) ||
+//                            (checkStateDown.getBlock() instanceof BlockLog) ||
+//                            (checkStateDown.getBlock() instanceof BlockPlanks) ||
                             (checkStateDown.getBlock() instanceof BlockSlab)) )
                     {
                         // ModLogger.info("stage_regal NOT ON TREES OR WATER: block: %s", checkStateDown.getBlock().getRegistryName()); 
@@ -135,11 +129,11 @@ public class WorldGenStageRegal implements IWorldGenerator
             template.addBlocksToWorld(world, zeroPos, settings);
 
             // Fill in below the structure with stone
-            for(int z = 0; z < size.getZ(); z++)
-                for(int x = 0; x < size.getX(); x++)
-                    for (int y = zeroPos.getY()-1 ; y > 0 ; y--)
+            for(int z = 0; z < template.getSize().getZ(); z++)
+                for(int x = 0; x < template.getSize().getX(); x++)
+                    for (int y = -1 ; y > -zeroPos.getY()  ; y--)
                     {
-                        BlockPos checkPos = zeroPos.add(template.transformedBlockPos(settings, new BlockPos(x, -y, z)));
+                        BlockPos checkPos = template.transformedBlockPos(settings, blockpos$mutableblockpos.setPos(x, y, z)).add(zeroPos);
                         IBlockState checkState = world.getBlockState(checkPos);
                         if(checkState.getBlock().canPlaceBlockAt(world, checkPos) || !checkState.getBlock().isCollidable()
                                 || (checkState.getBlock() instanceof BlockAir) || checkState.getBlock().isPassable(world, checkPos)
@@ -199,6 +193,9 @@ public class WorldGenStageRegal implements IWorldGenerator
                 {
                     worldIn.setBlockState(dataPos, Blocks.CARPET.getDefaultState().withProperty(BlockCarpet.COLOR, EnumDyeColor.RED));
                 }
+                break;
+            case "update": // Lighting update - Schedule a block update at the block below the DATA structure block - must be a mutable block and not AIR
+                worldIn.scheduleBlockUpdate(dataPos.down(), worldIn.getBlockState(dataPos.down()).getBlock(), 10, 0);
                 break;
             }
         }   
