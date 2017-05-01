@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import tld.testmod.common.CommonProxy;
-import tld.testmod.common.entity.living.EntityTestSkeleton;
+import tld.testmod.common.entity.living.EntityGoldenSkeleton;
 
 @Mod(modid = Main.MODID, name = Main.MODNAME, version = Main.VERSION)
 public class Main
@@ -35,7 +35,7 @@ public class Main
     public void init(FMLInitializationEvent event)
     {
         proxy.init(event);
-        EntityRegistry.registerModEntity(new ResourceLocation(MODID,  "test_skeleton"), EntityTestSkeleton.class, "test_skeleton", 0, this, 64, 1, true, 0x000000, 0xE6BA50);
+        EntityRegistry.registerModEntity(new ResourceLocation(MODID,  "test_skeleton"), EntityGoldenSkeleton.class, "test_skeleton", 0, this, 64, 1, true, 0x000000, 0xE6BA50);
     }
 
     @EventHandler
