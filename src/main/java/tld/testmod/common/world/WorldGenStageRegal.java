@@ -40,7 +40,7 @@ import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.fml.common.IWorldGenerator;
 import tld.testmod.Main;
 import tld.testmod.ModLogger;
-import tld.testmod.common.entity.living.EntityTestSkeleton;
+import tld.testmod.common.entity.living.EntityGoldenSkeleton;
 
 /**
  * {@link IWorldGenerator}
@@ -159,13 +159,13 @@ public class WorldGenStageRegal implements IWorldGenerator
                 return;
 
             BlockPos dataPos = entry.getKey();
-            EntityTestSkeleton skeleton;
+            EntityGoldenSkeleton skeleton;
 
             ModLogger.info("stage_regal dataEntry: %s", entry);
             switch(tokens[0])
             {
             case "skeleton":
-                skeleton = new EntityTestSkeleton(worldIn);
+                skeleton = new EntityGoldenSkeleton(worldIn);
                 skeleton.setPosition(dataPos.getX() + 0.5, dataPos.getY() + 0.1, dataPos.getZ() + 0.5);
                 skeleton.setItemStackToSlot(EntityEquipmentSlot.CHEST, new ItemStack(Items.GOLDEN_CHESTPLATE));
                 skeleton.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(Items.GOLDEN_HELMET));
