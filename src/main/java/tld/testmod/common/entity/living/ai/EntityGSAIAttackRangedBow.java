@@ -58,7 +58,7 @@ public class EntityGSAIAttackRangedBow extends EntityAIBase
 
     protected boolean isBowInMainhand()
     {
-        return !this.entity.getHeldItemMainhand().isEmpty() && this.entity.getHeldItemMainhand().getItem() == Items.BOW;
+        return (this.entity.getHeldItemMainhand() != null) && this.entity.getHeldItemMainhand().getItem() == Items.BOW;
     }
 
     /**

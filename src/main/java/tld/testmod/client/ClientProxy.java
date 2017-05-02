@@ -17,6 +17,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import tld.testmod.client.render.RenderTestSkeleton;
 import tld.testmod.common.CommonProxy;
+import tld.testmod.common.entity.living.EntityGoldenSkeleton;
 
 public class ClientProxy extends CommonProxy
 {
@@ -25,7 +26,9 @@ public class ClientProxy extends CommonProxy
     public void preInit(FMLPreInitializationEvent event)
     {
         super.preInit(event);
+        RenderingRegistry.registerEntityRenderingHandler(EntityGoldenSkeleton.class, new IRenderFactory<EntityGoldenSkeleton>() {
             @Override
+            public Render<? super EntityGoldenSkeleton> createRenderFor(RenderManager manager) {
                 return new RenderTestSkeleton(manager);
             }
         });

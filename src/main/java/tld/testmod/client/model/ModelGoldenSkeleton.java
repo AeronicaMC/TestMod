@@ -96,7 +96,7 @@ public class ModelGoldenSkeleton extends ModelBiped
         ItemStack itemstack = ((EntityLivingBase)entityIn).getHeldItemMainhand();
         EntityGoldenSkeleton abstractskeleton = (EntityGoldenSkeleton)entityIn;
 
-        if (abstractskeleton.isSwingingArms() && (itemstack.isEmpty() || itemstack.getItem() != Items.BOW))
+        if (abstractskeleton.isSwingingArms() && (itemstack == null || itemstack.getItem() != Items.BOW))
         {
             float f = MathHelper.sin(this.swingProgress * (float)Math.PI);
             float f1 = MathHelper.sin((1.0F - (1.0F - this.swingProgress) * (1.0F - this.swingProgress)) * (float)Math.PI);
