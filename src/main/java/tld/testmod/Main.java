@@ -1,6 +1,7 @@
 package tld.testmod;
 
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -10,6 +11,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import tld.testmod.common.CommonProxy;
 import tld.testmod.common.entity.living.EntityGoldenSkeleton;
+import tld.testmod.common.handlers.SpawnHandler;
 
 @Mod(modid = Main.MODID, name = Main.MODNAME, version = Main.VERSION)
 public class Main
@@ -29,6 +31,7 @@ public class Main
     {
         ModLogger.setLogger(event.getModLog());
         proxy.preInit(event);
+        MinecraftForge.EVENT_BUS.register(SpawnHandler.INSTANCE);
     }
 
     @EventHandler
