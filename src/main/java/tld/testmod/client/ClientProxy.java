@@ -16,8 +16,10 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import tld.testmod.client.render.RenderTestSkeleton;
+import tld.testmod.client.render.RenderTimpani;
 import tld.testmod.common.CommonProxy;
 import tld.testmod.common.entity.living.EntityGoldenSkeleton;
+import tld.testmod.common.entity.living.EntityTimpani;
 
 public class ClientProxy extends CommonProxy
 {
@@ -30,6 +32,12 @@ public class ClientProxy extends CommonProxy
             @Override
             public Render<? super EntityGoldenSkeleton> createRenderFor(RenderManager manager) {
                 return new RenderTestSkeleton(manager);
+            }
+        });
+        RenderingRegistry.registerEntityRenderingHandler(EntityTimpani.class, new IRenderFactory<EntityTimpani>() {
+            @Override
+            public Render<? super EntityTimpani> createRenderFor(RenderManager manager) {
+                return new RenderTimpani(manager);
             }
         });
     }
