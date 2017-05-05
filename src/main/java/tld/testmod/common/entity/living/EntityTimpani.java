@@ -28,6 +28,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTableList;
+import tld.testmod.common.ModSoundEvents;
 
 public class EntityTimpani extends EntitySlime
 {
@@ -70,6 +71,8 @@ public class EntityTimpani extends EntitySlime
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue((double)(size * 3));
     }
 
+
+    
 //    @SideOnly(Side.CLIENT)
 //    @Override
 //    public int getBrightnessForRender(float partialTicks)
@@ -126,7 +129,7 @@ public class EntityTimpani extends EntitySlime
     @Override
     protected void alterSquishAmount()
     {
-        this.squishAmount *= 0.6F;
+        this.squishAmount *= 0.5F;
     }
 
     /**
@@ -135,7 +138,7 @@ public class EntityTimpani extends EntitySlime
     @Override
     protected void jump()
     {
-        this.motionY = (double)(0.2F + (float)this.getSlimeSize() * 0.1F);
+        this.motionY = (double)(0.22F + (float)this.getSlimeSize() * 0.1F);
         this.isAirBorne = true;
         net.minecraftforge.common.ForgeHooks.onLivingJump(this);
     }
@@ -155,7 +158,7 @@ public class EntityTimpani extends EntitySlime
     @Override
     public float getEyeHeight()
     {
-        return 0.625F * this.height;
+        return this.height * 0.8F;
     }
     
     /**
@@ -211,7 +214,24 @@ public class EntityTimpani extends EntitySlime
     @Override
     protected SoundEvent getSquishSound()
     {
-        return this.isSmallSlime() ? SoundEvents.ENTITY_SMALL_MAGMACUBE_SQUISH : SoundEvents.ENTITY_MAGMACUBE_SQUISH;
+        SoundEvent soundEvent = SoundEvents.ENTITY_SMALL_MAGMACUBE_SQUISH;
+        switch(this.getSlimeSize())
+        {
+        case 1:
+            soundEvent = (SoundEvent) ModSoundEvents.ENTITY_TIMPANI_SQUISH_TINY;
+            break;
+        case 2:
+            soundEvent = (SoundEvent) ModSoundEvents.ENTITY_TIMPANI_SQUISH_SMALL;
+            break;
+        case 3:
+            soundEvent = (SoundEvent) ModSoundEvents.ENTITY_TIMPANI_SQUISH_MEDIUM;
+            break;
+        case 4:
+            soundEvent = (SoundEvent) ModSoundEvents.ENTITY_TIMPANI_SQUISH_LARGE;
+            break;
+        default:
+        }
+        return soundEvent;
     }
 
     @Override

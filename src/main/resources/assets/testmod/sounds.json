@@ -1,0 +1,6 @@
+{
+	"timpani_tiny":   {"sounds": [{"name": "testmod:entity/timpani_53", "stream": false}]},
+	"timpani_small":  {"sounds": [{"name": "testmod:entity/timpani_49", "stream": false}]},
+	"timpani_medium": {"sounds": [{"name": "testmod:entity/timpani_46", "stream": false}]},
+	"timpani_large":  {"sounds": [{"name": "testmod:entity/timpani_41", "stream": false}]}
+}

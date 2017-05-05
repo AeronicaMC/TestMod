@@ -1,6 +1,7 @@
 package tld.testmod;
 
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -10,6 +11,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import tld.testmod.common.CommonProxy;
+import tld.testmod.common.ModSoundEvents;
 import tld.testmod.common.entity.living.EntityGoldenSkeleton;
 import tld.testmod.common.entity.living.EntityTimpani;
 import tld.testmod.common.handlers.SpawnHandler;
@@ -20,6 +22,7 @@ public class Main
     public static final String MODID = "testmod";
     public static final String MODNAME = "Test Mod";
     public static final String VERSION = "{@VERSION}";
+    private static final SoundEvent SOUND_INIT = (SoundEvent) ModSoundEvents.ENTITY_TIMPANI_SQUISH_TINY;
     
     @Mod.Instance(MODID)
     public static Main instance;
