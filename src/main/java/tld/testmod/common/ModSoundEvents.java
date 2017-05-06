@@ -21,22 +21,28 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import tld.testmod.Main;
 
 public class ModSoundEvents {
-    public static final SoundEvent ENTITY_TIMPANI_SQUISH_TINY;
-    public static final SoundEvent ENTITY_TIMPANI_SQUISH_SMALL;
-    public static final SoundEvent ENTITY_TIMPANI_SQUISH_MEDIUM;
-    public static final SoundEvent ENTITY_TIMPANI_SQUISH_LARGE;
-    //public static final SoundEvent ENTITY_TIMPANI_JUMP;
+    public static final SoundEvent ENTITY_TINY_TIMPANI_SQUISH;
+    public static final SoundEvent ENTITY_MEDIUM_TIMPANI_SQUISH;
+    public static final SoundEvent ENTITY_LARGE_TIMPANI_SQUISH;
+    public static final SoundEvent ENTITY_TIMPANI_JUMP;
+    public static final SoundEvent ENTITY_TINY_TIMPANI_HURT;
+    public static final SoundEvent ENTITY_TINY_TIMPANI_DEATH;
+    public static final SoundEvent ENTITY_TIMPANI_HURT;
+    public static final SoundEvent ENTITY_TIMPANI_DEATH;
     /**
      * Register the {@link SoundEvent}s.
      */
     private ModSoundEvents() {}
     
     static {
-        ENTITY_TIMPANI_SQUISH_TINY = registerSound("timpani_tiny");
-        ENTITY_TIMPANI_SQUISH_SMALL = registerSound("timpani_small");
-        ENTITY_TIMPANI_SQUISH_MEDIUM = registerSound("timpani_medium");
-        ENTITY_TIMPANI_SQUISH_LARGE = registerSound("timpani_large");
-        //ENTITY_TIMPANI_JUMP = registerSound("timpani_jump");
+        ENTITY_TINY_TIMPANI_SQUISH = registerSound("entity.tiny.timpani.squish");
+        ENTITY_MEDIUM_TIMPANI_SQUISH = registerSound("entity.medium.timpani.squish");
+        ENTITY_LARGE_TIMPANI_SQUISH = registerSound("entity.large.timpani.squish");
+        ENTITY_TIMPANI_JUMP = registerSound("entity.timpani.jump");
+        ENTITY_TINY_TIMPANI_HURT = registerSound("entity.tiny.timpani.hurt");
+        ENTITY_TINY_TIMPANI_DEATH = registerSound("entity.tiny.timpani.death");
+        ENTITY_TIMPANI_HURT = registerSound("entity.timpani.hurt");
+        ENTITY_TIMPANI_DEATH = registerSound("entity.timpani.death");
     }
     /**
      * Register a {@link SoundEvent}.

@@ -68,5 +68,7 @@ public class CommonProxy
         }
         return false;
     }
+
+    public void spawnTimpaniParticle(World world, double x, double y, double z) {}
     
 }

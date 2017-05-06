@@ -1,6 +1,22 @@
 {
-	"timpani_tiny":   {"sounds": [{"name": "testmod:entity/timpani_53", "stream": false}]},
-	"timpani_small":  {"sounds": [{"name": "testmod:entity/timpani_49", "stream": false}]},
-	"timpani_medium": {"sounds": [{"name": "testmod:entity/timpani_46", "stream": false}]},
-	"timpani_large":  {"sounds": [{"name": "testmod:entity/timpani_41", "stream": false}]}
+	"entity.tiny.timpani.squish":   {"sounds": [{"name": "testmod:entity/timpani/timpani_53", "stream": false}]},
+	"entity.medium.timpani.squish": {"sounds": [{"name": "testmod:entity/timpani/timpani_46", "stream": false}]},
+	"entity.large.timpani.squish":  {"sounds": [{"name": "testmod:entity/timpani/timpani_41", "stream": false}]},
+	"entity.timpani.jump":  {"sounds": [
+		"testmod:entity/timpani/pedal_squeak1",
+		"testmod:entity/timpani/pedal_squeak2",
+		"testmod:entity/timpani/pedal_squeak3"
+	]},
+	"entity.small.timpani.hurt":  {"sounds": [
+		"testmod:entity/timpani/small_hurt"
+	]},
+	"entity.small.timpani.death":  {"sounds": [
+		"testmod:entity/timpani/small_death"
+	]},
+	"entity.timpani.hurt":  {"sounds": [
+		"testmod:entity/timpani/hurt"
+	]},
+	"entity.timpani.death":  {"sounds": [
+		"testmod:entity/timpani/death"
+	]}	
 }

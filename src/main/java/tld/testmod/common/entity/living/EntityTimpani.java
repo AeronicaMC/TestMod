@@ -20,15 +20,14 @@ import javax.annotation.Nullable;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntitySlime;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTableList;
-import tld.testmod.ModLogger;
+import tld.testmod.Main;
 import tld.testmod.common.ModSoundEvents;
 
 public class EntityTimpani extends EntitySlime
@@ -40,6 +39,12 @@ public class EntityTimpani extends EntitySlime
         this.isImmuneToFire = true;
     }
 
+    @Override
+    protected boolean canDespawn()
+    {
+        return false;
+    }
+    
     @Override
     protected void applyEntityAttributes()
     {
@@ -90,11 +95,11 @@ public class EntityTimpani extends EntitySlime
 //        return 1.0F;
 //    }
 
-    @Override
-    protected EnumParticleTypes getParticleType()
-    {
-        return EnumParticleTypes.NOTE;
-    }
+//    @Override
+//    protected EnumParticleTypes getParticleType()
+//    {
+//        return EnumParticleTypes.NOTE;
+//    }
 
     @Override
     protected EntityTimpani createInstance()
@@ -124,7 +129,7 @@ public class EntityTimpani extends EntitySlime
     @Override
     protected int getJumpDelay()
     {
-        return super.getJumpDelay() * 2;
+        return super.getJumpDelay() * 4;
     }
 
     @Override
@@ -203,13 +208,13 @@ public class EntityTimpani extends EntitySlime
     @Override
     protected SoundEvent getHurtSound()
     {
-        return this.isSmallSlime() ? SoundEvents.ENTITY_SMALL_MAGMACUBE_HURT : SoundEvents.ENTITY_MAGMACUBE_HURT;
+        return this.isSmallSlime() ? ModSoundEvents.ENTITY_TINY_TIMPANI_HURT : ModSoundEvents.ENTITY_TIMPANI_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound()
     {
-        return this.isSmallSlime() ? SoundEvents.ENTITY_SMALL_MAGMACUBE_DEATH : SoundEvents.ENTITY_MAGMACUBE_DEATH;
+        return this.isSmallSlime() ? ModSoundEvents.ENTITY_TINY_TIMPANI_DEATH : ModSoundEvents.ENTITY_TIMPANI_DEATH;
     }
 
     @Override
@@ -217,17 +222,17 @@ public class EntityTimpani extends EntitySlime
     {
         int slimeSize = this.getSlimeSize();
         //ModLogger.info("getSquishSound mobSize %d", slimeSize);
-        SoundEvent soundEvent = SoundEvents.ENTITY_SMALL_MAGMACUBE_SQUISH;
+        SoundEvent soundEvent = ModSoundEvents.ENTITY_MEDIUM_TIMPANI_SQUISH;
         switch(slimeSize)
         {
         case 1:
-            soundEvent = (SoundEvent) ModSoundEvents.ENTITY_TIMPANI_SQUISH_TINY;
+            soundEvent = ModSoundEvents.ENTITY_TINY_TIMPANI_SQUISH;
             break;
         case 2:
-            soundEvent = (SoundEvent) ModSoundEvents.ENTITY_TIMPANI_SQUISH_MEDIUM;
+            soundEvent = ModSoundEvents.ENTITY_MEDIUM_TIMPANI_SQUISH;
             break;
         case 4:
-            soundEvent = (SoundEvent) ModSoundEvents.ENTITY_TIMPANI_SQUISH_LARGE;
+            soundEvent = ModSoundEvents.ENTITY_LARGE_TIMPANI_SQUISH;
             break;
         default:
         }
@@ -237,6 +242,25 @@ public class EntityTimpani extends EntitySlime
     @Override
     protected SoundEvent getJumpSound()
     {
-        return SoundEvents.ENTITY_MAGMACUBE_JUMP;
+        return ModSoundEvents.ENTITY_TIMPANI_JUMP;
     }
+    
+    @Override
+    protected boolean spawnCustomParticles() {
+      if(this.getEntityWorld().isRemote) {
+        int i = this.getSlimeSize();
+        for(int j = 0; j < i * 8; ++j) {
+          float f = this.rand.nextFloat() * (float) Math.PI * 2.0F;
+          float f1 = this.rand.nextFloat() * 0.5F + 0.5F;
+          float f2 = MathHelper.sin(f) * (float) i * 0.5F * f1;
+          float f3 = MathHelper.cos(f) * (float) i * 0.5F * f1;
+          double d0 = this.posX + (double) f2;
+          double d1 = this.posZ + (double) f3;
+          double d2 = this.getEntityBoundingBox().minY;
+          Main.proxy.spawnTimpaniParticle(this.getEntityWorld(), d0, d2, d1);
+        }
+      }
+      return true;
+    }
+
 }

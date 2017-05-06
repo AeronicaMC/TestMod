@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Items;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
@@ -18,6 +19,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import tld.testmod.client.render.RenderTestSkeleton;
 import tld.testmod.client.render.RenderTimpani;
 import tld.testmod.common.CommonProxy;
+import tld.testmod.common.entity.EntityTimpaniFx;
 import tld.testmod.common.entity.living.EntityGoldenSkeleton;
 import tld.testmod.common.entity.living.EntityTimpani;
 
@@ -41,6 +43,12 @@ public class ClientProxy extends CommonProxy
             }
         });
     }
+    
+    @Override
+    public void spawnTimpaniParticle(World world, double x, double y, double z) {
+      Minecraft.getMinecraft().effectRenderer.addEffect(new EntityTimpaniFx(world, x, y, z, Items.BREAD, Items.BREAD.getMetadata(0)));
+    }
+
 
     @Override
     public void init(FMLInitializationEvent event)

@@ -22,7 +22,7 @@ public class Main
     public static final String MODID = "testmod";
     public static final String MODNAME = "Test Mod";
     public static final String VERSION = "{@VERSION}";
-    private static final SoundEvent SOUND_INIT = (SoundEvent) ModSoundEvents.ENTITY_TIMPANI_SQUISH_TINY;
+    private static final SoundEvent SOUND_INIT = (SoundEvent) ModSoundEvents.ENTITY_TINY_TIMPANI_SQUISH;
     
     @Mod.Instance(MODID)
     public static Main instance;
