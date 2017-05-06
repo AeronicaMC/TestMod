@@ -28,11 +28,12 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTableList;
+import tld.testmod.ModLogger;
 import tld.testmod.common.ModSoundEvents;
 
 public class EntityTimpani extends EntitySlime
 {
-
+    
     public EntityTimpani(World worldIn)
     {
         super(worldIn);
@@ -214,16 +215,15 @@ public class EntityTimpani extends EntitySlime
     @Override
     protected SoundEvent getSquishSound()
     {
+        int slimeSize = this.getSlimeSize();
+        //ModLogger.info("getSquishSound mobSize %d", slimeSize);
         SoundEvent soundEvent = SoundEvents.ENTITY_SMALL_MAGMACUBE_SQUISH;
-        switch(this.getSlimeSize())
+        switch(slimeSize)
         {
         case 1:
             soundEvent = (SoundEvent) ModSoundEvents.ENTITY_TIMPANI_SQUISH_TINY;
             break;
         case 2:
-            soundEvent = (SoundEvent) ModSoundEvents.ENTITY_TIMPANI_SQUISH_SMALL;
-            break;
-        case 3:
             soundEvent = (SoundEvent) ModSoundEvents.ENTITY_TIMPANI_SQUISH_MEDIUM;
             break;
         case 4:

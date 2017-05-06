@@ -58,7 +58,7 @@ public class RenderTimpani extends RenderLiving<EntityTimpani>
         int i = entitylivingbaseIn.getSlimeSize();
         float f = (entitylivingbaseIn.prevSquishFactor + (entitylivingbaseIn.squishFactor - entitylivingbaseIn.prevSquishFactor) * partialTickTime) / ((float)i * 0.5F + 1.0F);
         float f1 = 1.0F / (f + 1.0F);
-        GlStateManager.scale(f1 * (float)i * 0.5F, 1.0F / f1 * (float)i * 0.5F, f1 * (float)i * 0.5F);
+        GlStateManager.scale(f1 * (float)i * 0.6F, 1.0F / f1 * (float)i * 0.6F, f1 * (float)i * 0.6F);
     }
 
 }
