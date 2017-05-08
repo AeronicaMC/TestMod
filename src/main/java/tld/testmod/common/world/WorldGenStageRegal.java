@@ -211,7 +211,7 @@ public class WorldGenStageRegal implements IWorldGenerator
                 }
                 break;
             case "update": // Lighting update - Schedule a block update at the block below the DATA structure block - must be a mutable block and not AIR
-                worldIn.scheduleBlockUpdate(dataPos.down(), worldIn.getBlockState(dataPos.down()).getBlock(), 10, 0);
+                worldIn.scheduleBlockUpdate(dataPos.down(), worldIn.getBlockState(dataPos.down()).getBlock(), 10+randomIn.nextInt(5), 0);
                 break;
             }
         }   
