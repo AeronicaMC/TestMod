@@ -51,45 +51,6 @@
                ]
             },
             {
-               "type":"item", "name":"minecraft:fire_charge",
-               "weight":10,
-               "functions":[
-                  {
-                     "function":"set_count",
-                     "count":{
-                        "min":3,
-                        "max":9
-                     }
-                  }
-               ]
-            },
-            {
-               "type":"item", "name":"minecraft:tnt",
-               "weight":5,
-               "functions":[
-                  {
-                     "function":"set_count",
-                     "count":{
-                        "min":2,
-                        "max":4
-                     }
-                  }
-               ]
-            },
-            {
-               "type":"item", "name":"minecraft:gunpowder",
-               "weight":10,
-               "functions":[
-                  {
-                     "function":"set_count",
-                     "count":{
-                        "min":4,
-                        "max":12
-                     }
-                  }
-               ]
-            },
-            {
                "type":"item", "name":"minecraft:sponge",
                "weight":1,
                "functions":[
@@ -170,49 +131,6 @@
                ]
             },
             {
-               "type":"item", "name":"minecraft:apple",
-               "weight":10,
-               "functions":[
-                  {
-                     "function":"set_count",
-                     "count":{
-                        "min":1,
-                        "max":6
-                     }
-                  }
-               ]
-            },
-            {
-               "type":"item", "name":"minecraft:fish",
-               "weight":5,
-               "functions":[
-                  {
-                     "function":"set_data",
-                     "data":1
-                  },
-                  {
-                     "function":"set_count",
-                     "count":{
-                        "min":1,
-                        "max":6
-                     }
-                  }
-               ]
-            },
-            {
-               "type":"item", "name":"minecraft:rotten_flesh",
-               "weight":1,
-               "functions":[
-                  {
-                     "function":"set_count",
-                     "count":{
-                        "min":4,
-                        "max":12
-                     }
-                  }
-               ]
-            },
-            {
                "type":"item", "name":"minecraft:bow",
                "weight":3,
                "functions":[
@@ -241,7 +159,19 @@
                      }
                   }
                ]
-            }
+            },
+            {
+               "type": "item",
+               "name": "minecraft:book",
+               "weight": 10,
+               "functions": [
+                   {
+                       "function": "enchant_with_levels",
+                       "levels": 30,
+                       "treasure": true
+                   }
+               ]
+            }            
          ]
       }
    ]
