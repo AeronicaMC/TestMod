@@ -7,9 +7,6 @@ import java.util.Random;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockCarpet;
 import net.minecraft.block.BlockChest;
-import net.minecraft.block.BlockLeaves;
-import net.minecraft.block.BlockLog;
-import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.state.IBlockState;
@@ -35,12 +32,13 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
-import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.fml.common.IWorldGenerator;
 import tld.testmod.Main;
 import tld.testmod.ModLogger;
+import tld.testmod.common.ModLootTables;
 import tld.testmod.common.entity.living.EntityGoldenSkeleton;
+import tld.testmod.common.entity.living.EntityTimpani;
 
 /**
  * {@link IWorldGenerator}
@@ -160,6 +158,7 @@ public class WorldGenStageRegal implements IWorldGenerator
 
             BlockPos dataPos = entry.getKey();
             EntityGoldenSkeleton skeleton;
+            EntityTimpani  timpano;
 
             ModLogger.info("stage_regal dataEntry: %s", entry);
             switch(tokens[0])
@@ -175,6 +174,23 @@ public class WorldGenStageRegal implements IWorldGenerator
                 worldIn.spawnEntity(skeleton);
                 ModLogger.info("stage_regal Skeleton: %s", skeleton);
                 break;
+            case "timpano":
+                int size;
+                timpano = new EntityTimpani(worldIn);
+                timpano.setPosition(dataPos.getX() + 0.5, dataPos.getY() + 0.1, dataPos.getZ() + 0.5);
+                try {
+                    size = Integer.parseInt(tokens[1]);
+                }
+                catch (NumberFormatException e)
+                {
+                    size = 3;
+                }
+                if (size > 3 || size < 1)
+                    size = 3;
+                timpano.setSlimeSize(size, true);
+                worldIn.spawnEntity(timpano);
+                ModLogger.info("stage_regal Timpano: %s", timpano);
+                break;
             case "loot":
                 float chance = tokens.length == 3 ? 1F : 0.75F;
 
@@ -187,7 +203,7 @@ public class WorldGenStageRegal implements IWorldGenerator
 
                     TileEntity tile = worldIn.getTileEntity(dataPos);
                     if(tile != null && tile instanceof TileEntityLockableLoot)
-                        ((TileEntityLockableLoot) tile).setLootTable(LootTableList.CHESTS_SIMPLE_DUNGEON, randomIn.nextLong());
+                        ((TileEntityLockableLoot) tile).setLootTable(ModLootTables.STAGE_REGAL_CHEST_LOOT_TABLE, randomIn.nextLong());
                 }
                 else
                 {

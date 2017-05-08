@@ -70,14 +70,11 @@ public class EntityTimpani extends EntitySlime
         return this.world.checkNoEntityCollision(this.getEntityBoundingBox(), this) && this.world.getCollisionBoxes(this, this.getEntityBoundingBox()).isEmpty() && !this.world.containsAnyLiquid(this.getEntityBoundingBox());
     }
 
-    @Override
-    protected void setSlimeSize(int size, boolean p_70799_2_)
+    public void setSlimeSize(int size, boolean p_70799_2_)
     {
         super.setSlimeSize(size, p_70799_2_);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue((double)(size * 3));
     }
-
-
     
 //    @SideOnly(Side.CLIENT)
 //    @Override
@@ -175,7 +172,7 @@ public class EntityTimpani extends EntitySlime
     {
         return true;
     }
-
+    
     /**
      * Called only once on an entity when first time spawned, via egg, mob spawner, natural spawning etc, but not called
      * when entity is reloaded from nbt. Mainly used for initializing attributes and inventory
