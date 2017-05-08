@@ -21,6 +21,7 @@ import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.monster.EntityMagmaCube;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.registry.IRenderFactory;
 import tld.testmod.Main;
 import tld.testmod.client.model.ModelTimpani;
 import tld.testmod.common.entity.living.EntityTimpani;
@@ -30,9 +31,11 @@ public class RenderTimpani extends RenderLiving<EntityTimpani>
 
     private static final ResourceLocation MOB_TIMPANI_TEXTURE = new ResourceLocation(Main.MODID, "textures/entity/timpani/mob_timpani.png");
     
-    public RenderTimpani(RenderManager rendermanagerIn, ModelBase modelbaseIn, float shadowsizeIn)
+    public static final IRenderFactory<EntityTimpani> FACTORY = (RenderManager manager) -> new RenderTimpani(manager);
+    
+    public RenderTimpani(RenderManager manager, ModelBase modelbase, float shadowsize)
     {
-        super(rendermanagerIn, new ModelTimpani(), 0.25F);
+        super(manager, new ModelTimpani(), 0.25F);
     }
 
     public RenderTimpani(RenderManager manager)
