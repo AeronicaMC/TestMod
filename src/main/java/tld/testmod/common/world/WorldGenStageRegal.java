@@ -71,9 +71,9 @@ public class WorldGenStageRegal implements IWorldGenerator
                 && biome != Biomes.RIVER && biome != Biomes.BEACH && sWorld.getVillageCollection().getNearestVillage(xzPos, 100) == null)
         {
             if(random.nextInt(2) == 0) {
-                for (int rotation = 0; rotation < Rotation.values().length; rotation++)
-                    generateStageAt(sWorld, rotation, random, x, z)
-                        ;
+                for (int rotation = random.nextInt(2) * 2; rotation < Rotation.values().length; rotation++)
+                    if(generateStageAt(sWorld, rotation, random, x, z))
+                        break;
             }
         }       
     }
