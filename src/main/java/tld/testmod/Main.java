@@ -1,5 +1,6 @@
 package tld.testmod;
 
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -26,6 +27,8 @@ public class Main
 
     @SidedProxy(clientSide = "tld.testmod.client.ClientProxy", serverSide = "tld.testmod.common.CommonProxy")
     public static CommonProxy proxy;
+    
+    public static final CreativeTabs MODTAB  = new ModTab();
     
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
