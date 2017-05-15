@@ -39,8 +39,8 @@ public class ModSoundEvents {
         ENTITY_MEDIUM_TIMPANI_SQUISH = registerSound("entity.medium.timpani.squish");
         ENTITY_LARGE_TIMPANI_SQUISH = registerSound("entity.large.timpani.squish");
         ENTITY_TIMPANI_JUMP = registerSound("entity.timpani.jump");
-        ENTITY_TINY_TIMPANI_HURT = registerSound("entity.tiny.timpani.hurt");
-        ENTITY_TINY_TIMPANI_DEATH = registerSound("entity.tiny.timpani.death");
+        ENTITY_TINY_TIMPANI_HURT = registerSound("entity.small.timpani.hurt");
+        ENTITY_TINY_TIMPANI_DEATH = registerSound("entity.small.timpani.death");    
         ENTITY_TIMPANI_HURT = registerSound("entity.timpani.hurt");
         ENTITY_TIMPANI_DEATH = registerSound("entity.timpani.death");
     }
