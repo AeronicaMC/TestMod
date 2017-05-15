@@ -30,6 +30,7 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import tld.testmod.ModLogger;
 
 public class VQuadBlock extends Block 
 {
@@ -52,11 +53,11 @@ public class VQuadBlock extends Block
     }
     
     @Override
-    public boolean isFullCube(IBlockState state) {return false;}
+    public boolean isFullCube(IBlockState state) {return true;}
 
     /** Used to determine ambient occlusion and culling when rebuilding chunks for render */
     @Override
-    public boolean isOpaqueCube(IBlockState state) {return false;}
+    public boolean isOpaqueCube(IBlockState state) {return true;}
 
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
@@ -66,12 +67,6 @@ public class VQuadBlock extends Block
         if (state.getValue(PART) == VQuadBlock.EnumPartType.UR)
         {
             if (worldIn.getBlockState(pos.offset(enumfacing.getOpposite())).getBlock() != this)
-            {
-                worldIn.setBlockToAir(pos);
-            }
-        } else if (state.getValue(PART) == VQuadBlock.EnumPartType.UR)
-        {
-            if (worldIn.getBlockState(pos.offset(enumfacing).down()).getBlock() != this)
             {
                 worldIn.setBlockToAir(pos);
             }
@@ -89,6 +84,7 @@ public class VQuadBlock extends Block
             if (!worldIn.isRemote)
             {
                 this.dropBlockAsItem(worldIn, pos, state, 0);
+                ModLogger.info("VBQTest Drop %s", state);
             }
         }
     }
