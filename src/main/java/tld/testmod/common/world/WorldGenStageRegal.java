@@ -8,6 +8,7 @@ import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockCarpet;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockSlab;
+import net.minecraft.block.BlockTorch;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Biomes;
@@ -27,6 +28,7 @@ import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -136,7 +138,9 @@ public class WorldGenStageRegal implements IWorldGenerator
                         if(checkState.getBlock().canPlaceBlockAt(world, checkPos) || !checkState.getBlock().isCollidable()
                                 || (checkState.getBlock() instanceof BlockAir) || checkState.getBlock().isPassable(world, checkPos)
                                 || (checkState.getBlock() instanceof IGrowable) || (checkState.getBlock() instanceof IPlantable)) 
-                            world.setBlockState(checkPos, Blocks.STONE.getDefaultState());  
+                            world.setBlockState(checkPos, Blocks.STONE.getDefaultState());
+                            //world.setBlockState(checkPos, Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.GRANITE));
+                            //Blocks.SANDSTONE.getDefaultState().withProperty(BlockSandStone.TYPE, BlockSandStone.EnumType.CHISELED);
                     }
             replaceDataBlocks(world, zeroPos, random, template, settings);
             return true;
@@ -211,7 +215,7 @@ public class WorldGenStageRegal implements IWorldGenerator
                 }
                 break;
             case "update": // Lighting update - Schedule a block update at the block below the DATA structure block - must be a mutable block and not AIR
-                worldIn.scheduleBlockUpdate(dataPos.down(), worldIn.getBlockState(dataPos.down()).getBlock(), 10+randomIn.nextInt(5), 0);
+//                worldIn.scheduleBlockUpdate(dataPos.down(), worldIn.getBlockState(dataPos.down()).getBlock(), 10, 0);
                 break;
             }
         }   
