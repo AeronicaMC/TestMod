@@ -63,21 +63,21 @@ public class VQuadBlock extends Block
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
         EnumFacing enumfacing = state.getValue(FACING);
+        EnumPartType part = state.getValue(PART);
 
-        if (state.getValue(PART) == VQuadBlock.EnumPartType.UR)
+        if (part == VQuadBlock.EnumPartType.UR)
         {
-            if (worldIn.getBlockState(pos.offset(enumfacing.getOpposite())).getBlock() != this)
+            if ((worldIn.getBlockState(pos.offset(enumfacing.getOpposite())).getBlock() != this) || (worldIn.getBlockState(pos.down()).getBlock() != this))
             {
                 worldIn.setBlockToAir(pos);
             }
-        } else if (state.getValue(PART) == VQuadBlock.EnumPartType.LR)
+        } else if (part == VQuadBlock.EnumPartType.LR)
         {
-            if (worldIn.getBlockState(pos.offset(enumfacing.getOpposite())).getBlock() != this)
+            if ((worldIn.getBlockState(pos.offset(enumfacing.getOpposite())).getBlock() != this) || (worldIn.getBlockState(pos.up()).getBlock() != this))
             {
                 worldIn.setBlockToAir(pos);
-            } 
-        }
-        else if (worldIn.getBlockState(pos.offset(enumfacing)).getBlock() != this)
+            }
+        } else if ((worldIn.getBlockState(pos.offset(enumfacing)).getBlock() != this) && ((part == VQuadBlock.EnumPartType.UL) || part == VQuadBlock.EnumPartType.LL ))
         {
             worldIn.setBlockToAir(pos);
 
