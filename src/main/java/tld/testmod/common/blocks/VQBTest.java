@@ -15,19 +15,16 @@
  */
 package tld.testmod.common.blocks;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.item.Item;
 import tld.testmod.common.ModItems;
 
 public class VQBTest extends VQuadBlock
 {
-
+   
     @Override
-    public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state)
+    protected Item getItemBlock()
     {
-        return new ItemStack(ModItems.ITEM_VBQTEST);
+        return ModItems.ITEM_VBQTEST;
     }
-    
+   
 }
