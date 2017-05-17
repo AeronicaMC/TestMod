@@ -39,7 +39,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import tld.testmod.ModLogger;
-import tld.testmod.common.blocks.VQuadBlock.EnumPartType;
 
 public abstract class VQuadBlock extends Block 
 {
