@@ -1,0 +1,20 @@
+{
+    "variants": {
+        "facing=north,part=front_left": { "model": "testmod:hbqtest_front_left" },
+        "facing=east,part=front_left":  { "model": "testmod:hbqtest_front_left", "y": 90  },
+        "facing=south,part=front_left": { "model": "testmod:hbqtest_front_left", "y": 180 },
+        "facing=west,part=front_left":  { "model": "testmod:hbqtest_front_left", "y": 270 },
+        "facing=north,part=front_right": { "model": "testmod:hbqtest_front_right" },
+        "facing=east,part=front_right":  { "model": "testmod:hbqtest_front_right", "y": 90  },
+        "facing=south,part=front_right": { "model": "testmod:hbqtest_front_right", "y": 180 },
+        "facing=west,part=front_right":  { "model": "testmod:hbqtest_front_right", "y": 270 },
+        "facing=north,part=back_left": { "model": "testmod:hbqtest_back_left" },
+        "facing=east,part=back_left":  { "model": "testmod:hbqtest_back_left", "y": 90  },
+        "facing=south,part=back_left": { "model": "testmod:hbqtest_back_left", "y": 180 },
+        "facing=west,part=back_left":  { "model": "testmod:hbqtest_back_left", "y": 270 },
+        "facing=north,part=back_right": { "model": "testmod:hbqtest_back_right" },
+        "facing=east,part=back_right":  { "model": "testmod:hbqtest_back_right", "y": 90  },
+        "facing=south,part=back_right": { "model": "testmod:hbqtest_back_right", "y": 180 },
+        "facing=west,part=back_right":  { "model": "testmod:hbqtest_back_right", "y": 270 }
+    }
+}

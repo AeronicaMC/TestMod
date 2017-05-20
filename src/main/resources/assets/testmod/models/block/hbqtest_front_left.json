@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "testmod:blocks/hbqtest_front_left",
+    "down": "testmod:blocks/hbqtest_front_left",
+    "up": "testmod:blocks/hbqtest_front_left",
+    "east": "testmod:blocks/hbqtest_front_left_front",
+    "west": "testmod:blocks/hbqtest_front_left",
+    "north": "testmod:blocks/hbqtest_front_left",
+    "south": "testmod:blocks/hbqtest_front_left"
+  }
+}

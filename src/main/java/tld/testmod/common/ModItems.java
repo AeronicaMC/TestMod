@@ -9,6 +9,8 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.IForgeRegistry;
+import tld.testmod.common.items.HQBTestItemBlock;
+import tld.testmod.common.items.ItemRightClickTest;
 import tld.testmod.common.items.VQBTestItemBlock;
 
 @SuppressWarnings("unused")
@@ -17,8 +19,8 @@ public class ModItems
     
 //    public static final ItemInstrument ITEM_INSTRUMENT = registerItem(new ItemInstrument(), "item_inst");
 //    public static final ItemMusicPaper ITEM_MUSIC_PAPER = registerItem(new ItemMusicPaper(), "item_musicpaper");
-//    public static final ItemSheetMusic ITEM_SHEET_MUSIC = registerItem(new ItemSheetMusic(), "item_sheetmusic");
-//    public static final ItemConverter ITEM_CONVERTER = registerItem(new ItemConverter(), "item_converter");
+    public static final ItemRightClickTest ITEM_RC_TEST = registerItem(new ItemRightClickTest(), "item_rc_test");
+    public static final HQBTestItemBlock ITEM_HBQTEST = registerItem(new HQBTestItemBlock(), "block_hbqtest");
     public static final VQBTestItemBlock ITEM_VBQTEST = registerItem(new VQBTestItemBlock(), "block_vbqtest");
    
     @Mod.EventBusSubscriber
@@ -37,7 +39,9 @@ public class ModItems
 //                    ITEM_MUSIC_PAPER,
 //                    ITEM_SHEET_MUSIC,
 //                    ITEM_CONVERTER,
+                    ITEM_RC_TEST,
                     ITEM_VBQTEST,
+                    ITEM_HBQTEST,
             };
 
             final IForgeRegistry<Item> registry = event.getRegistry();

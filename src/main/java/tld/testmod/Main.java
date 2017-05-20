@@ -2,6 +2,7 @@ package tld.testmod;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -11,6 +12,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import tld.testmod.common.CommonProxy;
+import tld.testmod.common.ModSoundEvents;
 import tld.testmod.common.entity.living.EntityGoldenSkeleton;
 import tld.testmod.common.entity.living.EntityTimpani;
 import tld.testmod.common.handlers.SpawnHandler;
@@ -29,6 +31,7 @@ public class Main
     public static CommonProxy proxy;
     
     public static final CreativeTabs MODTAB  = new ModTab();
+    public static final ModSoundEvents MSE_INSTANCE = ModSoundEvents.getInstance();
     
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)

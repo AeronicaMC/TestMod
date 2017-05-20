@@ -13,6 +13,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.IForgeRegistry;
 import tld.testmod.Main;
+import tld.testmod.common.blocks.HQBTest;
 import tld.testmod.common.blocks.VQBTest;
 
 @SuppressWarnings("unused")
@@ -20,6 +21,7 @@ public class ModBlocks
 {
    
     public static final VQBTest BLOCK_VQBTEST = registerBlock(new VQBTest(), "block_vbqtest");
+    public static final HQBTest BLOCK_HQBTEST = registerBlock(new HQBTest(), "block_hbqtest");
     private ModBlocks() {}
     
     @Mod.EventBusSubscriber
@@ -38,6 +40,7 @@ public class ModBlocks
 
             final Block[] blocks = {
                     BLOCK_VQBTEST,
+                    BLOCK_HQBTEST,
             };
 
             registry.registerAll(blocks);
