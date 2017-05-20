@@ -4,9 +4,9 @@
     "particle": "testmod:blocks/hbqtest_front_right",
     "down": "testmod:blocks/hbqtest_front_right",
     "up": "testmod:blocks/hbqtest_front_right",
-    "east": "testmod:blocks/hbqtest_front_right_front",
+    "east": "testmod:blocks/hbqtest_front_right",
     "west": "testmod:blocks/hbqtest_front_right",
     "north": "testmod:blocks/hbqtest_front_right",
-    "south": "testmod:blocks/hbqtest_front_right"
+    "south": "testmod:blocks/hbqtest_front_right_front"
   }
 }

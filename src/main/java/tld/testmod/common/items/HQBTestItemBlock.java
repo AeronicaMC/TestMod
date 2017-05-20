@@ -64,9 +64,9 @@ public class HQBTestItemBlock extends Item
             int i = MathHelper.floor((double) (playerIn.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
             EnumFacing enumfacing = EnumFacing.getHorizontal(i);
             /**get the next blocks. */
-            BlockPos posFR = posFL.offset(enumfacing);
-            BlockPos posBL = posFL.offset(enumfacing.rotateYCCW());
-            BlockPos posBR = posBL.offset(enumfacing);
+            BlockPos posFR = posFL.offset(enumfacing.rotateY());
+            BlockPos posBL = posFL.offset(enumfacing);
+            BlockPos posBR = posBL.offset(enumfacing.rotateY());
 
             if (playerIn.canPlayerEdit(posFL, facingIn, stack) && playerIn.canPlayerEdit(posFR, facingIn, stack) &&
                     playerIn.canPlayerEdit(posBL, facingIn, stack) && playerIn.canPlayerEdit(posBR, facingIn, stack))

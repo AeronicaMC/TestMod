@@ -105,17 +105,17 @@ public abstract class HQuadBlock extends Block
 
         if (part == HQuadBlock.EnumPartType.BR)
         {
-            if ((worldIn.getBlockState(pos.offset(enumfacing.getOpposite())).getBlock() != this) || (worldIn.getBlockState(pos.offset(enumfacing.rotateY())).getBlock() != this))
+            if ((worldIn.getBlockState(pos.offset(enumfacing.getOpposite())).getBlock() != this) || (worldIn.getBlockState(pos.offset(enumfacing.rotateYCCW())).getBlock() != this))
             {
                 worldIn.setBlockToAir(pos);
             }
         } else if (part == HQuadBlock.EnumPartType.FR)
         {
-            if ((worldIn.getBlockState(pos.offset(enumfacing.getOpposite())).getBlock() != this) || (worldIn.getBlockState(pos.offset(enumfacing.rotateYCCW())).getBlock() != this))
+            if ((worldIn.getBlockState(pos.offset(enumfacing)).getBlock() != this) || (worldIn.getBlockState(pos.offset(enumfacing.rotateYCCW())).getBlock() != this))
             {
                 worldIn.setBlockToAir(pos);
             }
-        } else if ((worldIn.getBlockState(pos.offset(enumfacing)).getBlock() != this) && ((part == HQuadBlock.EnumPartType.BL) || part == HQuadBlock.EnumPartType.FL ))
+        } else if ((worldIn.getBlockState(pos.offset(enumfacing.rotateY())).getBlock() != this) && ((part == HQuadBlock.EnumPartType.BL) || part == HQuadBlock.EnumPartType.FL ))
         {
             worldIn.setBlockToAir(pos);
         }

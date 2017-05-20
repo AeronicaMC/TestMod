@@ -5,8 +5,8 @@
     "down": "testmod:blocks/hbqtest_back_left",
     "up": "testmod:blocks/hbqtest_back_left",
     "east": "testmod:blocks/hbqtest_back_left",
-    "west": "testmod:blocks/hbqtest_back_left_back",
-    "north": "testmod:blocks/hbqtest_back_left",
+    "west": "testmod:blocks/hbqtest_back_left",
+    "north": "testmod:blocks/hbqtest_back_left_back",
     "south": "testmod:blocks/hbqtest_back_left"
   }
 }
