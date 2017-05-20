@@ -64,9 +64,9 @@ public class VQBTestItemBlock extends Item
             int i = MathHelper.floor((double) (playerIn.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
             EnumFacing enumfacing = EnumFacing.getHorizontal(i);
             /**get the next blocks. */
-            BlockPos posLR = posLL.offset(enumfacing);
+            BlockPos posLR = posLL.offset(enumfacing.rotateY());
             BlockPos posUL = posLL.up();
-            BlockPos posUR = posUL.offset(enumfacing);
+            BlockPos posUR = posUL.offset(enumfacing.rotateY());
 
             if (playerIn.canPlayerEdit(posLL, facingIn, stack) && playerIn.canPlayerEdit(posLR, facingIn, stack) &&
                     playerIn.canPlayerEdit(posUL, facingIn, stack) && playerIn.canPlayerEdit(posUR, facingIn, stack))

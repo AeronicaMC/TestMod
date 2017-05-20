@@ -105,17 +105,17 @@ public abstract class VQuadBlock extends Block
 
         if (part == VQuadBlock.EnumPartType.UR)
         {
-            if ((worldIn.getBlockState(pos.offset(enumfacing.getOpposite())).getBlock() != this) || (worldIn.getBlockState(pos.down()).getBlock() != this))
+            if ((worldIn.getBlockState(pos.offset(enumfacing.rotateYCCW())).getBlock() != this) || (worldIn.getBlockState(pos.down()).getBlock() != this))
             {
                 worldIn.setBlockToAir(pos);
             }
         } else if (part == VQuadBlock.EnumPartType.LR)
         {
-            if ((worldIn.getBlockState(pos.offset(enumfacing.getOpposite())).getBlock() != this) || (worldIn.getBlockState(pos.up()).getBlock() != this))
+            if ((worldIn.getBlockState(pos.offset(enumfacing.rotateYCCW())).getBlock() != this) || (worldIn.getBlockState(pos.up()).getBlock() != this))
             {
                 worldIn.setBlockToAir(pos);
             }
-        } else if ((worldIn.getBlockState(pos.offset(enumfacing)).getBlock() != this) && ((part == VQuadBlock.EnumPartType.UL) || part == VQuadBlock.EnumPartType.LL ))
+        } else if ((worldIn.getBlockState(pos.offset(enumfacing.rotateY())).getBlock() != this) && ((part == VQuadBlock.EnumPartType.UL) || part == VQuadBlock.EnumPartType.LL ))
         {
             worldIn.setBlockToAir(pos);
         }

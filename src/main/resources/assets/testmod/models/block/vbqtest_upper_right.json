@@ -4,9 +4,9 @@
     "particle": "testmod:blocks/vbqtest_upper_right",
     "down": "testmod:blocks/vbqtest_upper_right",
     "up": "testmod:blocks/vbqtest_upper_right",
-    "east": "testmod:blocks/vbqtest_upper_right_front",
+    "east": "testmod:blocks/vbqtest_upper_right",
     "west": "testmod:blocks/vbqtest_upper_right",
     "north": "testmod:blocks/vbqtest_upper_right",
-    "south": "testmod:blocks/vbqtest_upper_right"
+    "south": "testmod:blocks/vbqtest_upper_right_front"
   }
 }
