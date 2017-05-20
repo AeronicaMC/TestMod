@@ -15,12 +15,14 @@ import net.minecraftforge.fml.common.registry.IForgeRegistry;
 import tld.testmod.Main;
 import tld.testmod.common.blocks.HQBTest;
 import tld.testmod.common.blocks.VQBTest;
+import tld.testmod.common.blocks.VQBTest2;
 
 @SuppressWarnings("unused")
 public class ModBlocks
 {
    
     public static final VQBTest BLOCK_VQBTEST = registerBlock(new VQBTest(), "block_vbqtest");
+    public static final VQBTest2 BLOCK_VQBTEST2 = registerBlock(new VQBTest2(), "block_vbqtest2");
     public static final HQBTest BLOCK_HQBTEST = registerBlock(new HQBTest(), "block_hbqtest");
     private ModBlocks() {}
     
@@ -40,6 +42,7 @@ public class ModBlocks
 
             final Block[] blocks = {
                     BLOCK_VQBTEST,
+                    BLOCK_VQBTEST2,
                     BLOCK_HQBTEST,
             };
 

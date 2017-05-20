@@ -1,3 +1,11 @@
 < en_US.lang - English localization file >
 entity.test_skeleton.name=Golden Skeleton
 entity.mob_timpani.name=Timpani of Doom
+
+block.testmod:block_hbqtest.name=Horizontal Quad
+block.testmod:block_vbqtest.name=Vertical Quad
+block.testmod:block_vbqtest2.name=Vertical Quad 2
+item.testmod:item_rc_test.name=Right Click Test
+item.testmod:block_hbqtest.name=Horizontal Quad
+item.testmod:block_vbqtest.name=Vertical Quad
+item.testmod:block_vbqtest2.name=Vertical Quad 2

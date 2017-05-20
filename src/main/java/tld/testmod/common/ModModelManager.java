@@ -81,11 +81,15 @@ public class ModModelManager
         ModelLoader.setCustomStateMapper(ModBlocks.BLOCK_VQBTEST, new StateMap.Builder().ignore(new IProperty[]
                 {
                 }).build());
+        ModelLoader.setCustomStateMapper(ModBlocks.BLOCK_VQBTEST2, new StateMap.Builder().ignore(new IProperty[]
+                {
+                }).build());
         ModelLoader.setCustomStateMapper(ModBlocks.BLOCK_HQBTEST, new StateMap.Builder().ignore(new IProperty[]
                 {
                 }).build());
 
         registerItemModel(ModBlocks.BLOCK_VQBTEST);
+        registerItemModel(ModBlocks.BLOCK_VQBTEST2);
         registerItemModel(ModBlocks.BLOCK_HQBTEST);
     }
     
