@@ -10,7 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -19,7 +18,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import tld.testmod.common.LocationArea;
-import tld.testmod.common.items.VQuadItemBlock;
+import tld.testmod.common.items.IPlaceableBounding;
 
 /*
  * box Rendering code mechanics by thebrightspark from the mod StructuralRelocation
@@ -44,7 +43,7 @@ public class ClientEventHandler
         while(heldItems.hasNext())
         {
             ItemStack held = heldItems.next();
-            if(!held.isEmpty() && held.getItem() instanceof VQuadItemBlock)
+            if(!held.isEmpty() && held.getItem() instanceof IPlaceableBounding)
                 return held;
         }
         return ItemStack.EMPTY;
@@ -73,9 +72,10 @@ public class ClientEventHandler
         GlStateManager.enableAlpha();
         GlStateManager.enableBlend();
         GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-        GlStateManager.glLineWidth(5f);
+        GlStateManager.glLineWidth(4f);
         GlStateManager.disableTexture2D();
         GlStateManager.translate(-x, -y, -z);
+        RenderGlobal.drawSelectionBoundingBox(box, 0f, 1f, 1f, 0.4f);
         RenderGlobal.renderFilledBox(box, 0f, 1f, 1f, 0.2f);
         RenderGlobal.drawSelectionBoundingBox(box, 0f, 1f, 1f, 0.4f);
         GlStateManager.enableTexture2D();
@@ -89,18 +89,20 @@ public class ClientEventHandler
         ItemStack heldItem = getHeldSelector();
         if(heldItem.isEmpty()) return;
         
+        IPlaceableBounding blockPlacer = (IPlaceableBounding) heldItem.getItem();
         EntityPlayerSP player = mc.player;
         World world = player.getEntityWorld();
-        int i = MathHelper.floor((double) (player.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-        EnumFacing enumfacing = EnumFacing.getHorizontal(i);
+
         RayTraceResult rayTraceResult = ForgeHooks.rayTraceEyes(player, 5);
 
-        if(rayTraceResult != null && rayTraceResult.typeOfHit.equals(RayTraceResult.Type.BLOCK) && !world.getBlockState(rayTraceResult.getBlockPos().up()).isBlockNormalCube() &&
-                rayTraceResult.sideHit.equals(EnumFacing.UP))
+        if(rayTraceResult != null && rayTraceResult.typeOfHit.equals(RayTraceResult.Type.BLOCK) && rayTraceResult.sideHit.equals(EnumFacing.UP))
         {
-            LocationArea la = new LocationArea(rayTraceResult.getBlockPos().up(),  rayTraceResult.getBlockPos().offset(enumfacing.rotateY()).up());
-            renderBox(la.getStartingPoint(), la.getEndPoint().add(1, 2, 1), event.getPartialTicks());
-            
+            BlockPos pos = rayTraceResult.getBlockPos();
+            if (blockPlacer.canPlaceHere(player, world, heldItem, pos, rayTraceResult.sideHit))
+            {                
+                LocationArea boundingBox = blockPlacer.getBoundingBox(player, world, pos);
+                renderBox(boundingBox.getStartingPoint(), boundingBox.getStartingPoint().add(1+boundingBox.getSize(EnumFacing.Axis.X), 1+boundingBox.getSize(EnumFacing.Axis.Y), 1+boundingBox.getSize(EnumFacing.Axis.Z)), event.getPartialTicks());            
+            }
         }
     }
 }
