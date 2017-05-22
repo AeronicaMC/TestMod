@@ -146,6 +146,7 @@ public class VQuadItemBlock extends Item implements IPlaceableBounding
         
         /** Looking at the ground or a replaceable block like grass. */
         if (!block.isReplaceable(worldIn, pos)) pos = pos.up();
+        /** The bounding box area - vertical 4x4 */
         return new LocationArea(pos, pos.offset(enumfacing.rotateY()).up());
     }
 }

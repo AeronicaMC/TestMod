@@ -64,8 +64,9 @@ public class LocationArea
     }
 
     /**
-     * Gets the position which represents the farthest corner of the farthest block
-     * 
+     * Gets the position which represents the farthest block
+     * from the starting point plus the size of a block.
+     * Useful for rendering an area bounding box.
      */
     public BlockPos getStartPointPlusSize()
     {
