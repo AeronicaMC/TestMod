@@ -52,12 +52,12 @@ public class ClientEventHandler
     @SuppressWarnings("unused")
     private static void renderBox(BlockPos pos, double partialTicks)
     {
-        renderBox(new AxisAlignedBB(pos).expandXyz(0.001d), partialTicks);
+        renderBox(new AxisAlignedBB(pos).expandXyz(-0.00625d), partialTicks);
     }
 
     private static void renderBox(BlockPos pos1, BlockPos pos2, double partialTicks)
     {
-        renderBox(new AxisAlignedBB(pos1, pos2).expandXyz(0.001d), partialTicks);
+        renderBox(new AxisAlignedBB(pos1, pos2).expandXyz(-0.00625d), partialTicks);
     }
 
     private static void renderBox(AxisAlignedBB box, double partialTicks)
@@ -101,7 +101,7 @@ public class ClientEventHandler
             if (blockPlacer.canPlaceHere(player, world, heldItem, pos, rayTraceResult.sideHit))
             {                
                 LocationArea boundingBox = blockPlacer.getBoundingBox(player, world, pos);
-                renderBox(boundingBox.getStartingPoint(), boundingBox.getStartingPoint().add(1+boundingBox.getSize(EnumFacing.Axis.X), 1+boundingBox.getSize(EnumFacing.Axis.Y), 1+boundingBox.getSize(EnumFacing.Axis.Z)), event.getPartialTicks());            
+                renderBox(boundingBox.getStartingPoint(), boundingBox.getStartPointPlusSize(), event.getPartialTicks());            
             }
         }
     }

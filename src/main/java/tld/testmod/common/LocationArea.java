@@ -64,6 +64,15 @@ public class LocationArea
     }
 
     /**
+     * Gets the position which represents the farthest corner of the farthest block
+     * 
+     */
+    public BlockPos getStartPointPlusSize()
+    {
+        return getStartingPoint().add(1+getSize(EnumFacing.Axis.X), 1+getSize(EnumFacing.Axis.Y), 1+getSize(EnumFacing.Axis.Z));
+    }
+    
+    /**
      * Get the length of the area along the axis given.
      */
     public int getSize(EnumFacing.Axis axis)
@@ -83,7 +92,7 @@ public class LocationArea
                 return -1;
         }
     }
-
+    
     public String getSizeString()
     {
         return getSize(EnumFacing.Axis.X) + " x " + getSize(EnumFacing.Axis.Y) + " x " + getSize(EnumFacing.Axis.Z);
