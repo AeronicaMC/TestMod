@@ -14,6 +14,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.IForgeRegistry;
 import tld.testmod.Main;
 import tld.testmod.common.animation.TestAnimBlock;
+import tld.testmod.common.animation.TestAnimTileEntity;
 import tld.testmod.common.blocks.HQBTest;
 import tld.testmod.common.blocks.VQBTest;
 import tld.testmod.common.blocks.VQBTest2;
@@ -73,6 +74,7 @@ public class ModBlocks
     }
     
     public static void registerTileEntities() {
+        GameRegistry.registerTileEntity(TestAnimTileEntity.class,  Main.prependModID("tile_test_anim"));
 //        GameRegistry.registerTileEntityWithAlternatives(TilePiano.class, MXTuneMain.prependModID("tile_piano"), "mxtune_tile_instrument", "PianoTile", "TileInstrument");
     }
 

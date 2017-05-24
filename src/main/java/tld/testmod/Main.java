@@ -11,6 +11,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import tld.testmod.common.CommonProxy;
+import tld.testmod.common.ModBlocks;
 import tld.testmod.common.ModSoundEvents;
 import tld.testmod.common.animation.TestAnimEntity;
 import tld.testmod.common.entity.living.EntityGoldenSkeleton;
@@ -38,6 +39,7 @@ public class Main
     {
         ModLogger.setLogger(event.getModLog());
         proxy.preInit(event);
+        ModBlocks.registerTileEntities();
         MinecraftForge.EVENT_BUS.register(SpawnHandler.INSTANCE);
     }
 
