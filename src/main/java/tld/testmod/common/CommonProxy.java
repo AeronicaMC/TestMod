@@ -16,10 +16,17 @@
  */
 package tld.testmod.common;
 
+import javax.annotation.Nullable;
+
+import com.google.common.collect.ImmutableMap;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.common.animation.ITimeValue;
+import net.minecraftforge.common.model.animation.IAnimationStateMachine;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -70,5 +77,11 @@ public class CommonProxy
     }
 
     public void spawnTimpaniParticle(World world, double x, double y, double z) {}
-    
+ 
+    @Nullable
+    public IAnimationStateMachine load(ResourceLocation location, ImmutableMap<String, ITimeValue> parameters)
+    {
+        return null;
+    }
+
 }

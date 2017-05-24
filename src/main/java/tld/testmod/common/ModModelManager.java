@@ -56,10 +56,15 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.client.model.animation.AnimationTESR;
+import net.minecraftforge.client.model.b3d.B3DLoader;
+import net.minecraftforge.common.animation.Event;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
+import tld.testmod.Main;
+import tld.testmod.common.animation.TestAnimTileEntity;
 
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber(Side.CLIENT)
@@ -71,6 +76,7 @@ public class ModModelManager
     
     @SubscribeEvent
     public static void registerAllModels(ModelRegistryEvent event) {
+        B3DLoader.INSTANCE.addDomain(Main.MODID);
         INSTANCE.registerTileRenderers();
         INSTANCE.registerBlockModels();
         INSTANCE.registerItemModels();
@@ -91,10 +97,18 @@ public class ModModelManager
         registerItemModel(ModBlocks.BLOCK_VQBTEST);
         registerItemModel(ModBlocks.BLOCK_VQBTEST2);
         registerItemModel(ModBlocks.BLOCK_HQBTEST);
+        registerItemModel(ModBlocks.BLOCK_ANIM_TEST);
     }
     
     public void registerTileRenderers() {
-//        registerTESR(TilePiano.class, new RendererPiano());
+        registerTESR(TestAnimTileEntity.class, new AnimationTESR<TestAnimTileEntity>()
+        {
+            @Override
+            public void handleEvents(TestAnimTileEntity te, float time, Iterable<Event> pastEvents)
+            {
+                te.handleEvents(time, pastEvents);
+            }
+        });
     }
 
     /**

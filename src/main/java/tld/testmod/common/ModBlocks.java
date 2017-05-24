@@ -13,6 +13,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.IForgeRegistry;
 import tld.testmod.Main;
+import tld.testmod.common.animation.TestAnimBlock;
 import tld.testmod.common.blocks.HQBTest;
 import tld.testmod.common.blocks.VQBTest;
 import tld.testmod.common.blocks.VQBTest2;
@@ -24,6 +25,8 @@ public class ModBlocks
     public static final VQBTest BLOCK_VQBTEST = registerBlock(new VQBTest(), "block_vbqtest");
     public static final VQBTest2 BLOCK_VQBTEST2 = registerBlock(new VQBTest2(), "block_vbqtest2");
     public static final HQBTest BLOCK_HQBTEST = registerBlock(new HQBTest(), "block_hbqtest");
+    public static final TestAnimBlock BLOCK_ANIM_TEST = registerBlock(new TestAnimBlock(), "block_anim_test");
+    
     private ModBlocks() {}
     
     @Mod.EventBusSubscriber
@@ -44,6 +47,7 @@ public class ModBlocks
                     BLOCK_VQBTEST,
                     BLOCK_VQBTEST2,
                     BLOCK_HQBTEST,
+                    BLOCK_ANIM_TEST,
             };
 
             registry.registerAll(blocks);
@@ -57,7 +61,6 @@ public class ModBlocks
         @SubscribeEvent
         public static void registerItemBlocks(RegistryEvent.Register<Item> event) {
             final ItemBlock[] items = {
-                    
             };
 
             final IForgeRegistry<Item> registry = event.getRegistry();
