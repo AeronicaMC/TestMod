@@ -122,58 +122,58 @@ public class TestAnimTileEntity extends TileEntity
     }
 
     // Persistence and syncing to client
-//    @Override
-//    public void readFromNBT(NBTTagCompound tag)
-//    {
-//        super.readFromNBT(tag);
-//    }
-//
-//    @Override
-//    public NBTTagCompound writeToNBT(NBTTagCompound tag)
-//    {
-//        return super.writeToNBT(tag);
-//    }
-//
-//    /**
-//     * 1.9.4 TE Syncing
-//     * https://gist.github.com/williewillus/7945c4959b1142ece9828706b527c5a4
-//     * 
-//     * When the chunk/block data is sent:
-//     * 
-//     * - getUpdateTag() called to get compound to sync - this tag must include
-//     * coordinate and id tags - vanilla TE's write ALL data into this tag by
-//     * calling writeToNBT
-//     * 
-//     * When TE is resynced:
-//     * 
-//     * - getUpdatePacket() called to get a SPacketUpdateTileEntity (this is more
-//     * limited than it used to) - the packet itself holds the pos, compound
-//     * itself need not include coordinates - compound can contain whatever you'd
-//     * like, since it just comes back to you in onDataPacket() - vanilla just
-//     * delegates to getUpdateTag(), writing ALL te data, coordinates, and id
-//     * into the packet, and reading it all out on the other side - but mods
-//     * don't have to
-//     * 
-//     */
-//    @Override
-//    public NBTTagCompound getUpdateTag()
-//    {
-//        NBTTagCompound tag = super.getUpdateTag();
-//        return this.writeToNBT(tag);
-//    }
-//
-//    @Override
-//    public SPacketUpdateTileEntity getUpdatePacket()
-//    {
-//        NBTTagCompound cmp = new NBTTagCompound();
-//        writeToNBT(cmp);
-//        return new SPacketUpdateTileEntity(pos, 1, cmp);
-//    }
-//
-//    @Override
-//    public void onDataPacket(NetworkManager manager, SPacketUpdateTileEntity packet)
-//    {
-//        readFromNBT(packet.getNbtCompound());
-//    }
+    @Override
+    public void readFromNBT(NBTTagCompound tag)
+    {
+        super.readFromNBT(tag);
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound tag)
+    {
+        return super.writeToNBT(tag);
+    }
+
+    /**
+     * 1.9.4 TE Syncing
+     * https://gist.github.com/williewillus/7945c4959b1142ece9828706b527c5a4
+     * 
+     * When the chunk/block data is sent:
+     * 
+     * - getUpdateTag() called to get compound to sync - this tag must include
+     * coordinate and id tags - vanilla TE's write ALL data into this tag by
+     * calling writeToNBT
+     * 
+     * When TE is resynced:
+     * 
+     * - getUpdatePacket() called to get a SPacketUpdateTileEntity (this is more
+     * limited than it used to) - the packet itself holds the pos, compound
+     * itself need not include coordinates - compound can contain whatever you'd
+     * like, since it just comes back to you in onDataPacket() - vanilla just
+     * delegates to getUpdateTag(), writing ALL te data, coordinates, and id
+     * into the packet, and reading it all out on the other side - but mods
+     * don't have to
+     * 
+     */
+    @Override
+    public NBTTagCompound getUpdateTag()
+    {
+        NBTTagCompound tag = super.getUpdateTag();
+        return this.writeToNBT(tag);
+    }
+
+    @Override
+    public SPacketUpdateTileEntity getUpdatePacket()
+    {
+        NBTTagCompound cmp = new NBTTagCompound();
+        writeToNBT(cmp);
+        return new SPacketUpdateTileEntity(pos, 1, cmp);
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager manager, SPacketUpdateTileEntity packet)
+    {
+        readFromNBT(packet.getNbtCompound());
+    }
 
 }
