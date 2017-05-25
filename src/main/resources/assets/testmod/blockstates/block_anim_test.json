@@ -20,8 +20,8 @@
             }
         }],
         "facing": {
-            "down":  { "transform": { "rotation": { "x": 90  } } },
-            "up":    { "transform": { "rotation": { "x": 270 } } },
+            "down":  { "transform": { "rotation": { "x": 270  } } },
+            "up":    { "transform": { "rotation": { "x": 90 } } },
             "south": { "transform": { "rotation": { "y": 180 } } },
             "north": { "transform": "identity"                   },
             "west":  { "transform": { "rotation": { "y": 90  } } },
