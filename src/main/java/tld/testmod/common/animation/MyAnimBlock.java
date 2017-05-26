@@ -36,7 +36,7 @@ import tld.testmod.Main;
 public class MyAnimBlock extends Block
 {
 
-    public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+    public static final PropertyDirection FACING = PropertyDirection.create("facing");
     
     public MyAnimBlock()
     {
