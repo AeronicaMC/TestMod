@@ -38,9 +38,9 @@ import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.fml.common.IWorldGenerator;
 import tld.testmod.Main;
 import tld.testmod.ModLogger;
-import tld.testmod.common.ModLootTables;
 import tld.testmod.common.entity.living.EntityGoldenSkeleton;
 import tld.testmod.common.entity.living.EntityTimpani;
+import tld.testmod.init.ModLootTables;
 
 /**
  * {@link IWorldGenerator}

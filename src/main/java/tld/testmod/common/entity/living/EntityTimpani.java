@@ -28,7 +28,7 @@ import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTableList;
 import tld.testmod.Main;
-import tld.testmod.common.ModSoundEvents;
+import tld.testmod.init.ModSoundEvents;
 
 public class EntityTimpani extends EntitySlime
 {

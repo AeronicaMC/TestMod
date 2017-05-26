@@ -31,6 +31,7 @@ import tld.testmod.Main;
 import tld.testmod.client.render.RenderGoldenSkeleton;
 import tld.testmod.client.render.RenderTimpani;
 import tld.testmod.common.CommonProxy;
+import tld.testmod.common.animation.MyAnimEntity;
 import tld.testmod.common.animation.TestAnimEntity;
 import tld.testmod.common.entity.EntityTimpaniFx;
 import tld.testmod.common.entity.living.EntityGoldenSkeleton;
@@ -44,7 +45,8 @@ public class ClientProxy extends CommonProxy
     {
         super.preInit(event);
         RenderingRegistry.registerEntityRenderingHandler(EntityGoldenSkeleton.class, RenderGoldenSkeleton.FACTORY);
-        RenderingRegistry.registerEntityRenderingHandler(EntityTimpani.class, RenderTimpani.FACTORY);       
+        RenderingRegistry.registerEntityRenderingHandler(EntityTimpani.class, RenderTimpani.FACTORY);
+        
         RenderingRegistry.registerEntityRenderingHandler(TestAnimEntity.class, new IRenderFactory<TestAnimEntity>()
         {
             @SuppressWarnings("deprecation")
@@ -67,6 +69,29 @@ public class ClientProxy extends CommonProxy
                 };
             }
         });
+        RenderingRegistry.registerEntityRenderingHandler(MyAnimEntity.class, new IRenderFactory<MyAnimEntity>()
+        {
+            @SuppressWarnings("deprecation")
+            public Render<MyAnimEntity> createRenderFor(RenderManager manager)
+            {
+                ResourceLocation location = new ModelResourceLocation(new ResourceLocation(Main.MODID, "block_my_anim"), "entity");
+                return new RenderLiving<MyAnimEntity>(manager, new net.minecraftforge.client.model.animation.AnimationModelBase<MyAnimEntity>(location, new VertexLighterSmoothAo(Minecraft.getMinecraft().getBlockColors()))
+                    {
+                        @Override
+                        public void handleEvents(MyAnimEntity te, float time, Iterable<Event> pastEvents)
+                        {
+                            te.handleEvents(time, pastEvents);
+                        }
+                    }, 0.5f)
+                {
+                    protected ResourceLocation getEntityTexture(MyAnimEntity entity)
+                    {
+                        return TextureMap.LOCATION_BLOCKS_TEXTURE;
+                    }
+                };
+            }
+        });
+
 
     }
     
