@@ -1,0 +1,122 @@
+{
+    "joints": {
+        "bell_conn": { "0": [ 1.0 ] },
+        "bell_top": { "1": [ 1.0 ] },
+        "bell_main": { "2": [ 1.0 ] },      
+        "bell_mouth": { "3": [ 1.0 ] },      
+        "axle_horiz": { "4": [ 1.0 ] },    
+        "axle_vert1": { "5": [ 1.0 ] },    
+        "axle_vert2": { "6": [ 1.0 ] }    
+    },
+    "clips": {
+        "up": {
+            "loop": false,
+            "joint_clips": {},
+            "events": {}
+        },     
+        "depressed": {
+            "loop": true,
+            "joint_clips": {
+		       	"bell_conn": [
+					{
+	                    "variable": "axis_x",
+	                    "type": "uniform",
+	                    "interpolation": "linear",
+	                    "samples": [ 1 ]
+					},
+			        {
+			            "variable": "angle",
+			            "type": "uniform",
+			            "interpolation": "linear",
+			            "samples": [ 0, 315, 0, 30, 0, 330, 0, 10, 0, 350, 0, 5, 0 ]
+			        }
+		        ],
+		       	"bell_top": [
+					{
+	                    "variable": "axis_x",
+	                    "type": "uniform",
+	                    "interpolation": "linear",
+	                    "samples": [ 1 ]
+					},
+			        {
+			            "variable": "angle",
+			            "type": "uniform",
+			            "interpolation": "linear",
+			            "samples": [ 0, 315, 0, 30, 0, 330, 0, 10, 0, 350, 0, 5, 0 ]
+			        }
+		        ],
+		       	"bell_main": [
+					{
+	                    "variable": "axis_x",
+	                    "type": "uniform",
+	                    "interpolation": "linear",
+	                    "samples": [ 1 ]
+					},
+			        {
+			            "variable": "angle",
+			            "type": "uniform",
+			            "interpolation": "linear",
+			            "samples": [ 0, 315, 0, 30, 0, 330, 0, 10, 0, 350, 0, 5, 0 ]
+			        }
+		        ],
+		       	"bell_mouth": [
+					{
+	                    "variable": "axis_x",
+	                    "type": "uniform",
+	                    "interpolation": "linear",
+	                    "samples": [ 1 ]
+					},
+			        {
+			            "variable": "angle",
+			            "type": "uniform",
+			            "interpolation": "linear",
+			            "samples": [ 0, 315, 0, 30, 0, 330, 0, 10, 0, 350, 0, 5, 0 ]
+			        }
+		        ],		                		        	        
+		       	"axle_horiz": [
+					{
+	                    "variable": "axis_x",
+	                    "type": "uniform",
+	                    "interpolation": "linear",
+	                    "samples": [ 1 ]
+					},
+			        {
+			            "variable": "angle",
+			            "type": "uniform",
+			            "interpolation": "linear",
+			            "samples": [ 0, 315, 0, 30, 0, 330, 0, 10, 0, 350, 0, 5, 0 ]
+			        }
+		        ],
+		       	"axle_vert1": [
+					{
+	                    "variable": "axis_x",
+	                    "type": "uniform",
+	                    "interpolation": "linear",
+	                    "samples": [ 1 ]
+					},
+			        {
+			            "variable": "angle",
+			            "type": "uniform",
+			            "interpolation": "linear",
+			            "samples": [ 0, 315, 0, 30, 0, 330, 0, 10, 0, 350, 0, 5, 0 ]
+			        }
+		        ],
+		       	"axle_vert2": [
+					{
+	                    "variable": "axis_x",
+	                    "type": "uniform",
+	                    "interpolation": "linear",
+	                    "samples": [ 1 ]
+					},
+			        {
+			            "variable": "angle",
+			            "type": "uniform",
+			            "interpolation": "linear",
+			            "samples": [ 0, 315, 0, 30, 0, 330, 0, 10, 0, 350, 0, 5, 0 ]
+			        }
+		        ]			        	                		        	        		        		                		        	        
+			},
+		"events": { "0.5": "peel..." }		    
+		}
+    }
+}

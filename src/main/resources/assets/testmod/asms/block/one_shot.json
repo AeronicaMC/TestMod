@@ -1,0 +1,20 @@
+{
+    "parameters": {
+        "end_anim": [ "compose", [ "+", 3 ] , "#click_time" ],
+        "trigger_anim": [ "-", "#end_anim" ],
+        "progress": [ "-/", "#click_time", 3 ]        
+    },
+    "clips": {
+        "up": "#identity",
+        "depressed": [ "trigger_positive", [ "apply", "testmod:block/one_shot_bell@depressed", "#progress" ], "#trigger_anim", "!transition:up" ] 
+    },
+    "states": [
+        "up",
+        "depressed"
+    ],
+    "transitions": {
+        "up": "depressed",
+        "depressed": "up"  
+    },
+    "start_state": "up"
+}

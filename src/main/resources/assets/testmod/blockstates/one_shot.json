@@ -1,0 +1,36 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+     },
+    "variants": {
+        "normal": [{}],
+        "inventory": [{
+            "transform": "forge:default-block",
+            "model": "testmod:one_shot",
+            "submodel": {
+                "bell": { "model": "testmod:one_shot_bell" }
+            }
+        }],
+        "facing": {
+            "south": { "transform": { "rotation": { "y": 180 } } },
+            "north": { "transform": "identity"                   },
+            "west":  { "transform": { "rotation": { "y": 90  } } },
+            "east":  { "transform": { "rotation": { "y": 270 } } }
+        },
+        "static": {
+            "true": {
+                "model": "testmod:one_shot"
+            },
+            "false": {
+            	"model": "testmod:one_shot_bell"
+            }
+        },
+        "entity": [{
+            "model": "testmod:one_shot",
+            "submodel": {
+                "bell": { "model": "testmod:one_shot_bell"	
+                }
+            }
+        }]
+    }
+}
