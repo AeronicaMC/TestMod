@@ -1,0 +1,45 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "textures": {
+        	"particle": "blocks/log_oak",
+            "base": "blocks/stone",
+            "front": "blocks/log_oak",
+            "front_diff": "blocks/diamond_block",
+            "chamber": "blocks/redstone_block",
+            "trunk": "blocks/end_stone"
+            }
+     },
+    "variants": {
+        "normal": [{}],
+        "inventory": [{
+            "transform": "forge:default-block",
+            "model": "testmod:forge_engine",
+            "submodel": {
+                "ring": { "model": "testmod:forge_engine_ring" }
+            }
+        }],
+        "facing": {
+            "down":  { "transform": { "rotation": { "x": 270  } } },
+            "up":    { "transform": { "rotation": { "x": 90 } } },
+            "south": { "transform": { "rotation": { "y": 180 } } },
+            "north": { "transform": "identity"                   },
+            "west":  { "transform": { "rotation": { "y": 90  } } },
+            "east":  { "transform": { "rotation": { "y": 270 } } }
+        },
+        "static": {
+            "true": {
+                "model": "testmod:forge_engine"
+            },
+            "false": {
+                "model": "testmod:forge_engine_ring"
+            }
+        },
+        "entity": [{
+            "model": "testmod:forge_engine",
+            "submodel": {
+                "ring": { "model": "testmod:forge_engine_ring" }
+            }
+        }]
+    }
+}
