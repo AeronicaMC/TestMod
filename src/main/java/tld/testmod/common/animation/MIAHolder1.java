@@ -30,12 +30,12 @@ import net.minecraftforge.common.model.animation.CapabilityAnimation;
 import net.minecraftforge.common.model.animation.IAnimationStateMachine;
 import tld.testmod.Main;
 
-public class MyItemAnimationHolder implements ICapabilityProvider
+public class MIAHolder1 implements ICapabilityProvider
 {
 
     private final VariableValue clickTime = new VariableValue(Float.NEGATIVE_INFINITY);
 
-    private final IAnimationStateMachine asm = Main.proxy.load(new ResourceLocation(Main.MODID, "asms/block/myanim.json"), ImmutableMap.<String, ITimeValue>of(
+    private final IAnimationStateMachine asm = Main.proxy.load(new ResourceLocation(Main.MODID, "asms/block/mab1.json"), ImmutableMap.<String, ITimeValue>of(
          "click_time", clickTime
     ));
 

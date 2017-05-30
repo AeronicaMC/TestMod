@@ -9,6 +9,7 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.IForgeRegistry;
+import tld.testmod.common.animation.MAIB1;
 import tld.testmod.common.animation.MyAnimItemBlock;
 import tld.testmod.common.animation.TestAnimItemBlock;
 import tld.testmod.common.items.HQItemTest;
@@ -26,7 +27,8 @@ public class ModItems
     public static final VQItemTest2 ITEM_VBQTEST2 = registerItem(new VQItemTest2(ModBlocks.BLOCK_VQBTEST2), "block_vbqtest2");
     public static final TestAnimItemBlock ITEMBLOCK_ANIM_TEST = registerItem(new TestAnimItemBlock(ModBlocks.BLOCK_ANIM_TEST), "block_anim_test");
     public static final MyAnimItemBlock ITEMBLOCK_MY_ANIM = registerItem(new MyAnimItemBlock(ModBlocks.BLOCK_MY_ANIM), "block_my_anim");
-   
+    public static final MAIB1 MAIB1 = registerItem(new MAIB1(ModBlocks.MAB1), "mab1");
+    
     @Mod.EventBusSubscriber
     public static class RegistrationHandler {
         protected static final Set<Item> ITEMS = new HashSet<>();
@@ -45,6 +47,7 @@ public class ModItems
                     ITEM_HBQTEST,
                     ITEMBLOCK_ANIM_TEST,
                     ITEMBLOCK_MY_ANIM,
+                    MAIB1,
             };
 
             final IForgeRegistry<Item> registry = event.getRegistry();

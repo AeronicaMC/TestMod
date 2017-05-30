@@ -65,6 +65,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import tld.testmod.Main;
 import tld.testmod.common.IVariant;
+import tld.testmod.common.animation.MATE1;
 import tld.testmod.common.animation.MyAnimTileEntity;
 import tld.testmod.common.animation.TestAnimTileEntity;
 
@@ -101,6 +102,7 @@ public class ModModelManager
         registerItemModel(ModBlocks.BLOCK_HQBTEST);
         registerItemModel(ModBlocks.BLOCK_ANIM_TEST);
         registerItemModel(ModBlocks.BLOCK_MY_ANIM);
+        registerItemModel(ModBlocks.MAB1);
     }
     
     public void registerTileRenderers() {
@@ -117,9 +119,20 @@ public class ModModelManager
             @Override
             public void handleEvents(MyAnimTileEntity te, float time, Iterable<Event> pastEvents)
             {
+                super.handleEvents(te, time, pastEvents);
                 te.handleEvents(time, pastEvents);
             }
         });
+        registerTESR(MATE1.class, new AnimationTESR<MATE1>()
+        {
+            @Override
+            public void handleEvents(MATE1 te, float time, Iterable<Event> pastEvents)
+            {
+                super.handleEvents(te, time, pastEvents);
+                te.handleEvents(time, pastEvents);
+            }
+        });
+
     }
 
     /**

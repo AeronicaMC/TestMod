@@ -20,40 +20,65 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableMap;
 
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
+import net.minecraftforge.common.animation.Event;
 import net.minecraftforge.common.animation.ITimeValue;
 import net.minecraftforge.common.animation.TimeValues.VariableValue;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.model.animation.CapabilityAnimation;
 import net.minecraftforge.common.model.animation.IAnimationStateMachine;
 import tld.testmod.Main;
 
-public class MyItemAnimationHolder implements ICapabilityProvider
+public class MAE1 extends EntityLiving
 {
 
+    private final IAnimationStateMachine asm;
     private final VariableValue clickTime = new VariableValue(Float.NEGATIVE_INFINITY);
+    
+    public MAE1(World world)
+    {
+        super(world);
+        setSize(1, 1);
+        asm = Main.proxy.load(new ResourceLocation(Main.MODID, "asms/block/mab1.json"), ImmutableMap.<String, ITimeValue>of(
+                "click_time", clickTime
+        ));
+    }
 
-    private final IAnimationStateMachine asm = Main.proxy.load(new ResourceLocation(Main.MODID, "asms/block/myanim.json"), ImmutableMap.<String, ITimeValue>of(
-         "click_time", clickTime
-    ));
+    public void handleEvents(float time, Iterable<Event> pastEvents)
+    {
+        // Does nothing since this resides in inventories and when dropped in the world
+    }
 
     @Override
-    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
+    protected void applyEntityAttributes()
     {
-        return capability == CapabilityAnimation.ANIMATION_CAPABILITY;
+        super.applyEntityAttributes();
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(60);
+    }
+
+    @Override
+    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing side)
+    {
+        if(capability == CapabilityAnimation.ANIMATION_CAPABILITY)
+        {
+            return true;
+        }
+        return super.hasCapability(capability, side);
     }
 
     @Override
     @Nullable
-    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
+    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing side)
     {
         if(capability == CapabilityAnimation.ANIMATION_CAPABILITY)
         {
             return CapabilityAnimation.ANIMATION_CAPABILITY.cast(asm);
         }
-        return null;
+        return super.getCapability(capability, side);
     }
 
 }

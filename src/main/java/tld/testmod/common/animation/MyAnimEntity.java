@@ -25,6 +25,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.animation.Animation;
 import net.minecraftforge.common.animation.Event;
 import net.minecraftforge.common.animation.ITimeValue;
 import net.minecraftforge.common.animation.TimeValues.VariableValue;
@@ -32,35 +33,26 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.model.animation.CapabilityAnimation;
 import net.minecraftforge.common.model.animation.IAnimationStateMachine;
 import tld.testmod.Main;
+import tld.testmod.ModLogger;
 
 public class MyAnimEntity extends EntityLiving
 {
 
     private final IAnimationStateMachine asm;
-    private final VariableValue cycleLength = new VariableValue(getHealth() / 5);
+    private final VariableValue clickTime = new VariableValue(Float.NEGATIVE_INFINITY);
     
     public MyAnimEntity(World world)
     {
         super(world);
         setSize(1, 1);
-        asm = Main.proxy.load(new ResourceLocation(Main.MODID, "asms/block/myanim_asm.json"), ImmutableMap.<String, ITimeValue>of(
-            "cycle_length", cycleLength
+        asm = Main.proxy.load(new ResourceLocation(Main.MODID, "asms/block/myanim.json"), ImmutableMap.<String, ITimeValue>of(
+                "click_time", clickTime
         ));
     }
 
     public void handleEvents(float time, Iterable<Event> pastEvents)
     {
         // Does nothing since this resides in inventories and when dropped in the world
-    }
-
-    @Override
-    public void onEntityUpdate()
-    {
-        super.onEntityUpdate();
-        if (world.isRemote && cycleLength != null)
-        {
-            cycleLength.setValue(getHealth() / 5);
-        }
     }
 
     @Override

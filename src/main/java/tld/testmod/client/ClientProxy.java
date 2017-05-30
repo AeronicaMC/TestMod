@@ -31,6 +31,7 @@ import tld.testmod.Main;
 import tld.testmod.client.render.RenderGoldenSkeleton;
 import tld.testmod.client.render.RenderTimpani;
 import tld.testmod.common.CommonProxy;
+import tld.testmod.common.animation.MAE1;
 import tld.testmod.common.animation.MyAnimEntity;
 import tld.testmod.common.animation.TestAnimEntity;
 import tld.testmod.common.entity.EntityTimpaniFx;
@@ -85,6 +86,28 @@ public class ClientProxy extends CommonProxy
                     }, 0.5f)
                 {
                     protected ResourceLocation getEntityTexture(MyAnimEntity entity)
+                    {
+                        return TextureMap.LOCATION_BLOCKS_TEXTURE;
+                    }
+                };
+            }
+        });
+        RenderingRegistry.registerEntityRenderingHandler(MAE1.class, new IRenderFactory<MAE1>()
+        {
+            @SuppressWarnings("deprecation")
+            public Render<MAE1> createRenderFor(RenderManager manager)
+            {
+                ResourceLocation location = new ModelResourceLocation(new ResourceLocation(Main.MODID, "mab1"), "entity");
+                return new RenderLiving<MAE1>(manager, new net.minecraftforge.client.model.animation.AnimationModelBase<MAE1>(location, new VertexLighterSmoothAo(Minecraft.getMinecraft().getBlockColors()))
+                    {
+                        @Override
+                        public void handleEvents(MAE1 te, float time, Iterable<Event> pastEvents)
+                        {
+                            te.handleEvents(time, pastEvents);
+                        }
+                    }, 0.5f)
+                {
+                    protected ResourceLocation getEntityTexture(MAE1 entity)
                     {
                         return TextureMap.LOCATION_BLOCKS_TEXTURE;
                     }

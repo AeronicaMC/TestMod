@@ -2,21 +2,21 @@
     "forge_marker": 1,
     "defaults": {
         "textures": {
-        	"particle": "blocks/log_oak",
+        	"particle": "blocks/log_jungle",
             "base": "blocks/stone",
-            "front": "blocks/log_oak",
-            "front_diff": "blocks/diamond_block",
-            "slide": "blocks/planks_oak",
-            "arm": "blocks/wool_colored_orange"
+            "front": "blocks/log_jungle",
+            "front_diff": "blocks/emerald_block",
+            "slide": "blocks/planks_jungle",
+            "arm": "blocks/wool_colored_blue"
             }
      },
     "variants": {
         "normal": [{}],
         "inventory": [{
             "transform": "forge:default-block",
-            "model": "testmod:myanim",
+            "model": "testmod:mab1",
             "submodel": {
-                "slide": { "model": "testmod:myanim_slide" }
+                "slide": { "model": "testmod:mab1_slide" }
             }
         }],
         "facing": {
@@ -27,16 +27,16 @@
         },
         "static": {
             "true": {
-                "model": "testmod:myanim"
+                "model": "testmod:mab1"
             },
             "false": {
-            	"model": "testmod:myanim_slide"
+            	"model": "testmod:mab1_slide"
             }
         },
         "entity": [{
-            "model": "testmod:myanim",
+            "model": "testmod:mab1",
             "submodel": {
-                "slide": { "model": "testmod:myanim_slide"	
+                "slide": { "model": "testmod:mab1_slide"	
                 }
             }
         }]

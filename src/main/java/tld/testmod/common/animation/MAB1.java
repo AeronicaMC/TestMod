@@ -34,18 +34,18 @@ import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.common.property.Properties;
 import tld.testmod.Main;
 
-public class MyAnimBlock extends Block
+public class MAB1 extends Block
 {
 
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
     
-    public MyAnimBlock()
+    public MAB1()
     {
         this(Material.WOOD);
         setCreativeTab(Main.MODTAB);
     }
     
-    public MyAnimBlock(Material materialIn)
+    public MAB1(Material materialIn)
     {
         super(materialIn);
     }
@@ -56,9 +56,9 @@ public class MyAnimBlock extends Block
         if(world.isRemote)
         {
             TileEntity te = world.getTileEntity(pos);
-            if(te instanceof MyAnimTileEntity)
+            if(te instanceof MATE1)
             {
-                ((MyAnimTileEntity)te).click();
+                ((MATE1)te).click();
             }
         }
         return true;
@@ -105,7 +105,7 @@ public class MyAnimBlock extends Block
 
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
-        return new MyAnimTileEntity();
+        return new MATE1();
     }
 
     @Override

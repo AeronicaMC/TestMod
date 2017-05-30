@@ -36,16 +36,16 @@ import net.minecraftforge.common.model.animation.IAnimationStateMachine;
 import tld.testmod.Main;
 import tld.testmod.ModLogger;
 
-public class MyAnimTileEntity extends TileEntity
+public class MATE1 extends TileEntity
 {
 
     @Nullable
     private final IAnimationStateMachine asm;
     private final VariableValue clickTime = new VariableValue(Float.NEGATIVE_INFINITY);
     
-    public MyAnimTileEntity()
+    public MATE1()
     {
-        asm = Main.proxy.load(new ResourceLocation(Main.MODID, "asms/block/myanim.json"), ImmutableMap.<String, ITimeValue>of(
+        asm = Main.proxy.load(new ResourceLocation(Main.MODID, "asms/block/mab1.json"), ImmutableMap.<String, ITimeValue>of(
                 "click_time", clickTime
             ));
     }
@@ -67,16 +67,17 @@ public class MyAnimTileEntity extends TileEntity
     public void click()
     {
         if(asm != null) {
-            if(asm.currentState().equals("open")) {
+//            if(asm.currentState().equals("open")) {
+//                float time = Animation.getWorldTime(getWorld(), Animation.getPartialTickTime());
+//                clickTime.setValue(time);
+//                asm.transition("closing");
+//                ModLogger.info("click closing: %f", time);
+//            } else
+                if(asm.currentState().equals("up")) {
                 float time = Animation.getWorldTime(getWorld(), Animation.getPartialTickTime());
                 clickTime.setValue(time);
-                asm.transition("closing");
-                ModLogger.info("click open: %f", time);
-            } else if(asm.currentState().equals("closed")) {
-                float time = Animation.getWorldTime(getWorld(), Animation.getPartialTickTime());
-                clickTime.setValue(time);
-                asm.transition("opening");
-                ModLogger.info("click close: %f", time);
+                asm.transition("depressed");
+                ModLogger.info("click depressing: %f", time);
             }
         }
     }

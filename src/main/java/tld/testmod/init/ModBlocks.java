@@ -13,6 +13,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.IForgeRegistry;
 import tld.testmod.Main;
+import tld.testmod.common.animation.MAB1;
+import tld.testmod.common.animation.MATE1;
 import tld.testmod.common.animation.MyAnimBlock;
 import tld.testmod.common.animation.MyAnimTileEntity;
 import tld.testmod.common.animation.TestAnimBlock;
@@ -30,6 +32,7 @@ public class ModBlocks
     public static final HQBTest BLOCK_HQBTEST = registerBlock(new HQBTest(), "block_hbqtest");
     public static final TestAnimBlock BLOCK_ANIM_TEST = registerBlock(new TestAnimBlock(), "block_anim_test");
     public static final MyAnimBlock BLOCK_MY_ANIM = registerBlock(new MyAnimBlock(), "block_my_anim");
+    public static final MAB1 MAB1 = registerBlock(new MAB1(), "mab1");
     
     private ModBlocks() {}
     
@@ -53,6 +56,7 @@ public class ModBlocks
                     BLOCK_HQBTEST,
                     BLOCK_ANIM_TEST,
                     BLOCK_MY_ANIM,
+                    MAB1,
             };
 
             registry.registerAll(blocks);
@@ -80,6 +84,7 @@ public class ModBlocks
     public static void registerTileEntities() {
         GameRegistry.registerTileEntity(TestAnimTileEntity.class,  Main.prependModID("tile_test_anim"));
         GameRegistry.registerTileEntity(MyAnimTileEntity.class,  Main.prependModID("tile_my_anim"));
+        GameRegistry.registerTileEntity(MATE1.class,  Main.prependModID("mate1"));
 //        GameRegistry.registerTileEntityWithAlternatives(TilePiano.class, MXTuneMain.prependModID("tile_piano"), "mxtune_tile_instrument", "PianoTile", "TileInstrument");
     }
 
