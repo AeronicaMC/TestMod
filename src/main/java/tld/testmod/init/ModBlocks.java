@@ -17,8 +17,8 @@ import tld.testmod.common.animation.MAB1;
 import tld.testmod.common.animation.MATE1;
 import tld.testmod.common.animation.MyAnimBlock;
 import tld.testmod.common.animation.MyAnimTileEntity;
-import tld.testmod.common.animation.TestAnimBlock;
-import tld.testmod.common.animation.TestAnimTileEntity;
+import tld.testmod.common.animation.ForgeAnimBlock;
+import tld.testmod.common.animation.ForgeAnimTileEntity;
 import tld.testmod.common.blocks.HQBTest;
 import tld.testmod.common.blocks.VQBTest;
 import tld.testmod.common.blocks.VQBTest2;
@@ -30,7 +30,7 @@ public class ModBlocks
     public static final VQBTest BLOCK_VQBTEST = registerBlock(new VQBTest(), "block_vbqtest");
     public static final VQBTest2 BLOCK_VQBTEST2 = registerBlock(new VQBTest2(), "block_vbqtest2");
     public static final HQBTest BLOCK_HQBTEST = registerBlock(new HQBTest(), "block_hbqtest");
-    public static final TestAnimBlock BLOCK_ANIM_TEST = registerBlock(new TestAnimBlock(), "block_anim_test");
+    public static final ForgeAnimBlock FORGE_ANIM_TEST = registerBlock(new ForgeAnimBlock(), "forge_anim_test");
     public static final MyAnimBlock BLOCK_MY_ANIM = registerBlock(new MyAnimBlock(), "block_my_anim");
     public static final MAB1 MAB1 = registerBlock(new MAB1(), "mab1");
     
@@ -54,7 +54,7 @@ public class ModBlocks
                     BLOCK_VQBTEST,
                     BLOCK_VQBTEST2,
                     BLOCK_HQBTEST,
-                    BLOCK_ANIM_TEST,
+                    FORGE_ANIM_TEST,
                     BLOCK_MY_ANIM,
                     MAB1,
             };
@@ -82,7 +82,7 @@ public class ModBlocks
     }
     
     public static void registerTileEntities() {
-        GameRegistry.registerTileEntity(TestAnimTileEntity.class,  Main.prependModID("tile_test_anim"));
+        GameRegistry.registerTileEntity(ForgeAnimTileEntity.class,  Main.prependModID("tile_test_anim"));
         GameRegistry.registerTileEntity(MyAnimTileEntity.class,  Main.prependModID("tile_my_anim"));
         GameRegistry.registerTileEntity(MATE1.class,  Main.prependModID("mate1"));
 //        GameRegistry.registerTileEntityWithAlternatives(TilePiano.class, MXTuneMain.prependModID("tile_piano"), "mxtune_tile_instrument", "PianoTile", "TileInstrument");

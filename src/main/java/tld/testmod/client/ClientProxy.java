@@ -33,7 +33,7 @@ import tld.testmod.client.render.RenderTimpani;
 import tld.testmod.common.CommonProxy;
 import tld.testmod.common.animation.MAE1;
 import tld.testmod.common.animation.MyAnimEntity;
-import tld.testmod.common.animation.TestAnimEntity;
+import tld.testmod.common.animation.ForgeAnimEntity;
 import tld.testmod.common.entity.EntityTimpaniFx;
 import tld.testmod.common.entity.living.EntityGoldenSkeleton;
 import tld.testmod.common.entity.living.EntityTimpani;
@@ -48,22 +48,22 @@ public class ClientProxy extends CommonProxy
         RenderingRegistry.registerEntityRenderingHandler(EntityGoldenSkeleton.class, RenderGoldenSkeleton.FACTORY);
         RenderingRegistry.registerEntityRenderingHandler(EntityTimpani.class, RenderTimpani.FACTORY);
         
-        RenderingRegistry.registerEntityRenderingHandler(TestAnimEntity.class, new IRenderFactory<TestAnimEntity>()
+        RenderingRegistry.registerEntityRenderingHandler(ForgeAnimEntity.class, new IRenderFactory<ForgeAnimEntity>()
         {
             @SuppressWarnings("deprecation")
-            public Render<TestAnimEntity> createRenderFor(RenderManager manager)
+            public Render<ForgeAnimEntity> createRenderFor(RenderManager manager)
             {
                 ResourceLocation location = new ModelResourceLocation(new ResourceLocation(Main.MODID, "block_anim_test"), "entity");
-                return new RenderLiving<TestAnimEntity>(manager, new net.minecraftforge.client.model.animation.AnimationModelBase<TestAnimEntity>(location, new VertexLighterSmoothAo(Minecraft.getMinecraft().getBlockColors()))
+                return new RenderLiving<ForgeAnimEntity>(manager, new net.minecraftforge.client.model.animation.AnimationModelBase<ForgeAnimEntity>(location, new VertexLighterSmoothAo(Minecraft.getMinecraft().getBlockColors()))
                     {
                         @Override
-                        public void handleEvents(TestAnimEntity te, float time, Iterable<Event> pastEvents)
+                        public void handleEvents(ForgeAnimEntity te, float time, Iterable<Event> pastEvents)
                         {
                             te.handleEvents(time, pastEvents);
                         }
                     }, 0.5f)
                 {
-                    protected ResourceLocation getEntityTexture(TestAnimEntity entity)
+                    protected ResourceLocation getEntityTexture(ForgeAnimEntity entity)
                     {
                         return TextureMap.LOCATION_BLOCKS_TEXTURE;
                     }

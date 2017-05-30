@@ -67,7 +67,7 @@ import tld.testmod.Main;
 import tld.testmod.common.IVariant;
 import tld.testmod.common.animation.MATE1;
 import tld.testmod.common.animation.MyAnimTileEntity;
-import tld.testmod.common.animation.TestAnimTileEntity;
+import tld.testmod.common.animation.ForgeAnimTileEntity;
 
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber(Side.CLIENT)
@@ -79,7 +79,6 @@ public class ModModelManager
     
     @SubscribeEvent
     public static void registerAllModels(ModelRegistryEvent event) {
-        B3DLoader.INSTANCE.addDomain(Main.MODID);
         INSTANCE.registerTileRenderers();
         INSTANCE.registerBlockModels();
         INSTANCE.registerItemModels();
@@ -100,16 +99,16 @@ public class ModModelManager
         registerItemModel(ModBlocks.BLOCK_VQBTEST);
         registerItemModel(ModBlocks.BLOCK_VQBTEST2);
         registerItemModel(ModBlocks.BLOCK_HQBTEST);
-        registerItemModel(ModBlocks.BLOCK_ANIM_TEST);
+        registerItemModel(ModBlocks.FORGE_ANIM_TEST);
         registerItemModel(ModBlocks.BLOCK_MY_ANIM);
         registerItemModel(ModBlocks.MAB1);
     }
     
     public void registerTileRenderers() {
-        registerTESR(TestAnimTileEntity.class, new AnimationTESR<TestAnimTileEntity>()
+        registerTESR(ForgeAnimTileEntity.class, new AnimationTESR<ForgeAnimTileEntity>()
         {
             @Override
-            public void handleEvents(TestAnimTileEntity te, float time, Iterable<Event> pastEvents)
+            public void handleEvents(ForgeAnimTileEntity te, float time, Iterable<Event> pastEvents)
             {
                 te.handleEvents(time, pastEvents);
             }
