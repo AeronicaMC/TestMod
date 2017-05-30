@@ -66,7 +66,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import tld.testmod.Main;
 import tld.testmod.common.IVariant;
 import tld.testmod.common.animation.MATE1;
-import tld.testmod.common.animation.MyAnimTileEntity;
+import tld.testmod.common.animation.EdgarAllenTileEntity;
 import tld.testmod.common.animation.ForgeAnimTileEntity;
 
 @SuppressWarnings("unused")
@@ -100,7 +100,7 @@ public class ModModelManager
         registerItemModel(ModBlocks.BLOCK_VQBTEST2);
         registerItemModel(ModBlocks.BLOCK_HQBTEST);
         registerItemModel(ModBlocks.FORGE_ANIM_TEST);
-        registerItemModel(ModBlocks.BLOCK_MY_ANIM);
+        registerItemModel(ModBlocks.EDGAR_ALLEN_BLOCK_LEVER);
         registerItemModel(ModBlocks.MAB1);
     }
     
@@ -113,10 +113,10 @@ public class ModModelManager
                 te.handleEvents(time, pastEvents);
             }
         });
-        registerTESR(MyAnimTileEntity.class, new AnimationTESR<MyAnimTileEntity>()
+        registerTESR(EdgarAllenTileEntity.class, new AnimationTESR<EdgarAllenTileEntity>()
         {
             @Override
-            public void handleEvents(MyAnimTileEntity te, float time, Iterable<Event> pastEvents)
+            public void handleEvents(EdgarAllenTileEntity te, float time, Iterable<Event> pastEvents)
             {
                 super.handleEvents(te, time, pastEvents);
                 te.handleEvents(time, pastEvents);

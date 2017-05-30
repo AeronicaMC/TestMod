@@ -11,9 +11,9 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import tld.testmod.common.CommonProxy;
-import tld.testmod.common.animation.MAE1;
-import tld.testmod.common.animation.MyAnimEntity;
+import tld.testmod.common.animation.EdgarAllenAnimEntity;
 import tld.testmod.common.animation.ForgeAnimEntity;
+import tld.testmod.common.animation.MAE1;
 import tld.testmod.common.entity.living.EntityGoldenSkeleton;
 import tld.testmod.common.entity.living.EntityTimpani;
 import tld.testmod.common.handlers.SpawnHandler;
@@ -53,7 +53,7 @@ public class Main
         EntityRegistry.registerModEntity(new ResourceLocation(MODID,  "mob_timpani"), EntityTimpani.class, "mob_timpani", 1, this, 64, 1, true, 0x000000, 0xFF5121);
         
         EntityRegistry.registerModEntity(new ResourceLocation(MODID, "entity_forge_anim_test"), ForgeAnimEntity.class, "entity_forge_anim_test", 2, this, 64, 20, true, 0xFFAAAA00, 0xFFDDDD00);
-        EntityRegistry.registerModEntity(new ResourceLocation(MODID, "entity_my_anim"), MyAnimEntity.class, "entity_my_anim", 3, this, 64, 20, true, 0xFFAAAA00, 0xFFDDDD00);
+        EntityRegistry.registerModEntity(new ResourceLocation(MODID, "entity_edgar_allen_block_lever"), EdgarAllenAnimEntity.class, "entity_edgar_allen_block_lever", 3, this, 64, 20, true, 0xFFAAAA00, 0xFFDDDD00);
         EntityRegistry.registerModEntity(new ResourceLocation(MODID, "mae1"), MAE1.class, "mae1", 4, this, 64, 20, true, 0xFFAAAA00, 0xFFDDDD00);
 
     }

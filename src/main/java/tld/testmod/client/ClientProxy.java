@@ -32,7 +32,7 @@ import tld.testmod.client.render.RenderGoldenSkeleton;
 import tld.testmod.client.render.RenderTimpani;
 import tld.testmod.common.CommonProxy;
 import tld.testmod.common.animation.MAE1;
-import tld.testmod.common.animation.MyAnimEntity;
+import tld.testmod.common.animation.EdgarAllenAnimEntity;
 import tld.testmod.common.animation.ForgeAnimEntity;
 import tld.testmod.common.entity.EntityTimpaniFx;
 import tld.testmod.common.entity.living.EntityGoldenSkeleton;
@@ -53,7 +53,7 @@ public class ClientProxy extends CommonProxy
             @SuppressWarnings("deprecation")
             public Render<ForgeAnimEntity> createRenderFor(RenderManager manager)
             {
-                ResourceLocation location = new ModelResourceLocation(new ResourceLocation(Main.MODID, "block_anim_test"), "entity");
+                ResourceLocation location = new ModelResourceLocation(new ResourceLocation(Main.MODID, "forge_anim_test"), "entity");
                 return new RenderLiving<ForgeAnimEntity>(manager, new net.minecraftforge.client.model.animation.AnimationModelBase<ForgeAnimEntity>(location, new VertexLighterSmoothAo(Minecraft.getMinecraft().getBlockColors()))
                     {
                         @Override
@@ -70,22 +70,22 @@ public class ClientProxy extends CommonProxy
                 };
             }
         });
-        RenderingRegistry.registerEntityRenderingHandler(MyAnimEntity.class, new IRenderFactory<MyAnimEntity>()
+        RenderingRegistry.registerEntityRenderingHandler(EdgarAllenAnimEntity.class, new IRenderFactory<EdgarAllenAnimEntity>()
         {
             @SuppressWarnings("deprecation")
-            public Render<MyAnimEntity> createRenderFor(RenderManager manager)
+            public Render<EdgarAllenAnimEntity> createRenderFor(RenderManager manager)
             {
-                ResourceLocation location = new ModelResourceLocation(new ResourceLocation(Main.MODID, "block_my_anim"), "entity");
-                return new RenderLiving<MyAnimEntity>(manager, new net.minecraftforge.client.model.animation.AnimationModelBase<MyAnimEntity>(location, new VertexLighterSmoothAo(Minecraft.getMinecraft().getBlockColors()))
+                ResourceLocation location = new ModelResourceLocation(new ResourceLocation(Main.MODID, "edgar_allen_block_lever"), "entity");
+                return new RenderLiving<EdgarAllenAnimEntity>(manager, new net.minecraftforge.client.model.animation.AnimationModelBase<EdgarAllenAnimEntity>(location, new VertexLighterSmoothAo(Minecraft.getMinecraft().getBlockColors()))
                     {
                         @Override
-                        public void handleEvents(MyAnimEntity te, float time, Iterable<Event> pastEvents)
+                        public void handleEvents(EdgarAllenAnimEntity te, float time, Iterable<Event> pastEvents)
                         {
                             te.handleEvents(time, pastEvents);
                         }
                     }, 0.5f)
                 {
-                    protected ResourceLocation getEntityTexture(MyAnimEntity entity)
+                    protected ResourceLocation getEntityTexture(EdgarAllenAnimEntity entity)
                     {
                         return TextureMap.LOCATION_BLOCKS_TEXTURE;
                     }
