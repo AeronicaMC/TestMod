@@ -13,8 +13,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.IForgeRegistry;
 import tld.testmod.Main;
-import tld.testmod.common.animation.MAB1;
-import tld.testmod.common.animation.MATE1;
+import tld.testmod.common.animation.OneShotBlock;
+import tld.testmod.common.animation.OneShotTileEntity;
 import tld.testmod.common.animation.EdgarAllenBlockLever;
 import tld.testmod.common.animation.EdgarAllenTileEntity;
 import tld.testmod.common.animation.ForgeAnimBlock;
@@ -32,7 +32,7 @@ public class ModBlocks
     public static final HQBTest BLOCK_HQBTEST = registerBlock(new HQBTest(), "block_hbqtest");
     public static final ForgeAnimBlock FORGE_ANIM_TEST = registerBlock(new ForgeAnimBlock(), "forge_anim_test");
     public static final EdgarAllenBlockLever EDGAR_ALLEN_BLOCK_LEVER = registerBlock(new EdgarAllenBlockLever(), "edgar_allen_block_lever");
-    public static final MAB1 MAB1 = registerBlock(new MAB1(), "mab1");
+    public static final OneShotBlock ONE_SHOT = registerBlock(new OneShotBlock(), "one_shot");
     
     private ModBlocks() {}
     
@@ -56,7 +56,7 @@ public class ModBlocks
                     BLOCK_HQBTEST,
                     FORGE_ANIM_TEST,
                     EDGAR_ALLEN_BLOCK_LEVER,
-                    MAB1,
+                    ONE_SHOT,
             };
 
             registry.registerAll(blocks);
@@ -84,7 +84,7 @@ public class ModBlocks
     public static void registerTileEntities() {
         GameRegistry.registerTileEntity(ForgeAnimTileEntity.class,  Main.prependModID("tile_forge_anim_test"));
         GameRegistry.registerTileEntity(EdgarAllenTileEntity.class,  Main.prependModID("tile_edgar_allen_block_lever"));
-        GameRegistry.registerTileEntity(MATE1.class,  Main.prependModID("mate1"));
+        GameRegistry.registerTileEntity(OneShotTileEntity.class,  Main.prependModID("tile_one_shot"));
 //        GameRegistry.registerTileEntityWithAlternatives(TilePiano.class, MXTuneMain.prependModID("tile_piano"), "mxtune_tile_instrument", "PianoTile", "TileInstrument");
     }
 

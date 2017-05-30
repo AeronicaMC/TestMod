@@ -1,0 +1,108 @@
+{
+	"__comment": "Designed by Aeronica with Cubik Studio - https://cubik.studio",
+	"textures": {
+		"particle": "blocks/gold_block",
+		"bell": "blocks/gold_block",
+		"axle": "blocks/iron_block"
+	},
+	"elements": [
+		{
+			"__comment": "bell_conn",
+			"name": "bell_conn",
+			"from": [ 7, 13, 7 ],
+			"to": [ 9, 14, 9 ],
+			"faces": {
+				"down": { "uv": [ 4, 4, 12, 12 ], "texture": "#bell" },
+				"up": { "uv": [ 4, 4, 12, 12 ], "texture": "#bell" },
+				"north": { "uv": [ 4, 13, 12, 14 ], "texture": "#bell" },
+				"south": { "uv": [ 4, 13, 12, 14 ], "texture": "#bell" },
+				"west": { "uv": [ 4, 13, 12, 14 ], "texture": "#bell" },
+				"east": { "uv": [ 4, 13, 12, 14 ], "texture": "#bell" }
+			}
+		},
+		{
+			"__comment": "bell_top",
+			"name": "bell_top",
+			"from": [ 6, 12, 6 ],
+			"to": [ 10, 13, 10 ],
+			"faces": {
+				"down": { "uv": [ 4, 4, 12, 12 ], "texture": "#bell" },
+				"up": { "uv": [ 4, 4, 12, 12 ], "texture": "#bell" },
+				"north": { "uv": [ 4, 13, 12, 14 ], "texture": "#bell" },
+				"south": { "uv": [ 4, 13, 12, 14 ], "texture": "#bell" },
+				"west": { "uv": [ 4, 13, 12, 14 ], "texture": "#bell" },
+				"east": { "uv": [ 4, 13, 12, 14 ], "texture": "#bell" }
+			}
+		},				
+		{
+			"__comment": "bell_main",
+			"name": "bell_main",
+			"from": [ 5, 4, 5 ],
+			"to": [ 11, 12, 11 ],
+			"faces": {
+				"down": { "uv": [ 5, 5, 11, 11 ], "texture": "#bell" },
+				"up": { "uv": [ 5, 5, 11, 11 ], "texture": "#bell" },
+				"north": { "uv": [ 5, 4, 11, 12 ], "texture": "#bell" },
+				"south": { "uv": [ 5, 4, 11, 12 ], "texture": "#bell" },
+				"west": { "uv": [ 5, 4, 11, 12 ], "texture": "#bell" },
+				"east": { "uv": [ 5, 4, 11, 12 ], "texture": "#bell" }
+			}
+		},
+		{
+			"__comment": "bell_mouth",
+			"name": "bell_mouth",
+			"from": [ 4, 2, 4 ],
+			"to": [ 12, 4, 12 ],
+			"faces": {
+				"down": { "uv": [ 4, 4, 12, 12 ], "texture": "#bell" },
+				"up": { "uv": [ 4, 4, 12, 12 ], "texture": "#bell" },
+				"north": { "uv": [ 4, 12, 12, 14 ], "texture": "#bell" },
+				"south": { "uv": [ 4, 12, 12, 14 ], "texture": "#bell" },
+				"west": { "uv": [ 4, 12, 12, 14 ], "texture": "#bell" },
+				"east": { "uv": [ 4, 12, 12, 14 ], "texture": "#bell" }
+			}
+		},		
+		{
+			"__comment": "axle_horiz",
+			"name": "axle_horiz",
+			"from": [ 4, 14, 7 ],
+			"to": [ 12, 16, 9 ],
+			"faces": {
+				"down": { "uv": [ 1, 7, 4, 9 ], "texture": "#axle" },
+				"up": { "uv": [ 1, 7, 4, 9 ], "texture": "#axle" },
+				"north": { "uv": [ 12, 6, 15, 8 ], "texture": "#axle" },
+				"south": { "uv": [ 1, 6, 4, 8 ], "texture": "#axle" },
+				"west": { "uv": [ 7, 6, 9, 8 ], "texture": "#axle" },
+				"east": { "uv": [ 7, 6, 9, 8 ], "texture": "#axle" }
+			}
+		},
+		{
+			"__comment": "axle_vert1",
+			"name": "axle_vert1",
+			"from": [ 3, 8, 7 ],
+			"to": [ 4, 15, 9 ],
+			"faces": {
+				"down": { "uv": [ 3, 7, 4, 9 ], "texture": "#axle" },
+				"up": { "uv": [ 3, 7, 4, 9 ], "texture": "#axle" },
+				"north": { "uv": [ 12, 1, 13, 8 ], "texture": "#axle" },
+				"south": { "uv": [ 3, 1, 4, 8 ], "texture": "#axle" },
+				"west": { "uv": [ 7, 1, 9, 8 ], "texture": "#axle" },
+				"east": { "uv": [ 7, 1, 9, 8 ], "texture": "#axle" }
+			}
+		},
+		{
+			"__comment": "axle_vert2",
+			"name": "axle_vert1",
+			"from": [ 12, 8, 7 ],
+			"to": [ 13, 15, 9 ],
+			"faces": {
+				"down": { "uv": [ 3, 11, 4, 13 ], "texture": "#axle" },
+				"up": { "uv": [ 3, 3, 4, 5 ], "texture": "#axle" },
+				"north": { "uv": [ 12, 1, 13, 8 ], "texture": "#axle" },
+				"south": { "uv": [ 3, 1, 4, 8 ], "texture": "#axle" },
+				"west": { "uv": [ 3, 1, 5, 8 ], "texture": "#axle" },
+				"east": { "uv": [ 11, 1, 13, 8 ], "texture": "#axle" }
+			}
+		}
+	]
+}

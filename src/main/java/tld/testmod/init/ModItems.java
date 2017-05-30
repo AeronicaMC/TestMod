@@ -9,7 +9,7 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.IForgeRegistry;
-import tld.testmod.common.animation.MAIB1;
+import tld.testmod.common.animation.OneShotItemBlock;
 import tld.testmod.common.animation.EdgarAllenItemBlock;
 import tld.testmod.common.animation.ForgeAnimItemBlock;
 import tld.testmod.common.items.HQItemTest;
@@ -27,7 +27,7 @@ public class ModItems
     public static final VQItemTest2 ITEM_VBQTEST2 = registerItem(new VQItemTest2(ModBlocks.BLOCK_VQBTEST2), "block_vbqtest2");
     public static final ForgeAnimItemBlock ITEMBLOCK_ANIM_TEST = registerItem(new ForgeAnimItemBlock(ModBlocks.FORGE_ANIM_TEST), "forge_anim_test");
     public static final EdgarAllenItemBlock EDGAR_ALLEN_BLOCK_LEVER = registerItem(new EdgarAllenItemBlock(ModBlocks.EDGAR_ALLEN_BLOCK_LEVER), "edgar_allen_block_lever");
-    public static final MAIB1 MAIB1 = registerItem(new MAIB1(ModBlocks.MAB1), "mab1");
+    public static final OneShotItemBlock ONE_SHOT = registerItem(new OneShotItemBlock(ModBlocks.ONE_SHOT), "one_shot");
     
     @Mod.EventBusSubscriber
     public static class RegistrationHandler {
@@ -47,7 +47,7 @@ public class ModItems
                     ITEM_HBQTEST,
                     ITEMBLOCK_ANIM_TEST,
                     EDGAR_ALLEN_BLOCK_LEVER,
-                    MAIB1,
+                    ONE_SHOT,
             };
 
             final IForgeRegistry<Item> registry = event.getRegistry();

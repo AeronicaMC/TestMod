@@ -31,7 +31,7 @@ import tld.testmod.Main;
 import tld.testmod.client.render.RenderGoldenSkeleton;
 import tld.testmod.client.render.RenderTimpani;
 import tld.testmod.common.CommonProxy;
-import tld.testmod.common.animation.MAE1;
+import tld.testmod.common.animation.OneShotEntity;
 import tld.testmod.common.animation.EdgarAllenAnimEntity;
 import tld.testmod.common.animation.ForgeAnimEntity;
 import tld.testmod.common.entity.EntityTimpaniFx;
@@ -92,22 +92,22 @@ public class ClientProxy extends CommonProxy
                 };
             }
         });
-        RenderingRegistry.registerEntityRenderingHandler(MAE1.class, new IRenderFactory<MAE1>()
+        RenderingRegistry.registerEntityRenderingHandler(OneShotEntity.class, new IRenderFactory<OneShotEntity>()
         {
             @SuppressWarnings("deprecation")
-            public Render<MAE1> createRenderFor(RenderManager manager)
+            public Render<OneShotEntity> createRenderFor(RenderManager manager)
             {
-                ResourceLocation location = new ModelResourceLocation(new ResourceLocation(Main.MODID, "mab1"), "entity");
-                return new RenderLiving<MAE1>(manager, new net.minecraftforge.client.model.animation.AnimationModelBase<MAE1>(location, new VertexLighterSmoothAo(Minecraft.getMinecraft().getBlockColors()))
+                ResourceLocation location = new ModelResourceLocation(new ResourceLocation(Main.MODID, "one_shot"), "entity");
+                return new RenderLiving<OneShotEntity>(manager, new net.minecraftforge.client.model.animation.AnimationModelBase<OneShotEntity>(location, new VertexLighterSmoothAo(Minecraft.getMinecraft().getBlockColors()))
                     {
                         @Override
-                        public void handleEvents(MAE1 te, float time, Iterable<Event> pastEvents)
+                        public void handleEvents(OneShotEntity te, float time, Iterable<Event> pastEvents)
                         {
                             te.handleEvents(time, pastEvents);
                         }
                     }, 0.5f)
                 {
-                    protected ResourceLocation getEntityTexture(MAE1 entity)
+                    protected ResourceLocation getEntityTexture(OneShotEntity entity)
                     {
                         return TextureMap.LOCATION_BLOCKS_TEXTURE;
                     }

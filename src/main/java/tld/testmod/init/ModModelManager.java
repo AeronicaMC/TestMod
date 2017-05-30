@@ -65,7 +65,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import tld.testmod.Main;
 import tld.testmod.common.IVariant;
-import tld.testmod.common.animation.MATE1;
+import tld.testmod.common.animation.OneShotTileEntity;
 import tld.testmod.common.animation.EdgarAllenTileEntity;
 import tld.testmod.common.animation.ForgeAnimTileEntity;
 
@@ -101,7 +101,7 @@ public class ModModelManager
         registerItemModel(ModBlocks.BLOCK_HQBTEST);
         registerItemModel(ModBlocks.FORGE_ANIM_TEST);
         registerItemModel(ModBlocks.EDGAR_ALLEN_BLOCK_LEVER);
-        registerItemModel(ModBlocks.MAB1);
+        registerItemModel(ModBlocks.ONE_SHOT);
     }
     
     public void registerTileRenderers() {
@@ -122,10 +122,10 @@ public class ModModelManager
                 te.handleEvents(time, pastEvents);
             }
         });
-        registerTESR(MATE1.class, new AnimationTESR<MATE1>()
+        registerTESR(OneShotTileEntity.class, new AnimationTESR<OneShotTileEntity>()
         {
             @Override
-            public void handleEvents(MATE1 te, float time, Iterable<Event> pastEvents)
+            public void handleEvents(OneShotTileEntity te, float time, Iterable<Event> pastEvents)
             {
                 super.handleEvents(te, time, pastEvents);
                 te.handleEvents(time, pastEvents);
