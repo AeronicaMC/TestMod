@@ -32,7 +32,7 @@
 			            "variable": "angle",
 			            "type": "uniform",
 			            "interpolation": "linear",
-			            "samples": [ 0, 315, 0, 30, 0, 330, 0, 10, 0, 350, 0, 5, 0 ]
+			            "samples": [ 0, 45, 0, 330, 0, 30, 0, 350,0, 10, 0, 355, 0 ]
 			        }
 		        ],
 		       	"bell_top": [
@@ -46,7 +46,7 @@
 			            "variable": "angle",
 			            "type": "uniform",
 			            "interpolation": "linear",
-			            "samples": [ 0, 315, 0, 30, 0, 330, 0, 10, 0, 350, 0, 5, 0 ]
+			            "samples": [ 0, 45, 0, 330, 0, 30, 0, 350,0, 10, 0, 355, 0 ]
 			        }
 		        ],
 		       	"bell_main": [
@@ -60,7 +60,7 @@
 			            "variable": "angle",
 			            "type": "uniform",
 			            "interpolation": "linear",
-			            "samples": [ 0, 315, 0, 30, 0, 330, 0, 10, 0, 350, 0, 5, 0 ]
+			            "samples": [ 0, 45, 0, 330, 0, 30, 0, 350,0, 10, 0, 355, 0 ]
 			        }
 		        ],
 		       	"bell_mouth1": [
@@ -74,7 +74,7 @@
 			            "variable": "angle",
 			            "type": "uniform",
 			            "interpolation": "linear",
-			            "samples": [ 0, 315, 0, 30, 0, 330, 0, 10, 0, 350, 0, 5, 0 ]
+			            "samples": [ 0, 45, 0, 330, 0, 30, 0, 350,0, 10, 0, 355, 0 ]
 			        }
 		        ],	                		        	        
 		       	"bell_mouth2": [
@@ -88,7 +88,7 @@
 			            "variable": "angle",
 			            "type": "uniform",
 			            "interpolation": "linear",
-			            "samples": [ 0, 315, 0, 30, 0, 330, 0, 10, 0, 350, 0, 5, 0 ]
+			            "samples": [ 0, 45, 0, 330, 0, 30, 0, 350,0, 10, 0, 355, 0 ]
 			        }
 		        ],	                		        	        
 		       	"bell_mouth3": [
@@ -102,7 +102,7 @@
 			            "variable": "angle",
 			            "type": "uniform",
 			            "interpolation": "linear",
-			            "samples": [ 0, 315, 0, 30, 0, 330, 0, 10, 0, 350, 0, 5, 0 ]
+			            "samples": [ 0, 45, 0, 330, 0, 30, 0, 350,0, 10, 0, 355, 0 ]
 			        }
 		        ],	                		        	        
 		       	"bell_mouth4": [
@@ -116,7 +116,7 @@
 			            "variable": "angle",
 			            "type": "uniform",
 			            "interpolation": "linear",
-			            "samples": [ 0, 315, 0, 30, 0, 330, 0, 10, 0, 350, 0, 5, 0 ]
+			            "samples": [ 0, 45, 0, 330, 0, 30, 0, 350,0, 10, 0, 355, 0 ]
 			        }
 		        ],	                		        	        
 		       	"axle_horiz": [
@@ -130,7 +130,7 @@
 			            "variable": "angle",
 			            "type": "uniform",
 			            "interpolation": "linear",
-			            "samples": [ 0, 315, 0, 30, 0, 330, 0, 10, 0, 350, 0, 5, 0 ]
+			            "samples": [ 0, 45, 0, 330, 0, 30, 0, 350,0, 10, 0, 355, 0 ]
 			        }
 		        ],
 		       	"axle_vert1": [
@@ -144,7 +144,7 @@
 			            "variable": "angle",
 			            "type": "uniform",
 			            "interpolation": "linear",
-			            "samples": [ 0, 315, 0, 30, 0, 330, 0, 10, 0, 350, 0, 5, 0 ]
+			            "samples": [ 0, 45, 0, 330, 0, 30, 0, 350,0, 10, 0, 355, 0 ]
 			        }
 		        ],
 		       	"axle_vert2": [
@@ -158,7 +158,7 @@
 			            "variable": "angle",
 			            "type": "uniform",
 			            "interpolation": "linear",
-			            "samples": [ 0, 315, 0, 30, 0, 330, 0, 10, 0, 350, 0, 5, 0 ]
+			            "samples": [ 0, 45, 0, 330, 0, 30, 0, 350,0, 10, 0, 355, 0 ]
 			        }
 		        ],			        	                		        	        		        		                		        	        
 		       	"clapper": [
@@ -172,11 +172,11 @@
 			            "variable": "angle",
 			            "type": "uniform",
 			            "interpolation": "linear",
-			            "samples": [  0, 315, 320, 0, 30, 25,  0, 330, 340, 0, 10, 15, 0, 350, 355, 0, 5, 10, 0 ]
+			            "samples": [  0, 45, 40, 0, 330, 335, 0, 30, 20, 0, 350, 345, 0, 10, 5, 0, 355, 350, 0 ]
 			        }
 		        ]	                		        	        
 			},
-		"events": { "0.5": "peel..." }		    
+		"events": {}		    
 		}
     }
 }
