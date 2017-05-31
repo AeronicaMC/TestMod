@@ -76,7 +76,7 @@ public class OneShotBlock extends Block
             TileEntity te = worldIn.getTileEntity(pos);
             if(te instanceof OneShotTileEntity)
             {
-                ((OneShotTileEntity)te).click(false);
+                ((OneShotTileEntity)te).triggerOneShot();
             }
         }
 
@@ -85,6 +85,28 @@ public class OneShotBlock extends Block
         worldIn.spawnParticle(EnumParticleTypes.NOTE, (double)pos.getX() + 0.5D, (double)pos.getY() + 1.2D, (double)pos.getZ() + 0.5D, (double)param / 24.0D, 0.0D, 0.0D, new int[0]);
         ModLogger.info("eventReceived: %d", param);
         return true;
+    }
+    
+    /**
+     * React to a redstone powered neighbor block
+     */
+    @Override
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    {
+        boolean flag = worldIn.isBlockPowered(pos);
+        TileEntity te = worldIn.getTileEntity(pos);
+
+        if (te instanceof OneShotTileEntity)
+        {
+            OneShotTileEntity oneShotTE = (OneShotTileEntity)te;
+            if (oneShotTE.isPreviousRedstoneState() != flag)
+            {
+                if (flag)
+                    oneShotTE.triggerOneShot();
+
+                oneShotTE.setPreviousRedstoneState(flag);
+            }
+        }
     }
 
     @Override

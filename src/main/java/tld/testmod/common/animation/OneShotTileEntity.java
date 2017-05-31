@@ -20,17 +20,13 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableMap;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
 import net.minecraftforge.client.model.animation.Animation;
 import net.minecraftforge.common.animation.Event;
 import net.minecraftforge.common.animation.ITimeValue;
@@ -41,13 +37,12 @@ import net.minecraftforge.common.model.animation.IAnimationStateMachine;
 import tld.testmod.Main;
 import tld.testmod.ModLogger;
 import tld.testmod.init.ModBlocks;
-import tld.testmod.init.ModSoundEvents;
 
 public class OneShotTileEntity extends TileEntity
 {
 
-    long lastClick = Long.MIN_VALUE;
-    int pitch = 0;
+    byte pitch = 0;
+    private boolean previousRedstoneState;
     
     @Nullable
     private final IAnimationStateMachine asm;
@@ -79,31 +74,27 @@ public class OneShotTileEntity extends TileEntity
         if(asm != null) {
             if(world.isRemote)
             {
-//                if(asm.currentState().equals("up")) {
-                    float time = Animation.getWorldTime(getWorld(), Animation.getPartialTickTime());
-                    clickTime.setValue(time);
-                    asm.transition("depressed");
-                    ModLogger.info("click depressing: %f", time);
-//                }t
+                float time = Animation.getWorldTime(getWorld(), Animation.getPartialTickTime());
+                clickTime.setValue(time);
+                asm.transition("depressed");
+                ModLogger.info("click depressing: %f", time);
             } else
             {
-                if (world.getTotalWorldTime() > lastClick ) 
+                if (isSneaking)
                 {
-                    if (isSneaking)
-                    {
-                        pitch = (++pitch % 25);
-                        ModLogger.info("Sneak %d", pitch);
-                        markDirty();
-                    }
-                    lastClick = world.getTotalWorldTime() + 2; 
-                    world.addBlockEvent(pos, ModBlocks.ONE_SHOT, 1, pitch);
-//                    float f = (float)Math.pow(2.0D, (double)(pitch - 12) / 12.0D);
-//                    world.playSound(null, pos, ModSoundEvents.BELL,  SoundCategory.BLOCKS, 1.0F, f );
+                    setPitch((byte) ((getPitch()+1) % 25));
+                    ModLogger.info("Sneak %d", pitch);
                 }
+                world.addBlockEvent(pos, ModBlocks.ONE_SHOT, 1, pitch);
             }                
         }
     }
 
+    public void triggerOneShot()
+    {
+        click(false);
+    }
+    
     @Override
     public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing side)
     {
@@ -125,18 +116,55 @@ public class OneShotTileEntity extends TileEntity
         return super.getCapability(capability, side);
     }
 
+    /**
+     * @return the previousRedstoneState
+     */
+    public boolean isPreviousRedstoneState()
+    {
+        return previousRedstoneState;
+    }
+
+    /**
+     * @param previousRedstoneState the previousRedstoneState to set
+     */
+    public void setPreviousRedstoneState(boolean previousRedstoneState)
+    {
+        this.previousRedstoneState = previousRedstoneState;
+        markDirty();
+    }
+    
+    /**
+     * @return the pitch
+     */
+    public byte getPitch()
+    {
+        return pitch;
+    }
+
+    /**
+     * @param pitch the pitch to set
+     */
+    public void setPitch(byte pitch)
+    {
+        this.pitch = pitch;
+        markDirty();
+    }
+
     // Persistence and syncing to client
     @Override
     public void readFromNBT(NBTTagCompound tag)
     {
         super.readFromNBT(tag);
-        pitch = tag.getInteger("pitch");
+        pitch = tag.getByte("pitch");
+        pitch = (byte)MathHelper.clamp(pitch, 0, 24);
+        previousRedstoneState = tag.getBoolean("powered");
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tag)
     {
-        tag.setInteger("pitch", pitch);
+        tag.setByte("pitch", pitch);
+        tag.setBoolean("powered", this.previousRedstoneState);
         return super.writeToNBT(tag);
     }
 
@@ -161,25 +189,25 @@ public class OneShotTileEntity extends TileEntity
      * don't have to
      * 
      */
-    @Override
-    public NBTTagCompound getUpdateTag()
-    {
-        NBTTagCompound tag = super.getUpdateTag();
-        return this.writeToNBT(tag);
-    }
-
-    @Override
-    public SPacketUpdateTileEntity getUpdatePacket()
-    {
-        NBTTagCompound cmp = new NBTTagCompound();
-        writeToNBT(cmp);
-        return new SPacketUpdateTileEntity(pos, 1, cmp);
-    }
-
-    @Override
-    public void onDataPacket(NetworkManager manager, SPacketUpdateTileEntity packet)
-    {
-        readFromNBT(packet.getNbtCompound());
-    }
+//    @Override
+//    public NBTTagCompound getUpdateTag()
+//    {
+//        NBTTagCompound tag = super.getUpdateTag();
+//        return this.writeToNBT(tag);
+//    }
+//
+//    @Override
+//    public SPacketUpdateTileEntity getUpdatePacket()
+//    {
+//        NBTTagCompound cmp = new NBTTagCompound();
+//        writeToNBT(cmp);
+//        return new SPacketUpdateTileEntity(pos, 1, cmp);
+//    }
+//
+//    @Override
+//    public void onDataPacket(NetworkManager manager, SPacketUpdateTileEntity packet)
+//    {
+//        readFromNBT(packet.getNbtCompound());
+//    }
 
 }
