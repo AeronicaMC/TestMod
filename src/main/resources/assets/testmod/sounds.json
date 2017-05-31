@@ -1,4 +1,5 @@
 {
+	"block.bell": {"sounds": [{"name": "testmod:block/bell", "stream": false}]},
 	"entity.tiny.timpani.squish":   {"sounds": [{"name": "testmod:entity/timpani/timpani_53", "stream": false}]},
 	"entity.medium.timpani.squish": {"sounds": [{"name": "testmod:entity/timpani/timpani_46", "stream": false}]},
 	"entity.large.timpani.squish":  {"sounds": [{"name": "testmod:entity/timpani/timpani_41", "stream": false}]},

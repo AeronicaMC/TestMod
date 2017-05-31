@@ -3,10 +3,14 @@
         "bell_conn": { "0": [ 1.0 ] },
         "bell_top": { "1": [ 1.0 ] },
         "bell_main": { "2": [ 1.0 ] },      
-        "bell_mouth": { "3": [ 1.0 ] },      
-        "axle_horiz": { "4": [ 1.0 ] },    
-        "axle_vert1": { "5": [ 1.0 ] },    
-        "axle_vert2": { "6": [ 1.0 ] }    
+        "bell_mouth1": { "3": [ 1.0 ] },      
+        "bell_mouth2": { "4": [ 1.0 ] },      
+        "bell_mouth3": { "5": [ 1.0 ] },      
+        "bell_mouth4": { "6": [ 1.0 ] },      
+        "axle_horiz": { "7": [ 1.0 ] },    
+        "axle_vert1": { "8": [ 1.0 ] },    
+        "axle_vert2": { "9": [ 1.0 ] },    
+        "clapper": { "10": [ 1.0 ] }      
     },
     "clips": {
         "up": {
@@ -59,7 +63,7 @@
 			            "samples": [ 0, 315, 0, 30, 0, 330, 0, 10, 0, 350, 0, 5, 0 ]
 			        }
 		        ],
-		       	"bell_mouth": [
+		       	"bell_mouth1": [
 					{
 	                    "variable": "axis_x",
 	                    "type": "uniform",
@@ -72,7 +76,49 @@
 			            "interpolation": "linear",
 			            "samples": [ 0, 315, 0, 30, 0, 330, 0, 10, 0, 350, 0, 5, 0 ]
 			        }
-		        ],		                		        	        
+		        ],	                		        	        
+		       	"bell_mouth2": [
+					{
+	                    "variable": "axis_x",
+	                    "type": "uniform",
+	                    "interpolation": "linear",
+	                    "samples": [ 1 ]
+					},
+			        {
+			            "variable": "angle",
+			            "type": "uniform",
+			            "interpolation": "linear",
+			            "samples": [ 0, 315, 0, 30, 0, 330, 0, 10, 0, 350, 0, 5, 0 ]
+			        }
+		        ],	                		        	        
+		       	"bell_mouth3": [
+					{
+	                    "variable": "axis_x",
+	                    "type": "uniform",
+	                    "interpolation": "linear",
+	                    "samples": [ 1 ]
+					},
+			        {
+			            "variable": "angle",
+			            "type": "uniform",
+			            "interpolation": "linear",
+			            "samples": [ 0, 315, 0, 30, 0, 330, 0, 10, 0, 350, 0, 5, 0 ]
+			        }
+		        ],	                		        	        
+		       	"bell_mouth4": [
+					{
+	                    "variable": "axis_x",
+	                    "type": "uniform",
+	                    "interpolation": "linear",
+	                    "samples": [ 1 ]
+					},
+			        {
+			            "variable": "angle",
+			            "type": "uniform",
+			            "interpolation": "linear",
+			            "samples": [ 0, 315, 0, 30, 0, 330, 0, 10, 0, 350, 0, 5, 0 ]
+			        }
+		        ],	                		        	        
 		       	"axle_horiz": [
 					{
 	                    "variable": "axis_x",
@@ -114,7 +160,21 @@
 			            "interpolation": "linear",
 			            "samples": [ 0, 315, 0, 30, 0, 330, 0, 10, 0, 350, 0, 5, 0 ]
 			        }
-		        ]			        	                		        	        		        		                		        	        
+		        ],			        	                		        	        		        		                		        	        
+		       	"clapper": [
+					{
+	                    "variable": "axis_x",
+	                    "type": "uniform",
+	                    "interpolation": "linear",
+	                    "samples": [ 1 ]
+					},
+			        {
+			            "variable": "angle",
+			            "type": "uniform",
+			            "interpolation": "linear",
+			            "samples": [  0, 315, 320, 0, 30, 25,  0, 330, 340, 0, 10, 15, 0, 350, 355, 0, 5, 10, 0 ]
+			        }
+		        ]	                		        	        
 			},
 		"events": { "0.5": "peel..." }		    
 		}

@@ -20,12 +20,17 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableMap;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraftforge.client.model.animation.Animation;
 import net.minecraftforge.common.animation.Event;
 import net.minecraftforge.common.animation.ITimeValue;
@@ -35,10 +40,15 @@ import net.minecraftforge.common.model.animation.CapabilityAnimation;
 import net.minecraftforge.common.model.animation.IAnimationStateMachine;
 import tld.testmod.Main;
 import tld.testmod.ModLogger;
+import tld.testmod.init.ModBlocks;
+import tld.testmod.init.ModSoundEvents;
 
 public class OneShotTileEntity extends TileEntity
 {
 
+    long lastClick = Long.MIN_VALUE;
+    int pitch = 0;
+    
     @Nullable
     private final IAnimationStateMachine asm;
     private final VariableValue clickTime = new VariableValue(Float.NEGATIVE_INFINITY);
@@ -64,24 +74,36 @@ public class OneShotTileEntity extends TileEntity
         return true;
     }
 
-    public void click()
+    public void click(boolean isSneaking)
     {
         if(asm != null) {
-//            if(asm.currentState().equals("open")) {
-//                float time = Animation.getWorldTime(getWorld(), Animation.getPartialTickTime());
-//                clickTime.setValue(time);
-//                asm.transition("closing");
-//                ModLogger.info("click closing: %f", time);
-//            } else
-                if(asm.currentState().equals("up")) {
-                float time = Animation.getWorldTime(getWorld(), Animation.getPartialTickTime());
-                clickTime.setValue(time);
-                asm.transition("depressed");
-                ModLogger.info("click depressing: %f", time);
-            }
+            if(world.isRemote)
+            {
+//                if(asm.currentState().equals("up")) {
+                    float time = Animation.getWorldTime(getWorld(), Animation.getPartialTickTime());
+                    clickTime.setValue(time);
+                    asm.transition("depressed");
+                    ModLogger.info("click depressing: %f", time);
+//                }t
+            } else
+            {
+                if (world.getTotalWorldTime() > lastClick ) 
+                {
+                    if (isSneaking)
+                    {
+                        pitch = (++pitch % 25);
+                        ModLogger.info("Sneak %d", pitch);
+                        markDirty();
+                    }
+                    lastClick = world.getTotalWorldTime() + 2; 
+                    world.addBlockEvent(pos, ModBlocks.ONE_SHOT, 1, pitch);
+//                    float f = (float)Math.pow(2.0D, (double)(pitch - 12) / 12.0D);
+//                    world.playSound(null, pos, ModSoundEvents.BELL,  SoundCategory.BLOCKS, 1.0F, f );
+                }
+            }                
         }
     }
-    
+
     @Override
     public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing side)
     {
@@ -108,11 +130,13 @@ public class OneShotTileEntity extends TileEntity
     public void readFromNBT(NBTTagCompound tag)
     {
         super.readFromNBT(tag);
+        pitch = tag.getInteger("pitch");
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tag)
     {
+        tag.setInteger("pitch", pitch);
         return super.writeToNBT(tag);
     }
 

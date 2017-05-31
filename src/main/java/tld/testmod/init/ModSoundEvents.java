@@ -30,6 +30,8 @@ public class ModSoundEvents {
     public static final SoundEvent ENTITY_TINY_TIMPANI_DEATH = registerSound("entity.small.timpani.death");
     public static final SoundEvent ENTITY_TIMPANI_HURT = registerSound("entity.timpani.hurt");
     public static final SoundEvent ENTITY_TIMPANI_DEATH = registerSound("entity.timpani.death");
+    public static final SoundEvent BELL = registerSound("block.bell");
+    
 
     private ModSoundEvents() {}
     private static class InstanceHolder

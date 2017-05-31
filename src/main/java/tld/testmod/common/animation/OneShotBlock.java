@@ -26,6 +26,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -33,6 +35,8 @@ import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.common.property.Properties;
 import tld.testmod.Main;
+import tld.testmod.ModLogger;
+import tld.testmod.init.ModSoundEvents;
 
 public class OneShotBlock extends Block
 {
@@ -53,17 +57,36 @@ public class OneShotBlock extends Block
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        if(world.isRemote)
+        if(!world.isRemote)
         {
             TileEntity te = world.getTileEntity(pos);
             if(te instanceof OneShotTileEntity)
             {
-                ((OneShotTileEntity)te).click();
+                ((OneShotTileEntity)te).click(player.isSneaking());
             }
         }
         return true;
     }
     
+    @Override
+    public boolean eventReceived(IBlockState state, World worldIn, BlockPos pos, int id, int param)
+    {
+        if(worldIn.isRemote)
+        {
+            TileEntity te = worldIn.getTileEntity(pos);
+            if(te instanceof OneShotTileEntity)
+            {
+                ((OneShotTileEntity)te).click(false);
+            }
+        }
+
+        float f = (float)Math.pow(2.0D, (double)(param - 12) / 12.0D);
+        worldIn.playSound(null, pos, ModSoundEvents.BELL,  SoundCategory.RECORDS, 3.0F, f );
+        worldIn.spawnParticle(EnumParticleTypes.NOTE, (double)pos.getX() + 0.5D, (double)pos.getY() + 1.2D, (double)pos.getZ() + 0.5D, (double)param / 24.0D, 0.0D, 0.0D, new int[0]);
+        ModLogger.info("eventReceived: %d", param);
+        return true;
+    }
+
     @Override
     public ExtendedBlockState createBlockState()
     {

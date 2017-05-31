@@ -3,12 +3,12 @@
 	"textures": {
 		"particle": "blocks/gold_block",
 		"bell": "blocks/gold_block",
+		"end": "blocks/wool_colored_black",
 		"axle": "blocks/iron_block"
 	},
 	"elements": [
 		{
 			"__comment": "bell_conn",
-			"name": "bell_conn",
 			"from": [ 7, 13, 7 ],
 			"to": [ 9, 14, 9 ],
 			"faces": {
@@ -22,7 +22,6 @@
 		},
 		{
 			"__comment": "bell_top",
-			"name": "bell_top",
 			"from": [ 6, 12, 6 ],
 			"to": [ 10, 13, 10 ],
 			"faces": {
@@ -36,11 +35,10 @@
 		},				
 		{
 			"__comment": "bell_main",
-			"name": "bell_main",
 			"from": [ 5, 4, 5 ],
 			"to": [ 11, 12, 11 ],
 			"faces": {
-				"down": { "uv": [ 5, 5, 11, 11 ], "texture": "#bell" },
+				"down": { "uv": [ 5, 5, 11, 11 ], "texture": "#end" },
 				"up": { "uv": [ 5, 5, 11, 11 ], "texture": "#bell" },
 				"north": { "uv": [ 5, 4, 11, 12 ], "texture": "#bell" },
 				"south": { "uv": [ 5, 4, 11, 12 ], "texture": "#bell" },
@@ -50,21 +48,58 @@
 		},
 		{
 			"__comment": "bell_mouth",
-			"name": "bell_mouth",
 			"from": [ 4, 2, 4 ],
-			"to": [ 12, 4, 12 ],
+			"to": [ 12, 4, 6 ],
 			"faces": {
-				"down": { "uv": [ 4, 4, 12, 12 ], "texture": "#bell" },
-				"up": { "uv": [ 4, 4, 12, 12 ], "texture": "#bell" },
+				"down": { "uv": [ 4, 10, 12, 12 ], "texture": "#bell" },
+				"up": { "uv": [ 4, 4, 12, 6 ], "texture": "#bell" },
 				"north": { "uv": [ 4, 12, 12, 14 ], "texture": "#bell" },
 				"south": { "uv": [ 4, 12, 12, 14 ], "texture": "#bell" },
-				"west": { "uv": [ 4, 12, 12, 14 ], "texture": "#bell" },
-				"east": { "uv": [ 4, 12, 12, 14 ], "texture": "#bell" }
+				"west": { "uv": [ 4, 12, 6, 14 ], "texture": "#bell" },
+				"east": { "uv": [ 10, 12, 12, 14 ], "texture": "#bell" }
 			}
-		},		
+		},
+		{
+			"__comment": "bell_mouth",
+			"from": [ 4, 2, 10 ],
+			"to": [ 12, 4, 12 ],
+			"faces": {
+				"down": { "uv": [ 1, 10, 8, 12 ], "texture": "#bell" },
+				"up": { "uv": [ 1, 4, 8, 6 ], "texture": "#bell" },
+				"north": { "uv": [ 8, 14, 15, 16 ], "texture": "#bell" },
+				"south": { "uv": [ 1, 14, 8, 16 ], "texture": "#bell" },
+				"west": { "uv": [ 4, 14, 6, 16 ], "texture": "#bell" },
+				"east": { "uv": [ 10, 14, 12, 16 ], "texture": "#bell" }
+			}
+		},
+		{
+			"__comment": "bell_mouth",
+			"from": [ 10, 2, 6 ],
+			"to": [ 12, 4, 10 ],
+			"faces": {
+				"down": { "uv": [ 10, 6, 12, 10 ], "texture": "#bell" },
+				"up": { "uv": [ 10, 6, 12, 10 ], "texture": "#bell" },
+				"north": { "uv": [ 4, 12, 6, 14 ], "texture": "#bell" },
+				"south": { "uv": [ 10, 12, 12, 14 ], "texture": "#bell" },
+				"west": { "uv": [ 6, 12, 10, 14 ], "texture": "#bell" },
+				"east": { "uv": [ 6, 12, 10, 14 ], "texture": "#bell" }
+			}
+		},
+		{
+			"__comment": "bell_mouth",
+			"from": [ 4, 2, 6 ],
+			"to": [ 6, 4, 10 ],
+			"faces": {
+				"down": { "uv": [ 6, 6, 8, 10 ], "texture": "#bell" },
+				"up": { "uv": [ 6, 6, 8, 10 ], "texture": "#bell" },
+				"north": { "uv": [ 8, 14, 10, 16 ], "texture": "#bell" },
+				"south": { "uv": [ 6, 14, 8, 16 ], "texture": "#bell" },
+				"west": { "uv": [ 6, 14, 10, 16 ], "texture": "#bell" },
+				"east": { "uv": [ 6, 14, 10, 16 ], "texture": "#bell" }
+			}
+		},
 		{
 			"__comment": "axle_horiz",
-			"name": "axle_horiz",
 			"from": [ 4, 14, 7 ],
 			"to": [ 12, 16, 9 ],
 			"faces": {
@@ -78,7 +113,6 @@
 		},
 		{
 			"__comment": "axle_vert1",
-			"name": "axle_vert1",
 			"from": [ 3, 8, 7 ],
 			"to": [ 4, 15, 9 ],
 			"faces": {
@@ -92,7 +126,6 @@
 		},
 		{
 			"__comment": "axle_vert2",
-			"name": "axle_vert1",
 			"from": [ 12, 8, 7 ],
 			"to": [ 13, 15, 9 ],
 			"faces": {
@@ -103,6 +136,19 @@
 				"west": { "uv": [ 3, 1, 5, 8 ], "texture": "#axle" },
 				"east": { "uv": [ 11, 1, 13, 8 ], "texture": "#axle" }
 			}
-		}
+		},
+		{
+			"__comment": "clapper",
+			"from": [ 7, 1, 7 ],
+			"to": [ 9, 4, 9 ],
+			"faces": {
+				"down": { "uv": [ 7, 7, 9, 9 ], "texture": "#axle" },
+				"up": { "uv": [ 7, 7, 9, 9 ], "texture": "#axle" },
+				"north": { "uv": [ 7, 12, 9, 15 ], "texture": "#axle" },
+				"south": { "uv": [ 7, 12, 9, 15 ], "texture": "#axle" },
+				"west": { "uv": [ 7, 12, 9, 15 ], "texture": "#axle" },
+				"east": { "uv": [ 7, 12, 9, 15 ], "texture": "#axle" }
+			}
+		}		
 	]
 }

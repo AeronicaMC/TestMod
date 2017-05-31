@@ -1,8 +1,8 @@
 {
     "parameters": {
-        "end_anim": [ "compose", [ "+", 3 ] , "#click_time" ],
+        "end_anim": [ "compose", [ "+", 2 ] , "#click_time" ],
         "trigger_anim": [ "-", "#end_anim" ],
-        "progress": [ "-/", "#click_time", 3 ]        
+        "progress": [ "-/", "#click_time", 2 ]        
     },
     "clips": {
         "up": "#identity",
@@ -14,7 +14,7 @@
     ],
     "transitions": {
         "up": "depressed",
-        "depressed": "up"  
+        "depressed": [ "up", "depressed" ]  
     },
     "start_state": "up"
 }
