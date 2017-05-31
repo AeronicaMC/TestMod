@@ -14,8 +14,8 @@
         "facing": {
             "north": { "transform": "identity"                   },        
             "south": { "transform": { "rotation": { "y": 180 } } },
-            "east":  { "transform": { "rotation": { "y": 90  } } },            
-            "west":  { "transform": { "rotation": { "y": 270 } } }
+            "east":  { "transform": { "rotation": { "y": 270 } } },            
+            "west":  { "transform": { "rotation": { "y": 90  } } }
         },
         "static": {
             "true": {
