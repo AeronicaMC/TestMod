@@ -1,8 +1,8 @@
 {
 	"__comment": "Designed by Aeronica with Cubik Studio - https://cubik.studio",
 	"textures": {
-		"particle": "blocks/planks_jungle",
-		"texture": "blocks/planks_jungle"
+		"particle": "blocks/planks_spruce",
+		"texture": "blocks/planks_spruce"
 	},
 	"elements": [
 		{
