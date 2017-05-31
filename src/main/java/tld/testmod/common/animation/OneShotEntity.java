@@ -38,13 +38,14 @@ public class OneShotEntity extends EntityLiving
 
     private final IAnimationStateMachine asm;
     private final VariableValue clickTime = new VariableValue(Float.NEGATIVE_INFINITY);
-    
+    private final VariableValue cycleLength = new VariableValue(4);
     public OneShotEntity(World world)
     {
         super(world);
         setSize(1, 1);
         asm = Main.proxy.load(new ResourceLocation(Main.MODID, "asms/block/one_shot.json"), ImmutableMap.<String, ITimeValue>of(
-                "click_time", clickTime
+                "click_time", clickTime,
+                "cycle_length", cycleLength
         ));
     }
 

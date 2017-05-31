@@ -13,12 +13,12 @@
         "clapper": { "10": [ 1.0 ] }      
     },
     "clips": {
-        "up": {
+        "rest": {
             "loop": false,
             "joint_clips": {},
             "events": {}
         },     
-        "depressed": {
+        "trigger": {
             "loop": true,
             "joint_clips": {
 		       	"bell_conn": [

@@ -34,9 +34,11 @@ public class OneShotItemAnimationHolder implements ICapabilityProvider
 {
 
     private final VariableValue clickTime = new VariableValue(Float.NEGATIVE_INFINITY);
+    private final VariableValue cycleLength = new VariableValue(4);
 
     private final IAnimationStateMachine asm = Main.proxy.load(new ResourceLocation(Main.MODID, "asms/block/one_shot.json"), ImmutableMap.<String, ITimeValue>of(
-         "click_time", clickTime
+         "click_time", clickTime,
+         "cycle_length", cycleLength
     ));
 
     @Override

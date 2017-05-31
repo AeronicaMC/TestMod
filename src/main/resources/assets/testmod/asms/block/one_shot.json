@@ -1,20 +1,25 @@
 {
     "parameters": {
-        "end_anim": [ "compose", [ "+", 2 ] , "#click_time" ],
+    	"world_cycle": [ "/", "#cycle_length" ],
+        "end_anim": [ "compose", [ "+", "#cycle_length" ] , "#click_time" ],
         "trigger_anim": [ "-", "#end_anim" ],
-        "progress": [ "-/", "#click_time", 2 ]        
+        "progress": [ "-/", "#click_time", "#cycle_length" ]        
     },
     "clips": {
-        "up": "#identity",
-        "depressed": [ "trigger_positive", [ "apply", "testmod:block/one_shot_bell@depressed", "#progress" ], "#trigger_anim", "!transition:up" ] 
+        "rest": "#identity",        
+        "trigger": [ "trigger_positive", [ "apply", "testmod:block/one_shot_bell@trigger", "#progress" ], "#trigger_anim", "!transition:rest" ],       
+        "free_run": [ "apply", "testmod:block/one_shot_bell@trigger", "#world_cycle" ]      
     },
     "states": [
-        "up",
-        "depressed"
+        "rest",
+        "trigger",
+        "free_run"
     ],
     "transitions": {
-        "up": "depressed",
-        "depressed": [ "up", "depressed" ]  
+        "rest": "trigger",
+        "trigger": [ "rest", "trigger" ],
+        "free_run": [ "rest", "trigger" ]
+
     },
-    "start_state": "up"
+    "start_state": "free_run"
 }

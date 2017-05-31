@@ -24,9 +24,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
 import net.minecraftforge.client.model.animation.Animation;
 import net.minecraftforge.common.animation.Event;
 import net.minecraftforge.common.animation.ITimeValue;
@@ -47,12 +45,15 @@ public class OneShotTileEntity extends TileEntity
     @Nullable
     private final IAnimationStateMachine asm;
     private final VariableValue clickTime = new VariableValue(Float.NEGATIVE_INFINITY);
+    private final VariableValue cycleLength = new VariableValue(2);
     
     public OneShotTileEntity()
     {
         asm = Main.proxy.load(new ResourceLocation(Main.MODID, "asms/block/one_shot.json"), ImmutableMap.<String, ITimeValue>of(
-                "click_time", clickTime
+                "click_time", clickTime,
+                "cycle_length", cycleLength
             ));
+        asm.transition("rest");
     }
 
     public void handleEvents(float time, Iterable<Event> pastEvents)
@@ -76,7 +77,7 @@ public class OneShotTileEntity extends TileEntity
             {
                 float time = Animation.getWorldTime(getWorld(), Animation.getPartialTickTime());
                 clickTime.setValue(time);
-                asm.transition("depressed");
+                asm.transition("trigger");
                 ModLogger.info("click depressing: %f", time);
             } else
             {
