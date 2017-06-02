@@ -85,6 +85,8 @@ public class ModModelManager
         registerItemModel(ModBlocks.FORGE_ANIM_TEST);
         registerItemModel(ModBlocks.EDGAR_ALLEN_BLOCK_LEVER);
         registerItemModel(ModBlocks.ONE_SHOT);
+        registerItemModel(ModBlocks.ITEM_PULL_ROPE);
+
     }
     
     public void registerTileRenderers() {

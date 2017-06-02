@@ -19,6 +19,7 @@ import tld.testmod.common.animation.EdgarAllenBlockLever;
 import tld.testmod.common.animation.EdgarAllenTileEntity;
 import tld.testmod.common.animation.ForgeAnimBlock;
 import tld.testmod.common.animation.ForgeAnimTileEntity;
+import tld.testmod.common.blocks.BlockPull;
 import tld.testmod.common.blocks.HQBTest;
 import tld.testmod.common.blocks.VQBTest;
 import tld.testmod.common.blocks.VQBTest2;
@@ -33,6 +34,8 @@ public class ModBlocks
     public static final ForgeAnimBlock FORGE_ANIM_TEST = registerBlock(new ForgeAnimBlock(), "forge_anim_test");
     public static final EdgarAllenBlockLever EDGAR_ALLEN_BLOCK_LEVER = registerBlock(new EdgarAllenBlockLever(), "edgar_allen_block_lever");
     public static final OneShotBlock ONE_SHOT = registerBlock(new OneShotBlock(), "one_shot");
+    public static final BlockPull PULL_ROPE = registerBlock(new BlockPull(true), "pull_rope");
+    public static final ItemBlock ITEM_PULL_ROPE = new ItemBlock(PULL_ROPE);
     
     private ModBlocks() {}
     
@@ -57,6 +60,7 @@ public class ModBlocks
                     FORGE_ANIM_TEST,
                     EDGAR_ALLEN_BLOCK_LEVER,
                     ONE_SHOT,
+                    PULL_ROPE,
             };
 
             registry.registerAll(blocks);
@@ -70,6 +74,7 @@ public class ModBlocks
         @SubscribeEvent
         public static void registerItemBlocks(RegistryEvent.Register<Item> event) {
             final ItemBlock[] items = {
+                    ITEM_PULL_ROPE,
             };
 
             final IForgeRegistry<Item> registry = event.getRegistry();
