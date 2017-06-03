@@ -22,12 +22,9 @@ import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import tld.testmod.Main;
-import tld.testmod.ModLogger;
 import tld.testmod.common.animation.OneShotBlock;
 
 public class BlockPull extends Block
@@ -36,15 +33,15 @@ public class BlockPull extends Block
     public static final PropertyBool POWERED = PropertyBool.create("powered");
     protected static final AxisAlignedBB AABB_HANGING_OFF = new AxisAlignedBB(0.375D, 0.0D, 0.375D, 0.625D, 1.0D, 0.625D);
     protected static final AxisAlignedBB AABB_PULLED_ON = new AxisAlignedBB(0.375D, 0.0D, 0.375D, 0.625D, 1.0D, 0.625D);
-    private final boolean chain;
+    private final boolean rope;
 
-    public BlockPull(boolean chain)
+    public BlockPull(boolean rope)
     {
         super(Material.CARPET);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(POWERED, Boolean.valueOf(false)));
         this.setTickRandomly(true);
         this.setCreativeTab(Main.MODTAB);
-        this.chain = chain;
+        this.rope = rope;
     }
 
     @Override
@@ -60,7 +57,7 @@ public class BlockPull extends Block
     @Override
     public int tickRate(World worldIn)
     {
-        return this.chain ? 10 : 15;
+        return this.rope ? 15 : 10;
     }
 
     /**
@@ -168,14 +165,8 @@ public class BlockPull extends Block
             return true;
         } else
         {
-            if (propagate(worldIn, pos, facing))
-            {
-                worldIn.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(true)), 3);
-                worldIn.markBlockRangeForRenderUpdate(pos, pos);
-                this.playClickSound(playerIn, worldIn, pos);
-                this.notifyNeighbors(worldIn, pos, state.getValue(FACING));
-                worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
-            }
+            propagate(worldIn, pos, state, facing, true);
+            worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
             return true;
         }
     }
@@ -241,15 +232,12 @@ public class BlockPull extends Block
         {
             if (state.getValue(POWERED).booleanValue())
             {
-                if (this.chain)
+                if (this.rope)
                 {
                     this.checkPressed(state, worldIn, pos);
                 } else
                 {
-                    worldIn.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(false)));
-                    this.notifyNeighbors(worldIn, pos, state.getValue(FACING));
-                    this.playReleaseSound(worldIn, pos);
-                    worldIn.markBlockRangeForRenderUpdate(pos, pos);
+                    this.propagate(worldIn, pos, state, state.getValue(FACING), false);
                 }
             }
         }
@@ -263,7 +251,7 @@ public class BlockPull extends Block
     {
         if (!worldIn.isRemote)
         {
-            if (this.chain)
+            if (this.rope)
             {
                 if (!state.getValue(POWERED).booleanValue())
                 {
@@ -281,19 +269,12 @@ public class BlockPull extends Block
 
         if (flag && !flag1)
         {
-            this.propagate(worldIn, pos, worldIn.getBlockState(pos).getValue(FACING));
-            worldIn.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(true)));
-            this.notifyNeighbors(worldIn, pos, state.getValue(FACING));
-            worldIn.markBlockRangeForRenderUpdate(pos, pos);
-            this.playClickSound((EntityPlayer) null, worldIn, pos);
+            this.propagate(worldIn, pos, state, state.getValue(FACING), true);
         }
 
         if (!flag && flag1)
         {
-            worldIn.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(false)));
-            this.notifyNeighbors(worldIn, pos, state.getValue(FACING));
-            worldIn.markBlockRangeForRenderUpdate(pos, pos);
-            this.playReleaseSound(worldIn, pos);
+            this.propagate(worldIn, pos, state, state.getValue(FACING), false);
         }
 
         if (flag)
@@ -308,21 +289,51 @@ public class BlockPull extends Block
         worldIn.notifyNeighborsOfStateChange(pos.offset(facing.getOpposite()), this, false);
     }
 
-    public boolean propagate(World worldIn, BlockPos posIn, EnumFacing facing)
+    private void propagate(World worldIn, BlockPos posIn, IBlockState state, EnumFacing facing, boolean power)
+    {
+        this.setPowerState(worldIn, posIn, state, facing, power);
+        this.propagateUp(worldIn, posIn, facing, power);
+        this.propagateDown(worldIn, posIn, facing, power);
+
+        if (power)
+            this.playClickSound((EntityPlayer) null, worldIn, posIn);
+        else
+            this.playReleaseSound(worldIn, posIn);        
+    }
+    
+    private boolean propagateUp(World worldIn, BlockPos posIn, EnumFacing facing, boolean power)
     {
         BlockPos posAbove = posIn.up();
-        boolean flag = worldIn.getBlockState(posAbove).getBlock() instanceof BlockPull;
+        IBlockState state = worldIn.getBlockState(posAbove);
+        boolean flag = state.getBlock() instanceof BlockPull;
         if (flag)
         {
-            IBlockState state = worldIn.getBlockState(posAbove);
-            propagate(worldIn, posAbove, state.getValue(FACING));                
-            worldIn.setBlockState(posAbove, state.withProperty(POWERED, Boolean.valueOf(true)), 3);
-            worldIn.markBlockRangeForRenderUpdate(posAbove, posAbove);
-            worldIn.notifyNeighborsOfStateChange(posAbove, this, false);
-            worldIn.scheduleUpdate(posAbove, this, this.tickRate(worldIn));
+            this.propagateUp(worldIn, posAbove, facing, power);
+            this.setPowerState(worldIn, posAbove, state, facing, power);
         }
         return !flag;
     }
+
+    private boolean propagateDown(World worldIn, BlockPos posIn, EnumFacing facing, boolean power)
+    {
+        BlockPos posBelow = posIn.down();
+        IBlockState state = worldIn.getBlockState(posBelow);
+        boolean flag = state.getBlock() instanceof BlockPull;
+        if (flag)
+        {
+            this.propagateDown(worldIn, posBelow, facing, power);
+            this.setPowerState(worldIn, posBelow, state, facing, power);
+        }
+        return !flag;
+    }
+    
+    private void setPowerState(World worldIn, BlockPos posIn, IBlockState state, EnumFacing facing, boolean power)
+    {
+        worldIn.setBlockState(posIn, worldIn.getBlockState(posIn).withProperty(POWERED, Boolean.valueOf(power)), 3);
+        this.notifyNeighbors(worldIn, posIn, state.getValue(FACING));
+        worldIn.markBlockRangeForRenderUpdate(posIn, posIn); 
+    }
+    
     /**
      * Convert the given metadata into a BlockState for this Block
      */
