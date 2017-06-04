@@ -29,11 +29,13 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import tld.testmod.Main;
 import tld.testmod.client.render.RenderGoldenSkeleton;
+import tld.testmod.client.render.RenderPull;
 import tld.testmod.client.render.RenderTimpani;
 import tld.testmod.common.CommonProxy;
-import tld.testmod.common.animation.OneShotEntity;
 import tld.testmod.common.animation.EdgarAllenAnimEntity;
 import tld.testmod.common.animation.ForgeAnimEntity;
+import tld.testmod.common.animation.OneShotEntity;
+import tld.testmod.common.entity.EntityPull;
 import tld.testmod.common.entity.EntityTimpaniFx;
 import tld.testmod.common.entity.living.EntityGoldenSkeleton;
 import tld.testmod.common.entity.living.EntityTimpani;
@@ -47,6 +49,7 @@ public class ClientProxy extends CommonProxy
         super.preInit(event);
         RenderingRegistry.registerEntityRenderingHandler(EntityGoldenSkeleton.class, RenderGoldenSkeleton.FACTORY);
         RenderingRegistry.registerEntityRenderingHandler(EntityTimpani.class, RenderTimpani.FACTORY);
+        RenderingRegistry.registerEntityRenderingHandler(EntityPull.class, RenderPull.FACTORY);
         
         RenderingRegistry.registerEntityRenderingHandler(ForgeAnimEntity.class, new IRenderFactory<ForgeAnimEntity>()
         {

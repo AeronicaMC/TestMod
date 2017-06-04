@@ -39,7 +39,7 @@ public class BlockPull extends Block
     protected static final AxisAlignedBB PULL_FULL_SOUTH_AABB = new AxisAlignedBB(0.8125D, 0.0D, 0.8125D, 1.0D, 1.0D, 1.0D);
     protected static final AxisAlignedBB PULL_FULL_NORTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.1875D, 1.0D, 0.1875D);
 
-    protected static final AxisAlignedBB PULL_FULL_EAST_AABB_ON = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.1875D, 1.0D, 0.8125D);
+    protected static final AxisAlignedBB PULL_FULL_EAST_AABB_ON = new AxisAlignedBB(0.8125D, 0.0D, 0.0D, 1.0D, 1.0D, 0.1875D);
     protected static final AxisAlignedBB PULL_FULL_WEST_AABB_ON = new AxisAlignedBB(0.0D, 0.0D, 0.8125D, 0.1875D, 1.0D, 1.0D);
     protected static final AxisAlignedBB PULL_FULL_SOUTH_AABB_ON = new AxisAlignedBB(0.8125D, 0.0D, 0.8125D, 1.0D, 1.0D, 1.0D);
     protected static final AxisAlignedBB PULL_FULL_NORTH_AABB_ON = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.1875D, 1.0D, 0.1875D);
@@ -125,7 +125,6 @@ public class BlockPull extends Block
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
         return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(POWERED, Boolean.valueOf(false));
-
     }
 
     /**
@@ -416,17 +415,10 @@ public class BlockPull extends Block
                 FACING, POWERED
         });
     }
-    
+
     @Override public boolean isLadder(IBlockState state, IBlockAccess world, BlockPos pos, EntityLivingBase entity)
     {
-//        int i = MathHelper.floor((double) (entity.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-//        EnumFacing enumfacing = EnumFacing.getHorizontal(i);
-//
-//        Boolean powered = state.getValue(POWERED);
-//        if(entity.isSneaking())
-//            propagate(entity.getEntityWorld(), pos, enumfacing);
-//        else
-//            ModLogger.info("powered %s", powered);
         return true;
     }
+
 }

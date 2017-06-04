@@ -9,10 +9,11 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.IForgeRegistry;
-import tld.testmod.common.animation.OneShotItemBlock;
 import tld.testmod.common.animation.EdgarAllenItemBlock;
 import tld.testmod.common.animation.ForgeAnimItemBlock;
+import tld.testmod.common.animation.OneShotItemBlock;
 import tld.testmod.common.items.HQItemTest;
+import tld.testmod.common.items.ItemPull;
 import tld.testmod.common.items.ItemRightClickTest;
 import tld.testmod.common.items.VQItemTest;
 import tld.testmod.common.items.VQItemTest2;
@@ -28,6 +29,7 @@ public class ModItems
     public static final ForgeAnimItemBlock ITEMBLOCK_ANIM_TEST = registerItem(new ForgeAnimItemBlock(ModBlocks.FORGE_ANIM_TEST), "forge_anim_test");
     public static final EdgarAllenItemBlock EDGAR_ALLEN_BLOCK_LEVER = registerItem(new EdgarAllenItemBlock(ModBlocks.EDGAR_ALLEN_BLOCK_LEVER), "edgar_allen_block_lever");
     public static final OneShotItemBlock ONE_SHOT = registerItem(new OneShotItemBlock(ModBlocks.ONE_SHOT), "one_shot");
+    public static final ItemPull ITEM_PULL = registerItem(new ItemPull(), "pull");
     
     @Mod.EventBusSubscriber
     public static class RegistrationHandler {
@@ -48,6 +50,7 @@ public class ModItems
                     ITEMBLOCK_ANIM_TEST,
                     EDGAR_ALLEN_BLOCK_LEVER,
                     ONE_SHOT,
+                    ITEM_PULL,
             };
 
             final IForgeRegistry<Item> registry = event.getRegistry();

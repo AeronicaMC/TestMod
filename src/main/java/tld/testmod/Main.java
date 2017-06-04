@@ -14,6 +14,7 @@ import tld.testmod.common.CommonProxy;
 import tld.testmod.common.animation.EdgarAllenAnimEntity;
 import tld.testmod.common.animation.ForgeAnimEntity;
 import tld.testmod.common.animation.OneShotEntity;
+import tld.testmod.common.entity.EntityPull;
 import tld.testmod.common.entity.living.EntityGoldenSkeleton;
 import tld.testmod.common.entity.living.EntityTimpani;
 import tld.testmod.common.handlers.SpawnHandler;
@@ -56,6 +57,7 @@ public class Main
         EntityRegistry.registerModEntity(new ResourceLocation(MODID, "entity_edgar_allen_block_lever"), EdgarAllenAnimEntity.class, "entity_edgar_allen_block_lever", 3, this, 64, 20, true, 0xFFAAAA00, 0xFFDDDD00);
         EntityRegistry.registerModEntity(new ResourceLocation(MODID, "entity_one_shot"), OneShotEntity.class, "entity_one_shot", 4, this, 64, 20, true, 0xFFAAAA00, 0xFFDDDD00);
 
+        EntityRegistry.registerModEntity(new ResourceLocation(MODID, "entity_pull"), EntityPull.class, "entity_pull", 5, this, 64, 20, true, 0xFFAAAA00, 0xFFDDDD00);
     }
 
     @EventHandler
