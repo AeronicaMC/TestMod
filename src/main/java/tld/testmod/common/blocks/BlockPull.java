@@ -16,10 +16,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -29,10 +31,19 @@ import tld.testmod.common.animation.OneShotBlock;
 
 public class BlockPull extends Block
 {
-    public static final PropertyDirection FACING = PropertyDirection.create("facing");
+    public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
     public static final PropertyBool POWERED = PropertyBool.create("powered");
-    protected static final AxisAlignedBB AABB_HANGING_OFF = new AxisAlignedBB(0.375D, 0.0D, 0.375D, 0.625D, 1.0D, 0.625D);
-    protected static final AxisAlignedBB AABB_PULLED_ON = new AxisAlignedBB(0.375D, 0.0D, 0.375D, 0.625D, 1.0D, 0.625D);
+    
+    protected static final AxisAlignedBB PULL_FULL_EAST_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.375D, 0.1875D, 1.0D, 0.625D);
+    protected static final AxisAlignedBB PULL_FULL_WEST_AABB = new AxisAlignedBB(0.8125D, 0.0D, 0.375D, 1.0D, 1.0D, 0.625D);
+    protected static final AxisAlignedBB PULL_FULL_SOUTH_AABB = new AxisAlignedBB(0.375D, 0.0D, 0.0D, 0.625D, 1.0D, 0.1875D);
+    protected static final AxisAlignedBB PULL_FULL_NORTH_AABB = new AxisAlignedBB(0.375D, 0.0D, 0.8125D, 0.625D, 1.0D, 1.0D);
+
+    protected static final AxisAlignedBB PULL_FULL_EAST_AABB_ON = new AxisAlignedBB(0.0D, 0.0D, 0.375D, 0.1875D, 1.0D, 0.625D);
+    protected static final AxisAlignedBB PULL_FULL_WEST_AABB_ON = new AxisAlignedBB(0.8125D, 0.0D, 0.375D, 1.0D, 1.0D, 0.625D);
+    protected static final AxisAlignedBB PULL_FULL_SOUTH_AABB_ON = new AxisAlignedBB(0.375D, 0.0D, 0.0D, 0.625D, 1.0D, 0.1875D);
+    protected static final AxisAlignedBB PULL_FULL_NORTH_AABB_ON = new AxisAlignedBB(0.375D, 0.0D, 0.8125D, 0.625D, 1.0D, 1.0D);
+    
     private final boolean rope;
 
     public BlockPull(boolean rope)
@@ -48,7 +59,7 @@ public class BlockPull extends Block
     @Nullable
     public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
     {
-        return AABB_PULLED_ON;//NULL_AABB;
+        return NULL_AABB; //this.getBoundingBox(blockState, worldIn, pos);
     }
 
     /**
@@ -79,11 +90,11 @@ public class BlockPull extends Block
     /**
      * Check whether this Block can be placed on the given side
      */
-    @Override
-    public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side)
-    {
-        return canPlaceBlock(worldIn, pos, side.getOpposite());
-    }
+//    @Override
+//    public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side)
+//    {
+//        return canPlaceBlock(worldIn, pos, side.getOpposite());
+//    }
 
     @Override
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
@@ -113,8 +124,8 @@ public class BlockPull extends Block
     @Override
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        return canPlaceBlock(worldIn, pos, facing.getOpposite()) ? this.getDefaultState().withProperty(FACING, facing).withProperty(POWERED, Boolean.valueOf(false))
-                : this.getDefaultState().withProperty(FACING, EnumFacing.DOWN).withProperty(POWERED, Boolean.valueOf(false));
+        return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(POWERED, Boolean.valueOf(false));
+
     }
 
     /**
@@ -126,7 +137,7 @@ public class BlockPull extends Block
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
-        if (this.checkForDrop(worldIn, pos, state) && !canPlaceBlock(worldIn, pos, state.getValue(FACING).getOpposite()))
+        if (this.checkForDrop(worldIn, pos, state) && !canPlaceBlockAt(worldIn, pos))
         {
             this.dropBlockAsItem(worldIn, pos, state, 0);
             worldIn.setBlockToAir(pos);
@@ -149,8 +160,23 @@ public class BlockPull extends Block
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        boolean flag = state.getValue(POWERED).booleanValue();
-        return flag ? AABB_PULLED_ON : AABB_HANGING_OFF;
+        EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
+        boolean flag = ((Boolean)state.getValue(POWERED)).booleanValue();
+
+        switch (enumfacing)
+        {
+            case EAST:
+                return flag ? PULL_FULL_EAST_AABB_ON : PULL_FULL_EAST_AABB;
+            case WEST:
+                return flag ? PULL_FULL_WEST_AABB_ON : PULL_FULL_WEST_AABB;
+            case SOUTH:
+                return flag ? PULL_FULL_SOUTH_AABB_ON : PULL_FULL_SOUTH_AABB;
+            case UP:
+            case DOWN:
+            case NORTH:
+            default:
+                return flag ? PULL_FULL_NORTH_AABB_ON : PULL_FULL_NORTH_AABB;
+        }
     }
 
     /**
@@ -173,12 +199,12 @@ public class BlockPull extends Block
 
     protected void playClickSound(@Nullable EntityPlayer player, World worldIn, BlockPos pos)
     {
-
+        worldIn.playSound(player, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.6F);
     }
 
     protected void playReleaseSound(World worldIn, BlockPos pos)
     {
-
+        worldIn.playSound((EntityPlayer)null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_OFF, SoundCategory.BLOCKS, 0.3F, 0.5F);
     }
 
     /**
@@ -207,7 +233,9 @@ public class BlockPull extends Block
     @Override
     public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
-        return !blockState.getValue(POWERED).booleanValue() ? 0 : (blockState.getValue(FACING) == side ? 15 : 0);
+//        return !blockState.getValue(POWERED).booleanValue() ? 0 : (blockState.getValue(FACING) == side ? 15 : 0);
+        return !blockState.getValue(POWERED).booleanValue() ? 0 : (side.equals(EnumFacing.DOWN) ? 15 : 0);
+
     }
 
     @Override
@@ -340,30 +368,7 @@ public class BlockPull extends Block
     @Override
     public IBlockState getStateFromMeta(int meta)
     {
-        EnumFacing enumfacing;
-
-        switch (meta & 7)
-        {
-        case 0:
-            enumfacing = EnumFacing.DOWN;
-            break;
-        case 1:
-            enumfacing = EnumFacing.EAST;
-            break;
-        case 2:
-            enumfacing = EnumFacing.WEST;
-            break;
-        case 3:
-            enumfacing = EnumFacing.SOUTH;
-            break;
-        case 4:
-            enumfacing = EnumFacing.NORTH;
-            break;
-        case 5:
-        default:
-            enumfacing = EnumFacing.UP;
-        }
-
+        EnumFacing enumfacing = EnumFacing.getHorizontal(meta & 3);
         return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(POWERED, Boolean.valueOf((meta & 8) > 0));
     }
 
@@ -373,35 +378,13 @@ public class BlockPull extends Block
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        int i;
-
-        switch (state.getValue(FACING))
-        {
-        case EAST:
-            i = 1;
-            break;
-        case WEST:
-            i = 2;
-            break;
-        case SOUTH:
-            i = 3;
-            break;
-        case NORTH:
-            i = 4;
-            break;
-        case UP:
-        default:
-            i = 5;
-            break;
-        case DOWN:
-            i = 0;
-        }
-
+        int i = 0;
+        i = i | ((EnumFacing) state.getValue(FACING)).getHorizontalIndex();
+  
         if (state.getValue(POWERED).booleanValue())
         {
             i |= 8;
         }
-
         return i;
     }
 

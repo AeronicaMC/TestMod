@@ -13,17 +13,13 @@
             "transform": "forge:default-block",
             "model": "testmod:pull_rope"
         }],
-        "facing=up,powered=false":    { "model": "testmod:pull_rope", "uvlock": true },
-        "facing=down,powered=false":  { "model": "testmod:pull_rope", "uvlock": true, "x": 180 },
-        "facing=east,powered=false":  { "model": "testmod:pull_rope", "uvlock": true, "x": 90, "y": 90 },
-        "facing=west,powered=false":  { "model": "testmod:pull_rope", "uvlock": true, "x": 90, "y": 270 },
-        "facing=south,powered=false": { "model": "testmod:pull_rope", "uvlock": true, "x": 90, "y": 180 },
-        "facing=north,powered=false": { "model": "testmod:pull_rope", "uvlock": true, "x": 90 },
-        "facing=up,powered=true":     { "model": "testmod:pull_rope_yanked", "uvlock": true },
-        "facing=down,powered=true":   { "model": "testmod:pull_rope_yanked", "uvlock": true, "x": 180 },
-        "facing=east,powered=true":   { "model": "testmod:pull_rope_yanked", "uvlock": true, "x": 90, "y": 90 },
-        "facing=west,powered=true":   { "model": "testmod:pull_rope_yanked", "uvlock": true, "x": 90, "y": 270 },
-        "facing=south,powered=true":  { "model": "testmod:pull_rope_yanked", "uvlock": true, "x": 90, "y": 180 },
-        "facing=north,powered=true":  { "model": "testmod:pull_rope_yanked", "uvlock": true, "x": 90 }
+        "facing=east,powered=false":  { "model": "testmod:pull_rope", "uvlock": true, "y": 90  },
+        "facing=west,powered=false":  { "model": "testmod:pull_rope", "uvlock": true, "y": 270 },
+        "facing=south,powered=false": { "model": "testmod:pull_rope", "uvlock": true, "y": 180 },
+        "facing=north,powered=false": { "model": "testmod:pull_rope", "uvlock": true           },
+        "facing=east,powered=true":   { "model": "testmod:pull_rope_yanked", "uvlock": true, "y": 90 },
+        "facing=west,powered=true":   { "model": "testmod:pull_rope_yanked", "uvlock": true, "y": 270 },
+        "facing=south,powered=true":  { "model": "testmod:pull_rope_yanked", "uvlock": true, "y": 180 },
+        "facing=north,powered=true":  { "model": "testmod:pull_rope_yanked", "uvlock": true           }
     }
 }
