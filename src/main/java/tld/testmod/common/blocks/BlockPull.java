@@ -34,15 +34,15 @@ public class BlockPull extends Block
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
     public static final PropertyBool POWERED = PropertyBool.create("powered");
     
-    protected static final AxisAlignedBB PULL_FULL_EAST_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.375D, 0.1875D, 1.0D, 0.625D);
-    protected static final AxisAlignedBB PULL_FULL_WEST_AABB = new AxisAlignedBB(0.8125D, 0.0D, 0.375D, 1.0D, 1.0D, 0.625D);
-    protected static final AxisAlignedBB PULL_FULL_SOUTH_AABB = new AxisAlignedBB(0.375D, 0.0D, 0.0D, 0.625D, 1.0D, 0.1875D);
-    protected static final AxisAlignedBB PULL_FULL_NORTH_AABB = new AxisAlignedBB(0.375D, 0.0D, 0.8125D, 0.625D, 1.0D, 1.0D);
+    protected static final AxisAlignedBB PULL_FULL_EAST_AABB = new AxisAlignedBB(0.8125D, 0.0D, 0.0D, 1.0D, 1.0D, 0.1875D);
+    protected static final AxisAlignedBB PULL_FULL_WEST_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.8125D, 0.1875D, 1.0D, 1.0D);
+    protected static final AxisAlignedBB PULL_FULL_SOUTH_AABB = new AxisAlignedBB(0.8125D, 0.0D, 0.8125D, 1.0D, 1.0D, 1.0D);
+    protected static final AxisAlignedBB PULL_FULL_NORTH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.1875D, 1.0D, 0.1875D);
 
-    protected static final AxisAlignedBB PULL_FULL_EAST_AABB_ON = new AxisAlignedBB(0.0D, 0.0D, 0.375D, 0.1875D, 1.0D, 0.625D);
-    protected static final AxisAlignedBB PULL_FULL_WEST_AABB_ON = new AxisAlignedBB(0.8125D, 0.0D, 0.375D, 1.0D, 1.0D, 0.625D);
-    protected static final AxisAlignedBB PULL_FULL_SOUTH_AABB_ON = new AxisAlignedBB(0.375D, 0.0D, 0.0D, 0.625D, 1.0D, 0.1875D);
-    protected static final AxisAlignedBB PULL_FULL_NORTH_AABB_ON = new AxisAlignedBB(0.375D, 0.0D, 0.8125D, 0.625D, 1.0D, 1.0D);
+    protected static final AxisAlignedBB PULL_FULL_EAST_AABB_ON = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.1875D, 1.0D, 0.8125D);
+    protected static final AxisAlignedBB PULL_FULL_WEST_AABB_ON = new AxisAlignedBB(0.0D, 0.0D, 0.8125D, 0.1875D, 1.0D, 1.0D);
+    protected static final AxisAlignedBB PULL_FULL_SOUTH_AABB_ON = new AxisAlignedBB(0.8125D, 0.0D, 0.8125D, 1.0D, 1.0D, 1.0D);
+    protected static final AxisAlignedBB PULL_FULL_NORTH_AABB_ON = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.1875D, 1.0D, 0.1875D);
     
     private final boolean rope;
 
@@ -124,7 +124,7 @@ public class BlockPull extends Block
     @Override
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(POWERED, Boolean.valueOf(false));
+        return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(POWERED, Boolean.valueOf(false));
 
     }
 
