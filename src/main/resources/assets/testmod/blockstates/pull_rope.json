@@ -2,9 +2,9 @@
     "forge_marker": 1,
     "defaults": {
         "textures": {
-		"texture": "blocks/planks_big_oak",
-		"yanked": "blocks/planks_oak",
-        "particle": "#texture"
+			"hanging": "testmod:blocks/rope_hanging",
+			"yanked": "testmod:blocks/rope_yanked",
+        	"particle": "#hanging"
     	}
      },
     "variants": {
