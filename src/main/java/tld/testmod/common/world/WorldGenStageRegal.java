@@ -136,7 +136,7 @@ public class WorldGenStageRegal implements IWorldGenerator
                         BlockPos checkPos = template.transformedBlockPos(settings, blockpos$mutableblockpos.setPos(x, y, z)).add(zeroPos);
                         IBlockState checkState = world.getBlockState(checkPos);
                         if(checkState.getBlock().canPlaceBlockAt(world, checkPos) || !checkState.getBlock().isCollidable()
-                                || (checkState.getBlock() instanceof BlockAir) || checkState.getBlock().isPassable(world, checkPos)
+                                || (checkState.getBlock() instanceof BlockAir) || !checkState.getBlock().blocksMovement(world, checkPos)
                                 || (checkState.getBlock() instanceof IGrowable) || (checkState.getBlock() instanceof IPlantable)) 
                             world.setBlockState(checkPos, Blocks.STONE.getDefaultState());
                             //world.setBlockState(checkPos, Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.GRANITE));

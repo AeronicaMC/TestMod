@@ -77,7 +77,7 @@ public class EntityPull extends EntityThrowable
         Vec3d posInBelow = posIn.addVector(0, -1.0D, 0);
         BlockPos pos = new BlockPos(posIn);
         IBlockState state = worldIn.getBlockState(pos);
-        boolean flag = state.getBlock().isAir(state, worldIn, pos) || state.getBlock().isReplaceable(worldIn, pos) || state.getBlock().isFoliage(worldIn, pos);
+        boolean flag = state.getBlock().isAir(state, worldIn, pos) || state.getBlock().isLeaves(state, worldIn, pos);
 
         if (flag)
         {

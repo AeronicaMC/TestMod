@@ -118,8 +118,8 @@ public class HQuadItemBlock extends Item implements IPlaceableBounding
             flagBR |= worldIn.isAirBlock(posBR);
             
             /** Disallow placing blocks on water or other unstable blocks */
-            if (flagFL && flagFR && flagBL && flagBR && worldIn.getBlockState(posFL.down()).isFullyOpaque() && worldIn.getBlockState(posFR.down()).isFullyOpaque() &&
-                    worldIn.getBlockState(posBL.down()).isFullyOpaque() && worldIn.getBlockState(posBR.down()).isFullyOpaque())
+            if (flagFL && flagFR && flagBL && flagBR && worldIn.getBlockState(posFL.down()).isFullCube() && worldIn.getBlockState(posFR.down()).isFullCube() &&
+                    worldIn.getBlockState(posBL.down()).isFullCube() && worldIn.getBlockState(posBR.down()).isFullCube())
             {
                  return true;
             }

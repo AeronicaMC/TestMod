@@ -113,7 +113,7 @@ public class VQuadItemBlock extends Item implements IPlaceableBounding
             flagUR |= worldIn.isAirBlock(posUR);
             
             /** Disallow placing blocks on water or other unstable blocks */
-            if (flagLL && flagLR && flagUL && flagUR && worldIn.getBlockState(posLL.down()).isFullyOpaque() && worldIn.getBlockState(posLR.down()).isFullyOpaque())
+            if (flagLL && flagLR && flagUL && flagUR && worldIn.getBlockState(posLL.down()).isFullCube() && worldIn.getBlockState(posLR.down()).isFullCube())
             {
                 return true;
             }
