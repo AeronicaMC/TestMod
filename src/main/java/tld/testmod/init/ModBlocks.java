@@ -13,13 +13,15 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.IForgeRegistry;
 import tld.testmod.Main;
-import tld.testmod.common.animation.OneShotBlock;
-import tld.testmod.common.animation.OneShotTileEntity;
 import tld.testmod.common.animation.EdgarAllenBlockLever;
 import tld.testmod.common.animation.EdgarAllenTileEntity;
 import tld.testmod.common.animation.ForgeAnimBlock;
 import tld.testmod.common.animation.ForgeAnimTileEntity;
+import tld.testmod.common.animation.OneShotBlock;
+import tld.testmod.common.animation.OneShotTileEntity;
+import tld.testmod.common.blocks.BlockCarillon;
 import tld.testmod.common.blocks.BlockPull;
+import tld.testmod.common.blocks.CarillionTileEntity;
 import tld.testmod.common.blocks.HQBTest;
 import tld.testmod.common.blocks.VQBTest;
 import tld.testmod.common.blocks.VQBTest2;
@@ -36,6 +38,8 @@ public class ModBlocks
     public static final OneShotBlock ONE_SHOT = registerBlock(new OneShotBlock(), "one_shot");
     public static final BlockPull PULL_ROPE = registerBlock(new BlockPull(true), "pull_rope");
     public static final ItemBlock ITEM_PULL_ROPE = new ItemBlock(PULL_ROPE);
+    public static final BlockCarillon CARILLON = registerBlock(new BlockCarillon(), "carillon");
+    public static final ItemBlock ITEM_CARILLON = new ItemBlock(CARILLON);
     
     private ModBlocks() {}
     
@@ -61,6 +65,7 @@ public class ModBlocks
                     EDGAR_ALLEN_BLOCK_LEVER,
                     ONE_SHOT,
                     PULL_ROPE,
+                    CARILLON,
             };
 
             registry.registerAll(blocks);
@@ -75,6 +80,7 @@ public class ModBlocks
         public static void registerItemBlocks(RegistryEvent.Register<Item> event) {
             final ItemBlock[] items = {
                     ITEM_PULL_ROPE,
+                    ITEM_CARILLON,
             };
 
             final IForgeRegistry<Item> registry = event.getRegistry();
@@ -90,6 +96,7 @@ public class ModBlocks
         GameRegistry.registerTileEntity(ForgeAnimTileEntity.class,  Main.prependModID("tile_forge_anim_test"));
         GameRegistry.registerTileEntity(EdgarAllenTileEntity.class,  Main.prependModID("tile_edgar_allen_block_lever"));
         GameRegistry.registerTileEntity(OneShotTileEntity.class,  Main.prependModID("tile_one_shot"));
+        GameRegistry.registerTileEntity(CarillionTileEntity.class,  Main.prependModID("tile_carillon"));
 //        GameRegistry.registerTileEntityWithAlternatives(TilePiano.class, MXTuneMain.prependModID("tile_piano"), "mxtune_tile_instrument", "PianoTile", "TileInstrument");
     }
 

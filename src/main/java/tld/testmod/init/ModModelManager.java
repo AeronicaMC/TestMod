@@ -86,7 +86,7 @@ public class ModModelManager
         registerItemModel(ModBlocks.EDGAR_ALLEN_BLOCK_LEVER);
         registerItemModel(ModBlocks.ONE_SHOT);
         registerItemModel(ModBlocks.ITEM_PULL_ROPE);
-
+        registerItemModel(ModBlocks.ITEM_CARILLON);
     }
     
     public void registerTileRenderers() {
