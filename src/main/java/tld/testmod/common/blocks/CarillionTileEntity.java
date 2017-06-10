@@ -28,13 +28,29 @@ public class CarillionTileEntity extends TileEntity
         BlockPos.MutableBlockPos opos = new BlockPos.MutableBlockPos(pos);
         IBlockState mState;
         OneShotTileEntity osTE;
-
+        int xx, zz;
+        xx = zz = 0;
         byte pitch = 0;
-        for (int x =0; x<3; x++)
-            for (int z = 0; z<3; z++)
+        for (int x=0; x<3; x++)
+            for (int z=0; z<3; z++)
                 for (int y=0; y<3; y++)
                 {
-                    opos.setPos(pos.offset(facing.getOpposite(), offset).add(x,y,z));
+                    switch (facing)
+                    {
+                    case SOUTH:
+                        xx=x; zz=z;
+                        break;
+                    case EAST:
+                        xx=x; zz=-z;
+                        break;
+                    case WEST:
+                        xx=-x; zz=z;
+                        break;
+                    case NORTH:
+                    default:
+                        xx=-x; zz=-z;                            
+                    }
+                    opos.setPos(pos.offset(facing.getOpposite(), offset).offset(facing.rotateY()).add(xx,y,zz));
                     mState = world.getBlockState(opos);
                     if (mState.getBlock() == ModBlocks.ONE_SHOT)
                     {
