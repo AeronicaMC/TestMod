@@ -1,5 +1,7 @@
 package tld.testmod.common.blocks;
 
+import javax.sound.midi.MidiMessage;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -7,9 +9,11 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -17,8 +21,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import tld.testmod.Main;
+import tld.testmod.client.midi.IMidiIn;
+import tld.testmod.client.midi.MidiUtils;
 
-public class BlockCarillon extends Block
+public class BlockCarillon extends Block implements IMidiIn
 {
 
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
@@ -51,6 +57,23 @@ public class BlockCarillon extends Block
                 carillonTE.setPreviousRedstoneState(flag);
             }
         }
+    }
+
+    /* (non-Javadoc)
+     * @see net.minecraft.block.Block#onBlockActivated(net.minecraft.world.World, net.minecraft.util.math.BlockPos, net.minecraft.block.state.IBlockState, net.minecraft.entity.player.EntityPlayer, net.minecraft.util.EnumHand, net.minecraft.util.EnumFacing, float, float, float)
+     */
+    @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    {
+        if (worldIn.isRemote)
+        {
+            // CLIENT SIDE
+            MidiUtils.INSTANCE.getMidiIn(this, worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);           
+        } else
+        {
+            // SERVER SIDE
+        }
+        return true;
     }
 
     @Override
@@ -113,6 +136,18 @@ public class BlockCarillon extends Block
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
         return new CarillionTileEntity();
+    }
+
+    @Override
+    public void midiSend(World worldIn, BlockPos posIn, IBlockState stateIn, EntityPlayer playerIn, MidiMessage msg)
+    {
+        TileEntity te = worldIn.getTileEntity(posIn);
+
+        if (te instanceof CarillionTileEntity)
+        {
+            CarillionTileEntity carillonTE = (CarillionTileEntity)te;
+            carillonTE.play(msg);
+        }
     }
     
 }
