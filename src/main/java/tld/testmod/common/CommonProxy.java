@@ -23,6 +23,7 @@ import com.google.common.collect.ImmutableMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.IThreadListener;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.animation.ITimeValue;
@@ -30,6 +31,7 @@ import net.minecraftforge.common.model.animation.IAnimationStateMachine;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.server.FMLServerHandler;
@@ -76,6 +78,20 @@ public class CommonProxy
         return false;
     }
 
+    /**
+     * Returns the current thread based on side during message handling, used
+     * for ensuring that the message is being handled by the main thread
+     */
+    public IThreadListener getThreadFromContext(MessageContext ctx)
+    {
+        return ctx.getServerHandler().player.getServer();
+    }
+
+    public EntityPlayer getPlayerEntity(MessageContext ctx)
+    {
+        return ctx.getServerHandler().player;
+    }
+    
     public void spawnTimpaniParticle(World world, double x, double y, double z) {}
  
     @Nullable

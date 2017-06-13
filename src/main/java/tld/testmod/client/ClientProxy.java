@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
+import net.minecraft.util.IThreadListener;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
@@ -26,6 +27,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 import tld.testmod.Main;
 import tld.testmod.client.render.RenderGoldenSkeleton;
@@ -180,6 +182,24 @@ public class ClientProxy extends CommonProxy
         return false;
     }
 
+    @Override
+    public IThreadListener getThreadFromContext(MessageContext ctx)
+    {
+        return (ctx.side.isClient() ? this.getMinecraft() : super.getThreadFromContext(ctx));
+    }
+
+    @Override
+    public EntityPlayer getPlayerEntity(MessageContext ctx)
+    {
+        // Note that if you simply return 'Minecraft.getMinecraft().thePlayer',
+        // your packets will not work as expected because you will be getting a
+        // client player even when you are on the server!
+        // Sounds absurd, but it's true.
+
+        // Solution is to double-check side before returning the player:
+        return (ctx.side.isClient() ? this.getClientPlayer() : super.getPlayerEntity(ctx));
+    }
+    
     @Override
     public IAnimationStateMachine load(ResourceLocation location, ImmutableMap<String, ITimeValue> parameters)
     {

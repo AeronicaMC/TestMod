@@ -20,6 +20,7 @@ import tld.testmod.common.entity.living.EntityTimpani;
 import tld.testmod.common.handlers.SpawnHandler;
 import tld.testmod.init.ModBlocks;
 import tld.testmod.init.ModSoundEvents;
+import tld.testmod.network.PacketDispatcher;
 
 @Mod(modid = Main.MODID, name = Main.MODNAME, version = Main.VERSION)
 public class Main
@@ -41,6 +42,7 @@ public class Main
     public void preInit(FMLPreInitializationEvent event)
     {
         ModLogger.setLogger(event.getModLog());
+        PacketDispatcher.registerPackets();
         proxy.preInit(event);
         ModBlocks.registerTileEntities();
         MinecraftForge.EVENT_BUS.register(SpawnHandler.INSTANCE);
