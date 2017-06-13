@@ -10,6 +10,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
 import net.minecraftforge.client.model.animation.Animation;
 import net.minecraftforge.common.animation.Event;
 import net.minecraftforge.common.animation.ITimeValue;
@@ -17,6 +18,7 @@ import net.minecraftforge.common.animation.TimeValues.VariableValue;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.model.animation.CapabilityAnimation;
 import net.minecraftforge.common.model.animation.IAnimationStateMachine;
+import net.minecraftforge.fml.relauncher.Side;
 import tld.testmod.Main;
 import tld.testmod.ModLogger;
 import tld.testmod.init.ModBlocks;
@@ -38,9 +40,10 @@ public class OneShotTileEntity extends TileEntity
                 "click_time", clickTime,
                 "cycle_length", cycleLength
             ));
-        asm.transition("rest");
+        if (Main.proxy.getPhysicalSide().isClient())
+            asm.transition("rest");
     }
-
+    
     public void handleEvents(float time, Iterable<Event> pastEvents)
     {
         for(Event event : pastEvents)
@@ -57,23 +60,21 @@ public class OneShotTileEntity extends TileEntity
 
     public void click(boolean isSneaking)
     {
-        if(asm != null) {
-            if(world.isRemote)
+        if(world.isRemote && asm != null)
+        {
+            float time = Animation.getWorldTime(getWorld(), Animation.getPartialTickTime());
+            clickTime.setValue(time);
+            asm.transition("trigger");
+            ModLogger.info("click depressing: %f", time);
+        } else
+        {
+            if (isSneaking)
             {
-                float time = Animation.getWorldTime(getWorld(), Animation.getPartialTickTime());
-                clickTime.setValue(time);
-                asm.transition("trigger");
-                ModLogger.info("click depressing: %f", time);
-            } else
-            {
-                if (isSneaking)
-                {
-                    setPitch((byte) ((getPitch()+1) % 25));
-                    ModLogger.info("Sneak %d", pitch);
-                }
-                world.addBlockEvent(pos, ModBlocks.ONE_SHOT, 1, pitch);
-            }                
-        }
+                setPitch((byte) ((getPitch()+1) % 25));
+                ModLogger.info("Sneak %d", pitch);
+            }
+            world.addBlockEvent(pos, ModBlocks.ONE_SHOT, 1, pitch);
+        }                
     }
 
     public void triggerOneShot()
