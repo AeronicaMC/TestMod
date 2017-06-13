@@ -1,6 +1,6 @@
 package tld.testmod.common.blocks;
 
-import javax.sound.midi.MidiMessage;
+import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -21,10 +21,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import tld.testmod.Main;
-import tld.testmod.client.midi.IMidiIn;
+import tld.testmod.client.midi.IActiveNoteReceiver;
 import tld.testmod.client.midi.MidiUtils;
 
-public class BlockCarillon extends Block implements IMidiIn
+public class BlockCarillon extends Block implements IActiveNoteReceiver
 {
 
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
@@ -57,6 +57,20 @@ public class BlockCarillon extends Block implements IMidiIn
                 carillonTE.setPreviousRedstoneState(flag);
             }
         }
+    }
+
+
+    /* (non-Javadoc)
+     * @see net.minecraft.block.Block#onBlockHarvested(net.minecraft.world.World, net.minecraft.util.math.BlockPos, net.minecraft.block.state.IBlockState, net.minecraft.entity.player.EntityPlayer)
+     */
+    @Override
+    public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player)
+    {
+        if (worldIn.isRemote)
+        {
+            notifyRemoved(worldIn, pos);
+        }
+        super.onBlockHarvested(worldIn, pos, state, player);
     }
 
     /* (non-Javadoc)
@@ -139,14 +153,14 @@ public class BlockCarillon extends Block implements IMidiIn
     }
 
     @Override
-    public void midiSend(World worldIn, BlockPos posIn, IBlockState stateIn, EntityPlayer playerIn, MidiMessage msg)
+    public void noteReceiver(World worldIn, BlockPos posIn, int EntityId, byte noteIn, byte volumeIn)
     {
         TileEntity te = worldIn.getTileEntity(posIn);
 
         if (te instanceof CarillionTileEntity)
         {
             CarillionTileEntity carillonTE = (CarillionTileEntity)te;
-            carillonTE.play(msg);
+            carillonTE.play(noteIn, volumeIn);
         }
     }
     

@@ -1,18 +1,13 @@
 package tld.testmod.common.blocks;
 
-import javax.sound.midi.MidiMessage;
-
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import tld.testmod.ModLogger;
 import tld.testmod.common.animation.OneShotTileEntity;
 import tld.testmod.init.ModBlocks;
-import tld.testmod.init.ModSoundEvents;
 
 public class CarillionTileEntity extends TileEntity
 {
@@ -25,7 +20,7 @@ public class CarillionTileEntity extends TileEntity
 
     public void triggerCarillon()
     {
-        int cubeSize = 10;
+        int cubeSize = 11;
         IBlockState state = world.getBlockState(pos);
         EnumFacing facing = (EnumFacing) state.getValue(BlockCarillon.FACING);
         BlockPos.MutableBlockPos opos = new BlockPos.MutableBlockPos(pos);
@@ -105,15 +100,14 @@ public class CarillionTileEntity extends TileEntity
         return super.writeToNBT(tag);
     }
 
-    public void play(MidiMessage msg)
+    public void play(byte noteIn, byte volumeIn)
     {
-        byte[] message = msg.getMessage();
-        byte note = (byte) (message[1] - 48);
-        boolean noteOn = (message[2] != 0);
+        byte note = (byte) (noteIn - 48);
+        boolean noteOn = (volumeIn != 0);
 
         if (noteOn)
         {
-            int cubeSize = 10;
+            int cubeSize = 11;
             IBlockState state = world.getBlockState(pos);
             EnumFacing facing = (EnumFacing) state.getValue(BlockCarillon.FACING);
             BlockPos.MutableBlockPos opos = new BlockPos.MutableBlockPos(pos);
@@ -154,9 +148,6 @@ public class CarillionTileEntity extends TileEntity
                                         {
                                         // this is only for some local testing. To make this work correctly midiIn packets will need to be sent to the server.
                                             osTE.triggerOneShot();
-                                            float f = (float)Math.pow(2.0D, (double)(osTE.getPitch() - 12) / 12.0D);
-                                            Minecraft.getMinecraft().player.playSound(ModSoundEvents.BELL, 3.0F, f );
-                                            world.addBlockEvent(pos, ModBlocks.ONE_SHOT, 1, osTE.getPitch());
                                         }
                                     if (pitch > 24) break;
                                 }

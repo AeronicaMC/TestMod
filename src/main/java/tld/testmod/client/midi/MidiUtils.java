@@ -1,5 +1,6 @@
 package tld.testmod.client.midi;
 
+import javax.annotation.Nullable;
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.MidiSystem;
@@ -11,11 +12,14 @@ import javax.sound.midi.Transmitter;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import tld.testmod.ModLogger;
+import tld.testmod.network.PacketDispatcher;
+import tld.testmod.network.server.ActiveReceiverMessage;
 
 public enum MidiUtils implements Receiver
 {
@@ -24,16 +28,17 @@ public enum MidiUtils implements Receiver
 
     static MidiDevice device;
     static MidiDevice.Info[] infos;
-    static IMidiIn instrument;
+    static IActiveNoteReceiver instrument;
     static World world;
-    static BlockPos pos;
+    static BlockPos pos = null;
     static IBlockState state;
     static EntityPlayer player;
     static EnumHand hand;
     static EnumFacing facing;
     static float hitX, hitY, hitZ;
+    static ItemStack stack = ItemStack.EMPTY;
 
-    public void getMidiIn(IMidiIn instrumentIn, World worldIn, BlockPos posIn, IBlockState stateIn, EntityPlayer playerIn, EnumHand handIn, EnumFacing facingIn, float hitXIn, float hitYIn, float hitZIn)
+    public void getMidiIn(IActiveNoteReceiver instrumentIn, World worldIn, @Nullable BlockPos posIn, @Nullable IBlockState stateIn, EntityPlayer playerIn, EnumHand handIn, @Nullable EnumFacing facingIn, float hitXIn, float hitYIn, float hitZIn)
     {
         instrument = instrumentIn;
         world = worldIn;
@@ -78,6 +83,13 @@ public enum MidiUtils implements Receiver
         }
     }
 
+    public void getMidiIn(IActiveNoteReceiver instrumentIn, World worldIn, EntityPlayer playerIn, EnumHand handIn)
+    {
+        getMidiIn(instrumentIn, worldIn, playerIn.getPosition(), null, playerIn, handIn, null, 0, 0, 0);
+ 
+    }
+
+    
     public Receiver getReceiver()
     {
         return this;
@@ -87,11 +99,11 @@ public enum MidiUtils implements Receiver
     public void send(MidiMessage msg, long timeStamp)
     {
         byte[] message = msg.getMessage();
-        if ((msg.getStatus() & 0xF0) == ShortMessage.NOTE_ON)
+        if ((msg.getStatus() & 0xF0) == ShortMessage.NOTE_ON && pos != null)
         {
-            instrument.midiSend(world, pos, state, player, msg);
-            for (byte b: message)
-                ModLogger.info("  msg: %x, %x, %x, %d", msg.getStatus() ,msg.getLength(), b ,timeStamp);
+            ActiveReceiverMessage packet =  new ActiveReceiverMessage(pos, player.getEntityId(), message[1], message[2]);
+            PacketDispatcher.sendToServer(packet);
+                ModLogger.info("  msg: %x, %x, %x, %d", msg.getStatus() ,message[1], message[2] ,timeStamp);
         }
     }
 
@@ -100,5 +112,25 @@ public enum MidiUtils implements Receiver
     {
         // TODO Auto-generated method stub
     }
- 
+
+    public void notifyRemoved(World worldIn, BlockPos posIn)
+    {
+        if (pos != null && pos.equals(posIn))
+        {
+            ModLogger.info("ActiveNoteReceiver Removed: %s", posIn);
+            pos = null;
+            stack = ItemStack.EMPTY;
+        }
+    }
+    
+    public void notifyRemoved(World worldIn, ItemStack stackIn)
+    {
+        if (!stack.equals(ItemStack.EMPTY) && stackIn.equals(stack))
+        {
+            ModLogger.info("ActiveNoteReceiver Removed: %s", stackIn.getDisplayName());
+            pos = null;
+            stack = ItemStack.EMPTY;
+        }        
+    }
+
 }
