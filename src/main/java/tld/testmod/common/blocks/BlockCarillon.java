@@ -1,7 +1,5 @@
 package tld.testmod.common.blocks;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -66,10 +64,7 @@ public class BlockCarillon extends Block implements IActiveNoteReceiver
     @Override
     public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player)
     {
-        if (worldIn.isRemote)
-        {
-            notifyRemoved(worldIn, pos);
-        }
+        notifyRemoved(worldIn, pos);
         super.onBlockHarvested(worldIn, pos, state, player);
     }
 
@@ -79,14 +74,7 @@ public class BlockCarillon extends Block implements IActiveNoteReceiver
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        if (worldIn.isRemote)
-        {
-            // CLIENT SIDE
-            MidiUtils.INSTANCE.getMidiIn(this, worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);           
-        } else
-        {
-            // SERVER SIDE
-        }
+        MidiUtils.INSTANCE.getMidiIn(this, worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
         return true;
     }
 

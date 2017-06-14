@@ -38,7 +38,7 @@ public enum MidiUtils implements Receiver
     static float hitX, hitY, hitZ;
     static ItemStack stack = ItemStack.EMPTY;
 
-    public void getMidiIn(IActiveNoteReceiver instrumentIn, World worldIn, @Nullable BlockPos posIn, @Nullable IBlockState stateIn, EntityPlayer playerIn, EnumHand handIn, @Nullable EnumFacing facingIn, float hitXIn, float hitYIn, float hitZIn)
+    public void getMidiIn(IActiveNoteReceiver instrumentIn, World worldIn, BlockPos posIn, @Nullable IBlockState stateIn, EntityPlayer playerIn, EnumHand handIn, @Nullable EnumFacing facingIn, float hitXIn, float hitYIn, float hitZIn)
     {
         instrument = instrumentIn;
         world = worldIn;
@@ -50,36 +50,39 @@ public enum MidiUtils implements Receiver
         hitX = hitXIn;
         hitY = hitYIn;
         hitZ = hitZIn;
-        
-        infos = MidiSystem.getMidiDeviceInfo();
-        for (int i = 0; i < infos.length; i++)
+
+        if (worldIn.isRemote)
         {
-            try
+            infos = MidiSystem.getMidiDeviceInfo();
+            for (int i = 0; i < infos.length; i++)
             {
-                device = MidiSystem.getMidiDevice(infos[i]);
-                // does the device have any transmitters?
-                // if it does, add it to the device list
-                if (device.isOpen()) device.close();
-                ModLogger.info("%s, %d", infos[i], device.getMaxTransmitters());
-
-
-                if (device.getMaxTransmitters() != 0 && !(device instanceof Sequencer))
+                try
                 {
-                    Transmitter trans = device.getTransmitter();
-                    trans.setReceiver(getReceiver());
+                    device = MidiSystem.getMidiDevice(infos[i]);
+                    // does the device have any transmitters?
+                    // if it does, add it to the device list
+                    if (device.isOpen()) device.close();
+                    ModLogger.info("%s, %d", infos[i], device.getMaxTransmitters());
 
-                    // open each device
-                    device.open();
-                    // if code gets this far without throwing an exception
-                    // print a success message
-                    ModLogger.info("%s was opened", device.getDeviceInfo());
+
+                    if (device.getMaxTransmitters() != 0 && !(device instanceof Sequencer))
+                    {
+                        Transmitter trans = device.getTransmitter();
+                        trans.setReceiver(getReceiver());
+
+                        // open each device
+                        device.open();
+                        // if code gets this far without throwing an exception
+                        // print a success message
+                        ModLogger.info("%s was opened", device.getDeviceInfo());
+                    }
+
+                } catch (MidiUnavailableException e)
+                {
+                    ModLogger.error(e);
                 }
 
-            } catch (MidiUnavailableException e)
-            {
-                ModLogger.error(e);
             }
-
         }
     }
 
