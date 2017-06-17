@@ -18,7 +18,6 @@ import net.minecraftforge.common.animation.TimeValues.VariableValue;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.model.animation.CapabilityAnimation;
 import net.minecraftforge.common.model.animation.IAnimationStateMachine;
-import net.minecraftforge.fml.relauncher.Side;
 import tld.testmod.Main;
 import tld.testmod.ModLogger;
 import tld.testmod.init.ModBlocks;
@@ -40,10 +39,30 @@ public class OneShotTileEntity extends TileEntity
                 "click_time", clickTime,
                 "cycle_length", cycleLength
             ));
-        if (Main.proxy.getPhysicalSide().isClient())
-            asm.transition("rest");
     }
     
+    /* (non-Javadoc)
+     * @see net.minecraft.tileentity.TileEntity#setWorld(net.minecraft.world.World)
+     */
+    @Override
+    public void setWorld(World worldIn)
+    {
+        if (worldIn.isRemote)
+            asm.transition("rest");
+        super.setWorld(worldIn);
+    }
+
+    /* (non-Javadoc)
+     * @see net.minecraft.tileentity.TileEntity#setWorldCreate(net.minecraft.world.World)
+     */
+    @Override
+    protected void setWorldCreate(World worldIn)
+    {
+        if (worldIn.isRemote)
+            asm.transition("rest");
+        super.setWorldCreate(worldIn);
+    }
+
     public void handleEvents(float time, Iterable<Event> pastEvents)
     {
         for(Event event : pastEvents)
