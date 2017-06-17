@@ -74,7 +74,7 @@ public class BlockCarillon extends Block implements IActiveNoteReceiver
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        MidiUtils.INSTANCE.getMidiIn(this, worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
+        MidiUtils.INSTANCE.setNoteReceiver(this, worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
         return true;
     }
 

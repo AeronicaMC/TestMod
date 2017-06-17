@@ -31,7 +31,7 @@ public class ItemRightClickTest extends Item implements IActiveNoteReceiver
         ItemStack itemstack = playerIn.getHeldItem(handIn);
         playerIn.setActiveHand(handIn);
         ModLogger.info("Right Clicked");
-        MidiUtils.INSTANCE.getMidiIn(this, worldIn, playerIn, handIn);
+        MidiUtils.INSTANCE.setNoteReceiver(this, worldIn, playerIn, handIn, itemstack);
         return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
     }
 

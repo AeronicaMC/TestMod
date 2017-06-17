@@ -10,6 +10,9 @@ import javax.sound.midi.Sequencer;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Transmitter;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -23,8 +26,9 @@ import tld.testmod.network.server.ActiveReceiverMessage;
 
 public enum MidiUtils implements Receiver
 {
-    
+
     INSTANCE;
+    static BiMap<Integer, BlockPos> playerIdUsingBlock = HashBiMap.create();
 
     static IActiveNoteReceiver instrument;
     static World world;
@@ -36,7 +40,8 @@ public enum MidiUtils implements Receiver
     static float hitX, hitY, hitZ;
     static ItemStack stack = ItemStack.EMPTY;
 
-    public void getMidiIn(IActiveNoteReceiver instrumentIn, World worldIn, BlockPos posIn, @Nullable IBlockState stateIn, EntityPlayer playerIn, EnumHand handIn, @Nullable EnumFacing facingIn, float hitXIn, float hitYIn, float hitZIn)
+    public void setNoteReceiver(IActiveNoteReceiver instrumentIn, World worldIn, BlockPos posIn, @Nullable IBlockState stateIn, EntityPlayer playerIn, EnumHand handIn, @Nullable EnumFacing facingIn,
+            float hitXIn, float hitYIn, float hitZIn, ItemStack stackIn)
     {
         instrument = instrumentIn;
         world = worldIn;
@@ -48,6 +53,7 @@ public enum MidiUtils implements Receiver
         hitX = hitXIn;
         hitY = hitYIn;
         hitZ = hitZIn;
+        stack = stackIn;
 
         if (worldIn.isRemote)
         {
@@ -62,7 +68,6 @@ public enum MidiUtils implements Receiver
                     // if it does, add it to the device list
                     if (device.isOpen()) device.close();
                     ModLogger.info("%s, %d", infos[i], device.getMaxTransmitters());
-
 
                     if (device.getMaxTransmitters() != 0 && !(device instanceof Sequencer))
                     {
@@ -85,18 +90,22 @@ public enum MidiUtils implements Receiver
         }
     }
 
-    public void getMidiIn(IActiveNoteReceiver instrumentIn, World worldIn, EntityPlayer playerIn, EnumHand handIn)
+    public void setNoteReceiver(IActiveNoteReceiver instrumentIn, World worldIn, BlockPos posIn, @Nullable IBlockState stateIn, EntityPlayer playerIn, EnumHand handIn, @Nullable EnumFacing facingIn,
+            float hitXIn, float hitYIn, float hitZIn)
     {
-        getMidiIn(instrumentIn, worldIn, playerIn.getPosition(), null, playerIn, handIn, null, 0, 0, 0);
- 
+        setNoteReceiver(instrumentIn, worldIn, posIn, stateIn, playerIn, handIn, facingIn, hitXIn, hitYIn, hitZIn, ItemStack.EMPTY);
     }
 
-    
-    public Receiver getReceiver()
+    public void setNoteReceiver(IActiveNoteReceiver instrumentIn, World worldIn, EntityPlayer playerIn, EnumHand handIn, ItemStack stackIn)
+    {
+        setNoteReceiver(instrumentIn, worldIn, playerIn.getPosition(), null, playerIn, handIn, null, 0, 0, 0, stackIn);
+    }
+
+    private Receiver getReceiver()
     {
         return this;
     }
-    
+
     @Override
     public void send(MidiMessage msg, long timeStamp)
     {
@@ -104,9 +113,9 @@ public enum MidiUtils implements Receiver
         if ((msg.getStatus() & 0xF0) == ShortMessage.NOTE_ON && pos != null)
         {
             // MIDI message [ (message & 0xF0 | channel & 0x0F), note, volume ]
-            ActiveReceiverMessage packet =  new ActiveReceiverMessage(pos, player.getEntityId(), message[1], message[2]);
+            ActiveReceiverMessage packet = new ActiveReceiverMessage(pos, player.getEntityId(), hand, message[1], message[2]);
             PacketDispatcher.sendToServer(packet);
-                ModLogger.info("  msg: %x, %x, %x, %d", msg.getStatus() ,message[1], message[2] ,timeStamp);
+            ModLogger.info("  msg: %x, %x, %x, %d", msg.getStatus(), message[1], message[2], timeStamp);
         }
     }
 
@@ -126,7 +135,7 @@ public enum MidiUtils implements Receiver
             stack = ItemStack.EMPTY;
         }
     }
-    
+
     public void notifyRemoved(World worldIn, ItemStack stackIn)
     {
         if (stackIn.equals(stack) && stack.getMetadata() == stackIn.getMetadata())
@@ -134,7 +143,7 @@ public enum MidiUtils implements Receiver
             ModLogger.info("ActiveNoteReceiver Removed: %s", stackIn.getDisplayName());
             pos = null;
             stack = ItemStack.EMPTY;
-        }        
+        }
     }
 
 }
