@@ -23,11 +23,9 @@ import tld.testmod.network.server.ActiveReceiverMessage;
 
 public enum MidiUtils implements Receiver
 {
-    //private static final MidiUtils INSTANCE = new MidiUtils();
+    
     INSTANCE;
 
-    static MidiDevice device;
-    static MidiDevice.Info[] infos;
     static IActiveNoteReceiver instrument;
     static World world;
     static BlockPos pos = null;
@@ -53,7 +51,8 @@ public enum MidiUtils implements Receiver
 
         if (worldIn.isRemote)
         {
-            infos = MidiSystem.getMidiDeviceInfo();
+            MidiDevice device;
+            MidiDevice.Info[] infos = MidiSystem.getMidiDeviceInfo();
             for (int i = 0; i < infos.length; i++)
             {
                 try
@@ -104,6 +103,7 @@ public enum MidiUtils implements Receiver
         byte[] message = msg.getMessage();
         if ((msg.getStatus() & 0xF0) == ShortMessage.NOTE_ON && pos != null)
         {
+            // MIDI message [ (message & 0xF0 | channel & 0x0F), note, volume ]
             ActiveReceiverMessage packet =  new ActiveReceiverMessage(pos, player.getEntityId(), message[1], message[2]);
             PacketDispatcher.sendToServer(packet);
                 ModLogger.info("  msg: %x, %x, %x, %d", msg.getStatus() ,message[1], message[2] ,timeStamp);
@@ -113,7 +113,8 @@ public enum MidiUtils implements Receiver
     @Override
     public void close()
     {
-        // TODO Auto-generated method stub
+        pos = null;
+        stack = ItemStack.EMPTY;
     }
 
     public void notifyRemoved(World worldIn, BlockPos posIn)
@@ -128,7 +129,7 @@ public enum MidiUtils implements Receiver
     
     public void notifyRemoved(World worldIn, ItemStack stackIn)
     {
-        if (!stack.equals(ItemStack.EMPTY) && stackIn.equals(stack))
+        if (stackIn.equals(stack) && stack.getMetadata() == stackIn.getMetadata())
         {
             ModLogger.info("ActiveNoteReceiver Removed: %s", stackIn.getDisplayName());
             pos = null;
