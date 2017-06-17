@@ -8,7 +8,6 @@ import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockCarpet;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockSlab;
-import net.minecraft.block.BlockTorch;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Biomes;
@@ -28,7 +27,6 @@ import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -136,7 +134,7 @@ public class WorldGenStageRegal implements IWorldGenerator
                         BlockPos checkPos = template.transformedBlockPos(settings, blockpos$mutableblockpos.setPos(x, y, z)).add(zeroPos);
                         IBlockState checkState = world.getBlockState(checkPos);
                         if(checkState.getBlock().canPlaceBlockAt(world, checkPos) || !checkState.getBlock().isCollidable()
-                                || (checkState.getBlock() instanceof BlockAir) || !checkState.getBlock().blocksMovement(world, checkPos)
+                                || (checkState.getBlock() instanceof BlockAir) || !checkState.getBlock().isPassable(world, checkPos)
                                 || (checkState.getBlock() instanceof IGrowable) || (checkState.getBlock() instanceof IPlantable)) 
                             world.setBlockState(checkPos, Blocks.STONE.getDefaultState());
                             //world.setBlockState(checkPos, Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.GRANITE));

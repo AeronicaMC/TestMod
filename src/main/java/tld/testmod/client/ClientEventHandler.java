@@ -52,12 +52,12 @@ public class ClientEventHandler
     @SuppressWarnings("unused")
     private static void renderBox(BlockPos pos, double partialTicks)
     {
-        renderBox(new AxisAlignedBB(pos).expandXyz(-0.00625d), partialTicks);
+        renderBox(new AxisAlignedBB(pos).grow(-0.00625d), partialTicks);
     }
 
     private static void renderBox(BlockPos pos1, BlockPos pos2, double partialTicks)
     {
-        renderBox(new AxisAlignedBB(pos1, pos2).expandXyz(-0.00625d), partialTicks);
+        renderBox(new AxisAlignedBB(pos1, pos2).grow(-0.00625d), partialTicks);
     }
 
     private static void renderBox(AxisAlignedBB box, double partialTicks)

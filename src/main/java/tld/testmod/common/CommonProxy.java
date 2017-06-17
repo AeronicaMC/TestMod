@@ -65,7 +65,7 @@ public class CommonProxy
 
     public World getWorldByDimensionId(int dimension)
     {
-        return FMLServerHandler.instance().getServer().worldServerForDimension(dimension);
+        return FMLServerHandler.instance().getServer().getWorld(dimension);
     }
     
     public boolean playerIsInCreativeMode(EntityPlayer player)

@@ -216,9 +216,9 @@ public class EntityGoldenSkeleton extends EntityMob implements IRangedAttackMob
     {
         super.onDeath(cause);
 
-        if (cause.getSourceOfDamage() instanceof EntityArrow && cause.getEntity() instanceof EntityPlayer)
+        if (cause.getImmediateSource() instanceof EntityArrow && cause.getTrueSource() instanceof EntityPlayer)
         {
-            EntityPlayer entityplayer = (EntityPlayer)cause.getEntity();
+            EntityPlayer entityplayer = (EntityPlayer)cause.getTrueSource();
             double d0 = entityplayer.posX - this.posX;
             double d1 = entityplayer.posZ - this.posZ;
 
