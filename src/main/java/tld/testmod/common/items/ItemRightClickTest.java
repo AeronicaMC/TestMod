@@ -15,6 +15,7 @@ import tld.testmod.Main;
 import tld.testmod.ModLogger;
 import tld.testmod.client.midi.IActiveNoteReceiver;
 import tld.testmod.client.midi.MidiUtils;
+import tld.testmod.init.ModSoundEvents;
 
 public class ItemRightClickTest extends Item implements IActiveNoteReceiver
 {
@@ -56,7 +57,6 @@ public class ItemRightClickTest extends Item implements IActiveNoteReceiver
             worldIn.playSound((EntityPlayer) null, player.getPosition(), SoundEvents.BLOCK_NOTE_HARP, SoundCategory.RECORDS, 3.0F, f);
             // spawnParticle does nothing server side. A special packet is needed to do this on the client side.
             worldIn.spawnParticle(EnumParticleTypes.NOTE, (double)pos.getX() + 0.5D, (double)pos.getY() + 2.5D, (double)pos.getZ() + 0.5D, (double)pitch / 24.0D, 0.0D, 0.0D, new int[0]);
-            ModLogger.info("pos %f", player.posZ);
         }
         
     }

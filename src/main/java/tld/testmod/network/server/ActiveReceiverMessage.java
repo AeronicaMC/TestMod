@@ -75,7 +75,6 @@ public class ActiveReceiverMessage extends AbstractServerMessage<ActiveReceiverM
         {
             IActiveNoteReceiver instrument = (IActiveNoteReceiver) personPlaying.getHeldItem(hand).getItem();
             instrument.noteReceiver(world, pos, entityId, note, volume);
-            ModLogger.info("pip %d", note);
         }
     }
 
