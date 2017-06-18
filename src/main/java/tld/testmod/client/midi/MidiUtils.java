@@ -110,9 +110,28 @@ public enum MidiUtils implements Receiver
     public void send(MidiMessage msg, long timeStamp)
     {
         byte[] message = msg.getMessage();
-        if ((msg.getStatus() & 0xF0) == ShortMessage.NOTE_ON && pos != null)
+        int command = msg.getStatus() & 0xF0;
+        int channel = msg.getStatus() & 0x0F;
+        boolean allChannels = true;
+        boolean sendNoteOff = false;
+        
+        switch (command)
         {
-            // MIDI message [ (message & 0xF0 | channel & 0x0F), note, volume ]
+        case ShortMessage.NOTE_OFF:
+            message[2] = 0;
+            break;
+        case ShortMessage.NOTE_ON:
+            break;
+        default:
+            return;
+        }
+
+        boolean channelFlag = allChannels ? true : channel == 1;
+        boolean noteOffFlag = sendNoteOff ? true : message[2] != 0;
+        
+        if (pos != null && channelFlag && noteOffFlag)
+        {
+            // NOTE_ON | NOTE_OFF MIDI message [ (message & 0xF0 | channel & 0x0F), note, volume ]
             ActiveReceiverMessage packet = new ActiveReceiverMessage(pos, player.getEntityId(), hand, message[1], message[2]);
             PacketDispatcher.sendToServer(packet);
             ModLogger.info("  msg: %x, %x, %x, %d", msg.getStatus(), message[1], message[2], timeStamp);
