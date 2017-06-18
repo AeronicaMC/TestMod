@@ -18,9 +18,6 @@ import tld.testmod.init.ModBlocks;
 
 public class EntityPull extends EntityThrowable
 {
-
-    boolean doPlace = false;
-    int count = 0;
     
     public EntityPull(World worldIn)
     {
@@ -72,7 +69,7 @@ public class EntityPull extends EntityThrowable
         }
     }
 
-    private boolean placePull(World worldIn, EntityLivingBase thrower, Vec3d posIn)
+    private void placePull(World worldIn, EntityLivingBase thrower, Vec3d posIn)
     {
         Vec3d posInBelow = posIn.addVector(0, -1.0D, 0);
         BlockPos pos = new BlockPos(posIn);
@@ -86,9 +83,8 @@ public class EntityPull extends EntityThrowable
             EnumFacing facing = flag2 ? state2.getValue(BlockPull.FACING) : thrower.getAdjustedHorizontalFacing();
             if (ModBlocks.PULL_ROPE.canPlaceBlockAt(worldIn, pos))
                 worldIn.setBlockState(pos, ModBlocks.PULL_ROPE.getDefaultState().withProperty(BlockPull.FACING, facing).withProperty(BlockPull.POWERED, Boolean.valueOf(false)));
-            this.placePull(worldIn, thrower, posInBelow);  
+            this.placePull(worldIn, thrower, posInBelow);
         }
-        return !flag;
     }
 
 }
