@@ -103,7 +103,7 @@ public enum MidiUtils implements Receiver
 
     private Receiver getReceiver()
     {
-        return this;
+        return INSTANCE;
     }
 
     @Override
