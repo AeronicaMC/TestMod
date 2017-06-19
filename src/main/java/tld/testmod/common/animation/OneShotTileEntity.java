@@ -6,6 +6,8 @@ import javax.annotation.Nullable;
 import com.google.common.collect.ImmutableMap;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -195,25 +197,25 @@ public class OneShotTileEntity extends TileEntity
      * don't have to
      * 
      */
-//    @Override
-//    public NBTTagCompound getUpdateTag()
-//    {
-//        NBTTagCompound tag = super.getUpdateTag();
-//        return this.writeToNBT(tag);
-//    }
-//
-//    @Override
-//    public SPacketUpdateTileEntity getUpdatePacket()
-//    {
-//        NBTTagCompound cmp = new NBTTagCompound();
-//        writeToNBT(cmp);
-//        return new SPacketUpdateTileEntity(pos, 1, cmp);
-//    }
-//
-//    @Override
-//    public void onDataPacket(NetworkManager manager, SPacketUpdateTileEntity packet)
-//    {
-//        readFromNBT(packet.getNbtCompound());
-//    }
+    @Override
+    public NBTTagCompound getUpdateTag()
+    {
+        NBTTagCompound tag = super.getUpdateTag();
+        return this.writeToNBT(tag);
+    }
+
+    @Override
+    public SPacketUpdateTileEntity getUpdatePacket()
+    {
+        NBTTagCompound cmp = new NBTTagCompound();
+        writeToNBT(cmp);
+        return new SPacketUpdateTileEntity(pos, 1, cmp);
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager manager, SPacketUpdateTileEntity packet)
+    {
+        readFromNBT(packet.getNbtCompound());
+    }
 
 }

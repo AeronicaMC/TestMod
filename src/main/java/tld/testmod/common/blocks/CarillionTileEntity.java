@@ -2,6 +2,8 @@ package tld.testmod.common.blocks;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -156,6 +158,48 @@ public class CarillionTileEntity extends TileEntity
                     }
         }
 
+    }
+
+    /**
+     * 1.9.4 TE Syncing
+     * https://gist.github.com/williewillus/7945c4959b1142ece9828706b527c5a4
+     * 
+     * When the chunk/block data is sent:
+     * 
+     * - getUpdateTag() called to get compound to sync - this tag must include
+     * coordinate and id tags - vanilla TE's write ALL data into this tag by
+     * calling writeToNBT
+     * 
+     * When TE is resynced:
+     * 
+     * - getUpdatePacket() called to get a SPacketUpdateTileEntity (this is more
+     * limited than it used to) - the packet itself holds the pos, compound
+     * itself need not include coordinates - compound can contain whatever you'd
+     * like, since it just comes back to you in onDataPacket() - vanilla just
+     * delegates to getUpdateTag(), writing ALL te data, coordinates, and id
+     * into the packet, and reading it all out on the other side - but mods
+     * don't have to
+     * 
+     */
+    @Override
+    public NBTTagCompound getUpdateTag()
+    {
+        NBTTagCompound tag = super.getUpdateTag();
+        return this.writeToNBT(tag);
+    }
+
+    @Override
+    public SPacketUpdateTileEntity getUpdatePacket()
+    {
+        NBTTagCompound cmp = new NBTTagCompound();
+        writeToNBT(cmp);
+        return new SPacketUpdateTileEntity(pos, 1, cmp);
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager manager, SPacketUpdateTileEntity packet)
+    {
+        readFromNBT(packet.getNbtCompound());
     }
 
 }
