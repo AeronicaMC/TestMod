@@ -93,11 +93,10 @@ public class ModBlocks
     }
     
     public static void registerTileEntities() {
-        GameRegistry.registerTileEntity(ForgeAnimTileEntity.class,  Main.prependModID("tile_forge_anim_test"));
-        GameRegistry.registerTileEntity(EdgarAllenTileEntity.class,  Main.prependModID("tile_edgar_allen_block_lever"));
-        GameRegistry.registerTileEntity(OneShotTileEntity.class,  Main.prependModID("tile_one_shot"));
-        GameRegistry.registerTileEntity(CarillionTileEntity.class,  Main.prependModID("tile_carillon"));
-//        GameRegistry.registerTileEntityWithAlternatives(TilePiano.class, MXTuneMain.prependModID("tile_piano"), "mxtune_tile_instrument", "PianoTile", "TileInstrument");
+        registerTileEntity(ForgeAnimTileEntity.class, "tile_forge_anim_test");
+        registerTileEntity(EdgarAllenTileEntity.class, "tile_edgar_allen_block_lever");
+        registerTileEntity(OneShotTileEntity.class, "tile_one_shot");
+        registerTileEntity(CarillionTileEntity.class, "tile_carillon");
     }
 
     private static <T extends Block> T registerBlock(T block, String name) {
