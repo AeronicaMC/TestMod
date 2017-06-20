@@ -328,7 +328,7 @@ public class BlockPull extends Block
             this.playReleaseSound(worldIn, posIn);        
     }
     
-    private boolean propagateUp(World worldIn, BlockPos posIn, EnumFacing facing, boolean power)
+    private void propagateUp(World worldIn, BlockPos posIn, EnumFacing facing, boolean power)
     {
         BlockPos posAbove = posIn.up();
         IBlockState state = worldIn.getBlockState(posAbove);
@@ -338,10 +338,9 @@ public class BlockPull extends Block
             this.propagateUp(worldIn, posAbove, facing, power);
             this.setPowerState(worldIn, posAbove, state, facing, power);
         }
-        return !flag;
     }
 
-    private boolean propagateDown(World worldIn, BlockPos posIn, EnumFacing facing, boolean power)
+    private void propagateDown(World worldIn, BlockPos posIn, EnumFacing facing, boolean power)
     {
         BlockPos posBelow = posIn.down();
         IBlockState state = worldIn.getBlockState(posBelow);
@@ -351,7 +350,6 @@ public class BlockPull extends Block
             this.propagateDown(worldIn, posBelow, facing, power);
             this.setPowerState(worldIn, posBelow, state, facing, power);
         }
-        return !flag;
     }
     
     private void setPowerState(World worldIn, BlockPos posIn, IBlockState state, EnumFacing facing, boolean power)
