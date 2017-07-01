@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
@@ -36,6 +37,7 @@ import tld.testmod.client.render.RenderTimpani;
 import tld.testmod.common.CommonProxy;
 import tld.testmod.common.animation.EdgarAllenAnimEntity;
 import tld.testmod.common.animation.ForgeAnimEntity;
+import tld.testmod.common.animation.ModAnimation;
 import tld.testmod.common.animation.OneShotEntity;
 import tld.testmod.common.entity.EntityPull;
 import tld.testmod.common.entity.EntityTimpaniFx;
@@ -104,13 +106,19 @@ public class ClientProxy extends CommonProxy
             {
                 ResourceLocation location = new ModelResourceLocation(new ResourceLocation(Main.MODID, "one_shot"), "entity");
                 return new RenderLiving<OneShotEntity>(manager, new net.minecraftforge.client.model.animation.AnimationModelBase<OneShotEntity>(location, new VertexLighterSmoothAo(Minecraft.getMinecraft().getBlockColors()))
+                {
+                    @Override
+                    public void render(Entity entity, float limbSwing, float limbSwingSpeed, float timeAlive, float yawHead, float rotationPitch, float scale)
                     {
-                        @Override
-                        public void handleEvents(OneShotEntity te, float time, Iterable<Event> pastEvents)
-                        {
-                            te.handleEvents(time, pastEvents);
-                        }
-                    }, 0.5f)
+                        float time = ((short)entity.getEntityWorld().getTotalWorldTime() + ModAnimation.getPartialTickTime());
+                        super.render(entity, limbSwing, limbSwingSpeed, time, yawHead, rotationPitch, scale);
+                    }
+                    @Override
+                    public void handleEvents(OneShotEntity te, float time, Iterable<Event> pastEvents)
+                    {
+                        te.handleEvents(time, pastEvents);
+                    }
+                }, 0.5f)
                 {
                     protected ResourceLocation getEntityTexture(OneShotEntity entity)
                     {

@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableMap;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -83,10 +84,14 @@ public class OneShotTileEntity extends TileEntity
     {
         if(world.isRemote && asm != null)
         {
-            float time = Animation.getWorldTime(getWorld(), Animation.getPartialTickTime());
+            float time = ModAnimation.getWorldTime(world, ModAnimation.getPartialTickTime());
+            short ltime = (short)getWorld().getTotalWorldTime();
+            float pticks = ModAnimation.getPartialTickTime();
+            //float time = (System.nanoTime() / 100000 ) +Minecraft.getMinecraft().getRenderPartialTicks();
+            //float time = Animation.getWorldTime(getWorld(), Minecraft.getMinecraft().getRenderPartialTicks());
             clickTime.setValue(time);
             asm.transition("trigger");
-            ModLogger.info("click depressing: %f", time);
+            ModLogger.info("click depressing: %f, %d, %d, %f, %f", time, ltime, ltime/20, (float)(ltime + pticks)/20, pticks);
         } else
         {
             if (isSneaking)
