@@ -48,9 +48,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.client.model.animation.Animation;
 import net.minecraftforge.client.model.animation.AnimationTESR;
-import net.minecraftforge.client.model.b3d.B3DLoader;
 import net.minecraftforge.common.animation.Event;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.animation.CapabilityAnimation;
@@ -61,13 +59,12 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
-import tld.testmod.Main;
-import tld.testmod.ModLogger;
 import tld.testmod.common.IVariant;
-import tld.testmod.common.animation.OneShotTileEntity;
 import tld.testmod.common.animation.EdgarAllenTileEntity;
 import tld.testmod.common.animation.ForgeAnimTileEntity;
+import tld.testmod.common.animation.ForgeSpinTileEntity;
 import tld.testmod.common.animation.ModAnimation;
+import tld.testmod.common.animation.OneShotTileEntity;
 
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber(Side.CLIENT)
@@ -100,6 +97,7 @@ public class ModModelManager
         registerItemModel(ModBlocks.BLOCK_VQBTEST2);
         registerItemModel(ModBlocks.BLOCK_HQBTEST);
         registerItemModel(ModBlocks.FORGE_ANIM_TEST);
+        registerItemModel(ModBlocks.FORGE_SPIN_TEST);
         registerItemModel(ModBlocks.EDGAR_ALLEN_BLOCK_LEVER);
         registerItemModel(ModBlocks.ONE_SHOT);
         registerItemModel(ModBlocks.ITEM_PULL_ROPE);
@@ -111,6 +109,14 @@ public class ModModelManager
         {
             @Override
             public void handleEvents(ForgeAnimTileEntity te, float time, Iterable<Event> pastEvents)
+            {
+                te.handleEvents(time, pastEvents);
+            }
+        });
+        registerTESR(ForgeSpinTileEntity.class, new AnimationTESR<ForgeSpinTileEntity>()
+        {
+            @Override
+            public void handleEvents(ForgeSpinTileEntity te, float time, Iterable<Event> pastEvents)
             {
                 te.handleEvents(time, pastEvents);
             }
@@ -146,12 +152,12 @@ public class ModModelManager
                     IExtendedBlockState exState = (IExtendedBlockState)state;
                     if(exState.getUnlistedNames().contains(Properties.AnimationProperty))
                     {
-                        float time = ModAnimation.getWorldTime(getWorld(), partialTick);
+                        double time = ModAnimation.getWorldTime(getWorld(), partialTick);
                         IAnimationStateMachine capability = te.getCapability(CapabilityAnimation.ANIMATION_CAPABILITY, null);
                         if (capability != null)
                         {
-                            Pair<IModelState, Iterable<Event>> pair = capability.apply(time);
-                            handleEvents(te, time, pair.getRight());
+                            Pair<IModelState, Iterable<Event>> pair = capability.apply((float)time);
+                            handleEvents(te, (float) time, pair.getRight());
 
                             // TODO: caching?
                             IBakedModel model = blockRenderer.getBlockModelShapes().getModelForState(exState.getClean());

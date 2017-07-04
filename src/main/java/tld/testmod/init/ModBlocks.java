@@ -17,6 +17,8 @@ import tld.testmod.common.animation.EdgarAllenBlockLever;
 import tld.testmod.common.animation.EdgarAllenTileEntity;
 import tld.testmod.common.animation.ForgeAnimBlock;
 import tld.testmod.common.animation.ForgeAnimTileEntity;
+import tld.testmod.common.animation.ForgeSpinBlock;
+import tld.testmod.common.animation.ForgeSpinTileEntity;
 import tld.testmod.common.animation.OneShotBlock;
 import tld.testmod.common.animation.OneShotTileEntity;
 import tld.testmod.common.blocks.BlockCarillon;
@@ -34,6 +36,7 @@ public class ModBlocks
     public static final VQBTest2 BLOCK_VQBTEST2 = registerBlock(new VQBTest2(), "block_vbqtest2");
     public static final HQBTest BLOCK_HQBTEST = registerBlock(new HQBTest(), "block_hbqtest");
     public static final ForgeAnimBlock FORGE_ANIM_TEST = registerBlock(new ForgeAnimBlock(), "forge_anim_test");
+    public static final ForgeSpinBlock FORGE_SPIN_TEST = registerBlock(new ForgeSpinBlock(), "forge_spin_test");
     public static final EdgarAllenBlockLever EDGAR_ALLEN_BLOCK_LEVER = registerBlock(new EdgarAllenBlockLever(), "edgar_allen_block_lever");
     public static final OneShotBlock ONE_SHOT = registerBlock(new OneShotBlock(), "one_shot");
     public static final BlockPull PULL_ROPE = registerBlock(new BlockPull(true), "pull_rope");
@@ -62,6 +65,7 @@ public class ModBlocks
                     BLOCK_VQBTEST2,
                     BLOCK_HQBTEST,
                     FORGE_ANIM_TEST,
+                    FORGE_SPIN_TEST,
                     EDGAR_ALLEN_BLOCK_LEVER,
                     ONE_SHOT,
                     PULL_ROPE,
@@ -94,6 +98,7 @@ public class ModBlocks
     
     public static void registerTileEntities() {
         registerTileEntity(ForgeAnimTileEntity.class, "tile_forge_anim_test");
+        registerTileEntity(ForgeSpinTileEntity.class, "tile_forge_spin_test");
         registerTileEntity(EdgarAllenTileEntity.class, "tile_edgar_allen_block_lever");
         registerTileEntity(OneShotTileEntity.class, "tile_one_shot");
         registerTileEntity(CarillionTileEntity.class, "tile_carillon");

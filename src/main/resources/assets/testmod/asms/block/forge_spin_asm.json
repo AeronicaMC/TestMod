@@ -1,0 +1,13 @@
+{
+  "parameters": {
+
+  },
+  "clips": {
+    "default": ["apply", "testmod:block/forge_spin_test@default", "#cycle" ]
+  },
+  "states": [
+    "default"
+  ],
+  "transitions": {},
+  "start_state": "default"
+}

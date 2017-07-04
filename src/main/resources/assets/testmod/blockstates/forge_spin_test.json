@@ -1,0 +1,23 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "testmod:forge_spin_test"
+  },
+  "variants": {
+    "normal": [{}],
+    "inventory": [{
+        "transform": "forge:default-block"
+    }],
+    "facing": {
+        "north": { "transform": "identity"                   },        
+        "south": { "transform": { "rotation": { "y": 180 } } },
+        "east":  { "transform": { "rotation": { "y": 270 } } },            
+        "west":  { "transform": { "rotation": { "y": 90  } } }
+    },    
+    "static": {
+      "true": {},
+      "false": {}
+    },
+    "entity": [{}]  
+  }
+}

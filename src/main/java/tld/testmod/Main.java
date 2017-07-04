@@ -13,6 +13,7 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 import tld.testmod.common.CommonProxy;
 import tld.testmod.common.animation.EdgarAllenAnimEntity;
 import tld.testmod.common.animation.ForgeAnimEntity;
+import tld.testmod.common.animation.ForgeSpinEntity;
 import tld.testmod.common.animation.OneShotEntity;
 import tld.testmod.common.entity.EntityPull;
 import tld.testmod.common.entity.living.EntityGoldenSkeleton;
@@ -57,6 +58,7 @@ public class Main
         EntityRegistry.registerModEntity(new ResourceLocation(MODID,  "mob_timpani"), EntityTimpani.class, "mob_timpani", getNextModEntityId(), this, 64, 1, true, 0x000000, 0xFF5121);
         
         EntityRegistry.registerModEntity(new ResourceLocation(MODID, "entity_forge_anim_test"), ForgeAnimEntity.class, "entity_forge_anim_test", getNextModEntityId(), this, 64, 20, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(MODID, "entity_forge_spin_test"), ForgeSpinEntity.class, "entity_forge_spin_test", getNextModEntityId(), this, 64, 20, true);
         EntityRegistry.registerModEntity(new ResourceLocation(MODID, "entity_edgar_allen_block_lever"), EdgarAllenAnimEntity.class, "entity_edgar_allen_block_lever", getNextModEntityId(), this, 64, 20, true);
         EntityRegistry.registerModEntity(new ResourceLocation(MODID, "entity_one_shot"), OneShotEntity.class, "entity_one_shot", getNextModEntityId(), this, 64, 20, true);
 
