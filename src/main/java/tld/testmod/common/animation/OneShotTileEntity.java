@@ -84,14 +84,14 @@ public class OneShotTileEntity extends TileEntity
     {
         if(world.isRemote && asm != null)
         {
-            float time = ModAnimation.getWorldTime(world, ModAnimation.getPartialTickTime());
-            short ltime = (short)getWorld().getTotalWorldTime();
+            double time = ModAnimation.getWorldTime(world, ModAnimation.getPartialTickTime());
+            long ltime = (long)getWorld().getTotalWorldTime();
             float pticks = ModAnimation.getPartialTickTime();
             //float time = (System.nanoTime() / 100000 ) +Minecraft.getMinecraft().getRenderPartialTicks();
             //float time = Animation.getWorldTime(getWorld(), Minecraft.getMinecraft().getRenderPartialTicks());
-            clickTime.setValue(time);
+            clickTime.setValue((float)time);
             asm.transition("trigger");
-            ModLogger.info("click depressing: %f, %d, %d, %f, %f", time, ltime, ltime/20, (float)(ltime + pticks)/20, pticks);
+            ModLogger.info("click depressing: double GWT %f, float GWT %f, long GTWT %d, long GTWT/20 %d, %f, %f, %d", time, (float)time, ltime, ltime/20, ((double)ltime + pticks)/20, pticks, getWorld().getTotalWorldTime());
         } else
         {
             if (isSneaking)
