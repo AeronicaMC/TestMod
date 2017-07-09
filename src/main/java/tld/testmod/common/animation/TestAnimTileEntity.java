@@ -5,7 +5,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableMap;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -25,7 +24,7 @@ import tld.testmod.Main;
 import tld.testmod.ModLogger;
 import tld.testmod.init.ModBlocks;
 
-public class OneShotTileEntity extends TileEntity
+public class TestAnimTileEntity extends TileEntity
 {
 
     byte pitch = 0;
@@ -34,37 +33,35 @@ public class OneShotTileEntity extends TileEntity
     @Nullable
     private final IAnimationStateMachine asm;
     private final VariableValue clickTime = new VariableValue(Float.NEGATIVE_INFINITY);
-    private final VariableValue cycleLength = new VariableValue(2);
     
-    public OneShotTileEntity()
+    public TestAnimTileEntity()
     {
-        asm = Main.proxy.load(new ResourceLocation(Main.MODID, "asms/block/one_shot.json"), ImmutableMap.<String, ITimeValue>of(
-                "click_time", clickTime,
-                "cycle_length", cycleLength
+        asm = Main.proxy.load(new ResourceLocation(Main.MODID, "asms/block/test_anim.json"), ImmutableMap.<String, ITimeValue>of(
+                "click_time", clickTime
             ));
     }
     
     /* (non-Javadoc)
      * @see net.minecraft.tileentity.TileEntity#setWorld(net.minecraft.world.World)
      */
-    @Override
-    public void setWorld(World worldIn)
-    {
-        if (worldIn.isRemote)
-            asm.transition("rest");
-        super.setWorld(worldIn);
-    }
+//    @Override
+//    public void setWorld(World worldIn)
+//    {
+//        if (worldIn.isRemote)
+//            asm.transition("rest");
+//        super.setWorld(worldIn);
+//    }
 
     /* (non-Javadoc)
      * @see net.minecraft.tileentity.TileEntity#setWorldCreate(net.minecraft.world.World)
      */
-    @Override
-    protected void setWorldCreate(World worldIn)
-    {
-        if (worldIn.isRemote)
-            asm.transition("rest");
-        super.setWorldCreate(worldIn);
-    }
+//    @Override
+//    protected void setWorldCreate(World worldIn)
+//    {
+//        if (worldIn.isRemote)
+//            asm.transition("rest");
+//        super.setWorldCreate(worldIn);
+//    }
 
     public void handleEvents(float time, Iterable<Event> pastEvents)
     {
@@ -80,32 +77,26 @@ public class OneShotTileEntity extends TileEntity
         return true;
     }
 
-    public void click(boolean isSneaking)
+    public void click()
     {
-        if(this.getWorld().isRemote && asm != null)
-        {
-            double time = ModAnimation.getWorldTime(world, ModAnimation.getPartialTickTime());
-            long ltime = (long)this.getWorld().getTotalWorldTime();
-            float pticks = ModAnimation.getPartialTickTime();
-            //float time = (System.nanoTime() / 100000 ) +Minecraft.getMinecraft().getRenderPartialTicks();
-            //float time = Animation.getWorldTime(getWorld(), Minecraft.getMinecraft().getRenderPartialTicks());
-            clickTime.setValue((float)time);
-            asm.transition("trigger");
-            ModLogger.info("click depressing: double GWT %f, float GWT %f, long GTWT %d, long GTWT/20 %d, %f, %f, %d", time, (float)time, ltime, ltime/20, ((double)ltime + pticks)/20, pticks, getWorld().getTotalWorldTime());
-        } else
-        {
-            if (isSneaking)
+        if(this.getWorld().isRemote) {
+            if (asm != null)
             {
-                setPitch((byte) ((getPitch()+1) % 25));
-                ModLogger.info("Sneak %d", pitch);
+                if(asm.currentState().equals("open")) {
+                    float time = Animation.getWorldTime(getWorld(), Animation.getPartialTickTime());
+                    clickTime.setValue(time);
+                    asm.transition("closing");
+                    ModLogger.info("click closing: %f", time);
+                } else if(asm.currentState().equals("closed")) {
+                    float time = Animation.getWorldTime(getWorld(), Animation.getPartialTickTime());
+                    clickTime.setValue(time);
+                    asm.transition("opening");
+                    ModLogger.info("click opening: %f", time);
+                }
             }
-            this.getWorld().addBlockEvent(pos, ModBlocks.ONE_SHOT, 1, pitch);
-        }                
-    }
-
-    public void triggerOneShot()
-    {
-        click(false);
+        } else {
+            this.getWorld().addBlockEvent(pos, ModBlocks.TEST_ANIM, 1, pitch);
+        }
     }
     
     @Override

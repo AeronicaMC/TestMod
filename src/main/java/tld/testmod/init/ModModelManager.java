@@ -65,6 +65,7 @@ import tld.testmod.common.animation.ForgeAnimTileEntity;
 import tld.testmod.common.animation.ForgeSpinTileEntity;
 import tld.testmod.common.animation.ModAnimation;
 import tld.testmod.common.animation.OneShotTileEntity;
+import tld.testmod.common.animation.TestAnimTileEntity;
 
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber(Side.CLIENT)
@@ -100,6 +101,7 @@ public class ModModelManager
         registerItemModel(ModBlocks.FORGE_SPIN_TEST);
         registerItemModel(ModBlocks.EDGAR_ALLEN_BLOCK_LEVER);
         registerItemModel(ModBlocks.ONE_SHOT);
+        registerItemModel(ModBlocks.TEST_ANIM);
         registerItemModel(ModBlocks.ITEM_PULL_ROPE);
         registerItemModel(ModBlocks.ITEM_CARILLON);
     }
@@ -159,7 +161,6 @@ public class ModModelManager
                             Pair<IModelState, Iterable<Event>> pair = capability.apply((float)time);
                             handleEvents(te, (float) time, pair.getRight());
 
-                            // TODO: caching?
                             IBakedModel model = blockRenderer.getBlockModelShapes().getModelForState(exState.getClean());
                             exState = exState.withProperty(Properties.AnimationProperty, pair.getLeft());
 
@@ -172,6 +173,15 @@ public class ModModelManager
             }
             @Override
             public void handleEvents(OneShotTileEntity te, float time, Iterable<Event> pastEvents)
+            {
+                super.handleEvents(te, time, pastEvents);
+                te.handleEvents(time, pastEvents);
+            }
+        });
+        registerTESR(TestAnimTileEntity.class, new AnimationTESR<TestAnimTileEntity>()
+        {
+            @Override
+            public void handleEvents(TestAnimTileEntity te, float time, Iterable<Event> pastEvents)
             {
                 super.handleEvents(te, time, pastEvents);
                 te.handleEvents(time, pastEvents);

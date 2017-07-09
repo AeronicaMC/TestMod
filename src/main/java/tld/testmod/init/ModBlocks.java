@@ -21,6 +21,8 @@ import tld.testmod.common.animation.ForgeSpinBlock;
 import tld.testmod.common.animation.ForgeSpinTileEntity;
 import tld.testmod.common.animation.OneShotBlock;
 import tld.testmod.common.animation.OneShotTileEntity;
+import tld.testmod.common.animation.TestAnimBlock;
+import tld.testmod.common.animation.TestAnimTileEntity;
 import tld.testmod.common.blocks.BlockCarillon;
 import tld.testmod.common.blocks.BlockPull;
 import tld.testmod.common.blocks.CarillionTileEntity;
@@ -39,6 +41,7 @@ public class ModBlocks
     public static final ForgeSpinBlock FORGE_SPIN_TEST = registerBlock(new ForgeSpinBlock(), "forge_spin_test");
     public static final EdgarAllenBlockLever EDGAR_ALLEN_BLOCK_LEVER = registerBlock(new EdgarAllenBlockLever(), "edgar_allen_block_lever");
     public static final OneShotBlock ONE_SHOT = registerBlock(new OneShotBlock(), "one_shot");
+    public static final TestAnimBlock TEST_ANIM = registerBlock(new TestAnimBlock(), "test_anim");
     public static final BlockPull PULL_ROPE = registerBlock(new BlockPull(true), "pull_rope");
     public static final ItemBlock ITEM_PULL_ROPE = new ItemBlock(PULL_ROPE);
     public static final BlockCarillon CARILLON = registerBlock(new BlockCarillon(), "carillon");
@@ -68,6 +71,7 @@ public class ModBlocks
                     FORGE_SPIN_TEST,
                     EDGAR_ALLEN_BLOCK_LEVER,
                     ONE_SHOT,
+                    TEST_ANIM,
                     PULL_ROPE,
                     CARILLON,
             };
@@ -101,6 +105,7 @@ public class ModBlocks
         registerTileEntity(ForgeSpinTileEntity.class, "tile_forge_spin_test");
         registerTileEntity(EdgarAllenTileEntity.class, "tile_edgar_allen_block_lever");
         registerTileEntity(OneShotTileEntity.class, "tile_one_shot");
+        registerTileEntity(TestAnimTileEntity.class, "tile_test_anim");
         registerTileEntity(CarillionTileEntity.class, "tile_carillon");
     }
 

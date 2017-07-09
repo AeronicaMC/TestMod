@@ -13,6 +13,7 @@ import tld.testmod.common.animation.EdgarAllenItemBlock;
 import tld.testmod.common.animation.ForgeAnimItemBlock;
 import tld.testmod.common.animation.ForgeSpinItemBlock;
 import tld.testmod.common.animation.OneShotItemBlock;
+import tld.testmod.common.animation.TestAnimItemBlock;
 import tld.testmod.common.items.HQItemTest;
 import tld.testmod.common.items.ItemPull;
 import tld.testmod.common.items.ItemRightClickTest;
@@ -31,6 +32,7 @@ public class ModItems
     public static final ForgeSpinItemBlock ITEMBLOCK_SPIN_TEST = registerItem(new ForgeSpinItemBlock(ModBlocks.FORGE_SPIN_TEST), "forge_spin_test");
     public static final EdgarAllenItemBlock EDGAR_ALLEN_BLOCK_LEVER = registerItem(new EdgarAllenItemBlock(ModBlocks.EDGAR_ALLEN_BLOCK_LEVER), "edgar_allen_block_lever");
     public static final OneShotItemBlock ONE_SHOT = registerItem(new OneShotItemBlock(ModBlocks.ONE_SHOT), "one_shot");
+    public static final TestAnimItemBlock TEST_ANIM = registerItem(new TestAnimItemBlock(ModBlocks.TEST_ANIM), "test_anim");
     public static final ItemPull ITEM_PULL = registerItem(new ItemPull(), "pull");
     
     @Mod.EventBusSubscriber
@@ -53,6 +55,7 @@ public class ModItems
                     ITEMBLOCK_SPIN_TEST,
                     EDGAR_ALLEN_BLOCK_LEVER,
                     ONE_SHOT,
+                    TEST_ANIM,
                     ITEM_PULL,
             };
 

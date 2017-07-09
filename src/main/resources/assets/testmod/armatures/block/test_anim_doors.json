@@ -1,0 +1,47 @@
+{
+    "joints": {
+        "door_north": { "0": [ 1.0 ] },
+        "door_south": { "1": [ 1.0 ] } 
+    },
+    "clips": {
+        "closed": {
+            "loop": false,
+            "joint_clips": {},
+            "events": {}
+            },
+        "open": {
+            "loop": true,
+            "joint_clips": {
+		       	"door_north": [
+					{
+	                    "variable": "axis_x",
+	                    "type": "uniform",
+	                    "interpolation": "linear",
+	                    "samples": [ 1 ]
+					},				
+			        {
+			            "variable": "angle",
+			            "type": "uniform",
+			            "interpolation": "linear",
+			            "samples": [ 0, 45, 90 ]
+			        }
+		        ],
+		       	"door_south": [
+					{
+	                    "variable": "axis_x",
+	                    "type": "uniform",
+	                    "interpolation": "linear",
+	                    "samples": [ 1 ]
+					},
+			        {
+			            "variable": "angle",
+			            "type": "uniform",
+			            "interpolation": "linear",
+			            "samples": [ 0, 45, 90]
+			        }
+		        ]	                		        	        
+			},
+		"events": {}		    
+		}
+    }
+}

@@ -12,4 +12,5 @@ item.testmod:block_vbqtest.name=Vertical Quad
 item.testmod:block_vbqtest2.name=Vertical Quad 2
 
 tile.testmod:one_shot.name=Bell
+tile.testmod:test_anim.name=Test Anim
 tile.testmod:carillon.name=Carillon Console

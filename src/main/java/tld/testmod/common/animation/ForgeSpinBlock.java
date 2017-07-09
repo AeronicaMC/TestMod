@@ -22,7 +22,8 @@ public class ForgeSpinBlock extends AnimBaseBlock
     }
 
     /** 
-     * A hack which lets you ignore the static option for models in the forge block state json
+     * A hack which lets you ignore the static option for models in the forge block state json.
+     * The intended purpose is to tell the renderer this will be rendered by a TESR.
      */
     @Override
     public EnumBlockRenderType getRenderType(IBlockState state) {

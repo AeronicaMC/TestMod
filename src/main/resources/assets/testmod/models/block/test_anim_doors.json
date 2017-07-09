@@ -1,0 +1,36 @@
+{
+	"__comment": "Designed by Aeronica with Cubik Studio - https://cubik.studio",
+	"textures": {
+		"particle": "blocks/planks_oak",
+		"light": "blocks/planks_oak",
+		"dark": "blocks/planks_big_oak"
+	},
+	"elements": [
+		{
+			"__comment": "door_north",
+			"from": [ 1, 6, 1 ],
+			"to": [ 15, 7, 8 ],
+			"faces": {
+				"down": { "uv": [ 1, 8, 15, 15 ], "texture": "#light" },
+				"up": { "uv": [ 1, 1, 15, 8 ], "texture": "#light" },
+				"north": { "uv": [ 1, 9, 15, 10 ], "texture": "#light" },
+				"south": { "uv": [ 1, 9, 15, 10 ], "texture": "#light" },
+				"west": { "uv": [ 1, 9, 8, 10 ], "texture": "#light" },
+				"east": { "uv": [ 8, 9, 15, 10 ], "texture": "#light" }
+			}
+		},
+		{
+			"__comment": "door_south",
+			"from": [ 1, 6, 8 ],
+			"to": [ 15, 7, 15 ],
+			"faces": {
+				"down": { "uv": [ 1, 1, 15, 8 ], "texture": "#dark" },
+				"up": { "uv": [ 1, 8, 15, 15 ], "texture": "#dark" },
+				"north": { "uv": [ 1, 9, 15, 10 ], "texture": "#dark" },
+				"south": { "uv": [ 1, 9, 15, 10 ], "texture": "#dark" },
+				"west": { "uv": [ 8, 9, 15, 10 ], "texture": "#dark" },
+				"east": { "uv": [ 1, 9, 8, 10 ], "texture": "#dark" }
+			}
+		}	
+	]
+}

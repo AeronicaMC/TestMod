@@ -2,7 +2,6 @@ package tld.testmod.common.animation;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -19,8 +18,6 @@ import tld.testmod.init.ModSoundEvents;
 public class OneShotBlock extends AnimBaseBlock
 {
 
-    public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
-    
     public OneShotBlock()
     {
         super(Material.WOOD);
@@ -28,10 +25,11 @@ public class OneShotBlock extends AnimBaseBlock
     }
 
     @Override
-    public TileEntity createTileEntity(World world, IBlockState state) {
+    public TileEntity createTileEntity(World world, IBlockState state)
+    {
         return new OneShotTileEntity();
     }
-    
+
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {

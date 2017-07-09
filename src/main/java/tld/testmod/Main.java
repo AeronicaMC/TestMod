@@ -15,6 +15,7 @@ import tld.testmod.common.animation.EdgarAllenAnimEntity;
 import tld.testmod.common.animation.ForgeAnimEntity;
 import tld.testmod.common.animation.ForgeSpinEntity;
 import tld.testmod.common.animation.OneShotEntity;
+import tld.testmod.common.animation.TestAnimEntity;
 import tld.testmod.common.entity.EntityPull;
 import tld.testmod.common.entity.living.EntityGoldenSkeleton;
 import tld.testmod.common.entity.living.EntityTimpani;
@@ -61,6 +62,7 @@ public class Main
         EntityRegistry.registerModEntity(new ResourceLocation(MODID, "entity_forge_spin_test"), ForgeSpinEntity.class, "entity_forge_spin_test", getNextModEntityId(), this, 64, 20, true);
         EntityRegistry.registerModEntity(new ResourceLocation(MODID, "entity_edgar_allen_block_lever"), EdgarAllenAnimEntity.class, "entity_edgar_allen_block_lever", getNextModEntityId(), this, 64, 20, true);
         EntityRegistry.registerModEntity(new ResourceLocation(MODID, "entity_one_shot"), OneShotEntity.class, "entity_one_shot", getNextModEntityId(), this, 64, 20, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(MODID, "entity_test_anim"), TestAnimEntity.class, "entity_test_anim", getNextModEntityId(), this, 64, 20, true);
 
         EntityRegistry.registerModEntity(new ResourceLocation(MODID, "entity_pull"), EntityPull.class, "entity_pull", getNextModEntityId(), this, 64, 20, true);
     }

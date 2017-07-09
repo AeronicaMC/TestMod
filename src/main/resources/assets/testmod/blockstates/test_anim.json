@@ -1,0 +1,36 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+     },
+    "variants": {
+        "normal": [{}],
+        "inventory": [{
+            "transform": "forge:default-block",
+            "model": "testmod:test_anim",
+            "submodel": {
+                "doors": { "model": "testmod:test_anim_doors" }
+            }
+        }],
+        "facing": {
+            "north": { "transform": "identity"                   },        
+            "south": { "transform": { "rotation": { "y": 180 } } },
+            "east":  { "transform": { "rotation": { "y": 270 } } },            
+            "west":  { "transform": { "rotation": { "y": 90  } } }
+        },
+        "static": {
+            "true": {
+                "model": "testmod:test_anim"
+            },
+            "false": {
+            	"model": "testmod:test_anim_doors"
+            }
+        },
+        "entity": [{
+            "model": "testmod:test_anim",
+            "submodel": {
+                "doors": { "model": "testmod:test_anim_doors"	
+                }
+            }
+        }]
+    }
+}
