@@ -4,7 +4,7 @@
         "door_south": {"1": [ 1.0 ]}
     },
     "clips": {
-        "closed": {
+        "closed_to_open": {
             "loop": true,
             "joint_clips": {
                 "door_north": [
@@ -76,7 +76,7 @@
             "events": {
             }
         },
-        "open": {
+        "open_to_closed": {
             "loop": true,
             "joint_clips": {
                 "door_north": [

@@ -6,17 +6,17 @@
         "progress": [ "-", "#click_time" ]  
     },
     "clips": {
-        "closed": [ "apply", "testmod:block/test_anim_doors@closed", 0 ],
+        "closed": [ "apply", "testmod:block/test_anim_doors@closed_to_open", 0 ],
         "opening": [
             "trigger_positive",
-            [ "apply", "testmod:block/test_anim_doors@closed", "#progress" ],
+            [ "apply", "testmod:block/test_anim_doors@closed_to_open", "#progress" ],
             "#trigger_anim",
             "!transition:open"
         ],
-        "open": [ "apply", "testmod:block/test_anim_doors@open", 0 ],
+        "open": [ "apply", "testmod:block/test_anim_doors@open_to_closed", 0 ],
         "closing": [
             "trigger_positive",
-            [ "apply", "testmod:block/test_anim_doors@open", "#progress" ],
+            [ "apply", "testmod:block/test_anim_doors@open_to_closed", "#progress" ],
             "#trigger_anim",
             "!transition:closed"
         ]
