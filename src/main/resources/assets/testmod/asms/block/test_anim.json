@@ -1,21 +1,22 @@
 {
     "parameters": {
-        "end_anim": [ "compose", [ "+", 1 ] , "#click_time" ],
+        "world_cycle": [ "/", 1 ],
+        "end_anim": [ "compose", [ "+", 0.5 ] , "#click_time" ],
         "trigger_anim": [ "-", "#end_anim" ],
-        "progress": [ "-", "#click_time" ]
+        "progress": [ "-", "#click_time" ]  
     },
     "clips": {
-        "closed": "#identity",
+        "closed": [ "apply", "testmod:block/test_anim_doors@closed", 0 ],
         "opening": [
             "trigger_positive",
-            [ "slerp", "#closed", "#open", "#identity", "#progress" ],
+            [ "apply", "testmod:block/test_anim_doors@closed", "#progress" ],
             "#trigger_anim",
             "!transition:open"
         ],
         "open": [ "apply", "testmod:block/test_anim_doors@open", 0 ],
         "closing": [
             "trigger_positive",
-            [ "slerp", "#open", "#closed", "#identity", "#progress" ],
+            [ "apply", "testmod:block/test_anim_doors@open", "#progress" ],
             "#trigger_anim",
             "!transition:closed"
         ]
