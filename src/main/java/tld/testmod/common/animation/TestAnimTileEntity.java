@@ -94,7 +94,7 @@ public class TestAnimTileEntity extends TileEntity
                     clickTime.setValue(time);
                     asm.transition("closing");
                     ModLogger.info("click closing: %f", time);
-                } else if (isOpen) {
+                } else {
                     float time = Animation.getWorldTime(getWorld(), Animation.getPartialTickTime());
                     clickTime.setValue(time);
                     asm.transition("opening");
