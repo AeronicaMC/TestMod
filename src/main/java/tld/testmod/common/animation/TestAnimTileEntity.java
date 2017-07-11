@@ -5,13 +5,13 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableMap;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.animation.Animation;
 import net.minecraftforge.common.animation.Event;
@@ -27,7 +27,7 @@ import tld.testmod.init.ModBlocks;
 public class TestAnimTileEntity extends TileEntity
 {
 
-    byte pitch = 0;
+    private boolean openState = false;
     private boolean previousRedstoneState;
     
     @Nullable
@@ -44,24 +44,24 @@ public class TestAnimTileEntity extends TileEntity
     /* (non-Javadoc)
      * @see net.minecraft.tileentity.TileEntity#setWorld(net.minecraft.world.World)
      */
-//    @Override
-//    public void setWorld(World worldIn)
-//    {
-//        if (worldIn.isRemote)
-//            asm.transition("rest");
-//        super.setWorld(worldIn);
-//    }
+    @Override
+    public void setWorld(World worldIn)
+    {
+        if (worldIn.isRemote && asm != null)
+            asm.transition(openState ? "open" : "closed");
+        super.setWorld(worldIn);
+    }
 
     /* (non-Javadoc)
      * @see net.minecraft.tileentity.TileEntity#setWorldCreate(net.minecraft.world.World)
      */
-//    @Override
-//    protected void setWorldCreate(World worldIn)
-//    {
-//        if (worldIn.isRemote)
-//            asm.transition("rest");
-//        super.setWorldCreate(worldIn);
-//    }
+    @Override
+    protected void setWorldCreate(World worldIn)
+    {
+        if (worldIn.isRemote && asm != null)
+            asm.transition(openState ? "open" : "closed");
+        super.setWorld(worldIn);
+    }
 
     public void handleEvents(float time, Iterable<Event> pastEvents)
     {
@@ -77,26 +77,31 @@ public class TestAnimTileEntity extends TileEntity
         return true;
     }
 
-    public void click()
+    public void click(boolean isOpen)
     {
+        if (!this.getWorld().isRemote)
+        {
+            openState = !openState;
+            setOpenState(openState);
+            this.getWorld().addBlockEvent(pos, ModBlocks.TEST_ANIM, 0, openState ? 1 : 0 );
+        }
+
         if(this.getWorld().isRemote) {
             if (asm != null)
             {
-                if(asm.currentState().equals("open")) {
+                if(!isOpen) {
                     float time = Animation.getWorldTime(getWorld(), Animation.getPartialTickTime());
                     clickTime.setValue(time);
                     asm.transition("closing");
                     ModLogger.info("click closing: %f", time);
-                } else if(asm.currentState().equals("closed")) {
+                } else if (isOpen) {
                     float time = Animation.getWorldTime(getWorld(), Animation.getPartialTickTime());
                     clickTime.setValue(time);
                     asm.transition("opening");
                     ModLogger.info("click opening: %f", time);
                 }
             }
-        } else {
-            this.getWorld().addBlockEvent(pos, ModBlocks.TEST_ANIM, 1, pitch);
-        }
+        }  
     }
     
     @Override
@@ -134,24 +139,24 @@ public class TestAnimTileEntity extends TileEntity
     public void setPreviousRedstoneState(boolean previousRedstoneState)
     {
         this.previousRedstoneState = previousRedstoneState;
-        markDirty();
+        syncToClient();
     }
     
     /**
      * @return the pitch
      */
-    public byte getPitch()
+    public boolean getOpenState()
     {
-        return pitch;
+        return openState;
     }
 
     /**
      * @param pitch the pitch to set
      */
-    public void setPitch(byte pitch)
+    public void setOpenState(boolean openState)
     {
-        this.pitch = pitch;
-        markDirty();
+        this.openState = openState;
+        syncToClient();
     }
 
     // Persistence and syncing to client
@@ -159,19 +164,41 @@ public class TestAnimTileEntity extends TileEntity
     public void readFromNBT(NBTTagCompound tag)
     {
         super.readFromNBT(tag);
-        pitch = tag.getByte("pitch");
-        pitch = (byte)MathHelper.clamp(pitch, 0, 24);
+        openState = tag.getBoolean("open_state");
         previousRedstoneState = tag.getBoolean("powered");
+        if (this.getWorld().isRemote && asm != null )
+            asm.transition(openState ? "open" : "closed");
+            
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tag)
     {
-        tag.setByte("pitch", pitch);
+        tag.setBoolean("open_state", openState);
         tag.setBoolean("powered", this.previousRedstoneState);
         return super.writeToNBT(tag);
     }
 
+    public void syncToClient()
+    {
+        this.markDirty();
+        if (world != null)
+        {
+            if (!this.getWorld().isRemote && !this.isInvalid())
+            {
+                IBlockState state = this.getWorld().getBlockState(this.getPos());
+                /**
+                 * Sets the block state at a given location. Flag 1 will cause a
+                 * block update. Flag 2 will send the change to clients (you
+                 * almost always want this). Flag 4 prevents the block from
+                 * being re-rendered, if this is a client world. Flags can be
+                 * added together.
+                 */
+                this.getWorld().notifyBlockUpdate(getPos(), state, state, 3);
+            }
+        }
+    }
+    
     /**
      * 1.9.4 TE Syncing
      * https://gist.github.com/williewillus/7945c4959b1142ece9828706b527c5a4
@@ -204,14 +231,14 @@ public class TestAnimTileEntity extends TileEntity
     public SPacketUpdateTileEntity getUpdatePacket()
     {
         NBTTagCompound cmp = new NBTTagCompound();
-        writeToNBT(cmp);
+        this.writeToNBT(cmp);
         return new SPacketUpdateTileEntity(pos, 1, cmp);
     }
 
     @Override
     public void onDataPacket(NetworkManager manager, SPacketUpdateTileEntity packet)
     {
-        readFromNBT(packet.getNbtCompound());
+        this.readFromNBT(packet.getNbtCompound());
     }
 
 }
