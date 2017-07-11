@@ -182,21 +182,21 @@ public class TestAnimTileEntity extends TileEntity
     public void syncToClient()
     {
         this.markDirty();
-        if (world != null)
-        {
-            if (!this.getWorld().isRemote && !this.isInvalid())
-            {
-                IBlockState state = this.getWorld().getBlockState(this.getPos());
-                /**
-                 * Sets the block state at a given location. Flag 1 will cause a
-                 * block update. Flag 2 will send the change to clients (you
-                 * almost always want this). Flag 4 prevents the block from
-                 * being re-rendered, if this is a client world. Flags can be
-                 * added together.
-                 */
-                this.getWorld().notifyBlockUpdate(getPos(), state, state, 3);
-            }
-        }
+//        if (world != null)
+//        {
+//            if (!this.getWorld().isRemote && !this.isInvalid())
+//            {
+//                IBlockState state = this.getWorld().getBlockState(this.getPos());
+//                /**
+//                 * Sets the block state at a given location. Flag 1 will cause a
+//                 * block update. Flag 2 will send the change to clients (you
+//                 * almost always want this). Flag 4 prevents the block from
+//                 * being re-rendered, if this is a client world. Flags can be
+//                 * added together.
+//                 */
+//                this.getWorld().notifyBlockUpdate(getPos(), state, state, 3);
+//            }
+//        }
     }
     
     /**
