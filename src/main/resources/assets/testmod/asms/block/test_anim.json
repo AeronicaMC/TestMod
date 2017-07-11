@@ -1,6 +1,5 @@
 {
     "parameters": {
-        "world_cycle": [ "/", 1 ],
         "end_anim": [ "compose", [ "+", 0.5 ] , "#click_time" ],
         "trigger_anim": [ "-", "#end_anim" ],
         "progress": [ "-", "#click_time" ]  
