@@ -5,7 +5,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableMap;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -14,7 +13,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.animation.Animation;
 import net.minecraftforge.common.animation.Event;
 import net.minecraftforge.common.animation.ITimeValue;
 import net.minecraftforge.common.animation.TimeValues.VariableValue;
@@ -84,12 +82,12 @@ public class OneShotTileEntity extends TileEntity
     {
         if(this.getWorld().isRemote && asm != null)
         {
-            double time = ModAnimation.getWorldTime(world, ModAnimation.getPartialTickTime());
+            float time = ModAnimation.getWorldTime(world, ModAnimation.getPartialTickTime());
             long ltime = (long)this.getWorld().getTotalWorldTime();
             float pticks = ModAnimation.getPartialTickTime();
             //float time = (System.nanoTime() / 100000 ) +Minecraft.getMinecraft().getRenderPartialTicks();
             //float time = Animation.getWorldTime(getWorld(), Minecraft.getMinecraft().getRenderPartialTicks());
-            clickTime.setValue((float)time);
+            clickTime.setValue(time);
             asm.transition("trigger");
             ModLogger.info("click depressing: double GWT %f, float GWT %f, long GTWT %d, long GTWT/20 %d, %f, %f, %d", time, (float)time, ltime, ltime/20, ((double)ltime + pticks)/20, pticks, getWorld().getTotalWorldTime());
         } else

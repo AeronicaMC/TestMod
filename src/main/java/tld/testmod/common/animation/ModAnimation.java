@@ -2,17 +2,19 @@ package tld.testmod.common.animation;
 
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.animation.Animation;
-
+import tld.testmod.ModLogger;
 
 public enum ModAnimation
 {
 
     INSTANCE;
+    static long timeOffset;
+    static Object lastWorld;
     
     /**
      * Get the global world time for the current tick, in seconds.
      */
-    public static double getWorldTime(World world)
+    public static float getWorldTime(World world)
     {
         return getWorldTime(world, 0);
     }
@@ -20,10 +22,16 @@ public enum ModAnimation
     /**
      * Get the global world time for the current tick + partial tick progress, in seconds.
      */
-    public static double getWorldTime(World world, float tickProgress)
+    public static float getWorldTime(World world, float tickProgress)
     {
-        long time = (long)world.getTotalWorldTime();
-        return ((double)time + tickProgress) / 20;
+        if (!world.equals(lastWorld))
+        {
+            timeOffset = world.getTotalWorldTime();
+            lastWorld = world;
+        }
+        long diff = world.getTotalWorldTime() - timeOffset;
+        ModLogger.info("Animation#getWorldTime: World: %s, time: %d, offset %d, diff: %d", lastWorld, world.getTotalWorldTime(), timeOffset, diff);
+        return (world.getTotalWorldTime() - timeOffset  + tickProgress) / 20;
     }
 
     /**

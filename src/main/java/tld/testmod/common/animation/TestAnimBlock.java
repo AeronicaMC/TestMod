@@ -58,7 +58,7 @@ public class TestAnimBlock extends AnimBaseBlock
         if (param == 1)
         {
             worldIn.playSound(null, pos, SoundEvents.BLOCK_IRON_TRAPDOOR_OPEN,  SoundCategory.BLOCKS, 0.5F, 1.0F );
-            worldIn.spawnParticle(EnumParticleTypes.HEART, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, (double)param / 24.0D, 0.0D, 0.0D, new int[0]);
+            worldIn.spawnParticle(EnumParticleTypes.HEART, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.2D, (double)pos.getZ() + 0.5D, (double)param / 24.0D, 0.0D, 0.0D, new int[0]);
         }
         else
         {
