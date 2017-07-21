@@ -9,7 +9,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
-import tld.testmod.ModLogger;
 import tld.testmod.client.midi.IActiveNoteReceiver;
 import tld.testmod.network.AbstractMessage.AbstractServerMessage;
 
@@ -63,18 +62,21 @@ public class ActiveReceiverMessage extends AbstractServerMessage<ActiveReceiverM
     public void process(EntityPlayer player, Side side)
     {
         World world = player.getEntityWorld();
-        EntityPlayer personPlaying = (EntityPlayer) world.getEntityByID(entityId);
         BlockPos pos = new BlockPos(posX, posY, posZ);
-        IBlockState state = world.getBlockState(pos);
+        if (world.isBlockLoaded(pos))
+        {
+            EntityPlayer personPlaying = (EntityPlayer) world.getEntityByID(entityId);
+            IBlockState state = world.getBlockState(pos);
 
-        if (state.getBlock() instanceof IActiveNoteReceiver)
-        {
-            IActiveNoteReceiver instrument = (IActiveNoteReceiver) state.getBlock();
-            instrument.noteReceiver(world, pos, entityId, note, volume);
-        } else if (entityId == player.getEntityId() && personPlaying.getHeldItem(hand).getItem() instanceof IActiveNoteReceiver)
-        {
-            IActiveNoteReceiver instrument = (IActiveNoteReceiver) personPlaying.getHeldItem(hand).getItem();
-            instrument.noteReceiver(world, pos, entityId, note, volume);
+            if (state.getBlock() instanceof IActiveNoteReceiver)
+            {
+                IActiveNoteReceiver instrument = (IActiveNoteReceiver) state.getBlock();
+                instrument.noteReceiver(world, pos, entityId, note, volume);
+            } else if (entityId == player.getEntityId() && personPlaying.getHeldItem(hand).getItem() instanceof IActiveNoteReceiver)
+            {
+                IActiveNoteReceiver instrument = (IActiveNoteReceiver) personPlaying.getHeldItem(hand).getItem();
+                instrument.noteReceiver(world, pos, entityId, note, volume);
+            }
         }
     }
 
