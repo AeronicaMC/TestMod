@@ -15,7 +15,7 @@ import tld.testmod.network.AbstractMessage.AbstractServerMessage;
 public class ActiveReceiverMessage extends AbstractServerMessage<ActiveReceiverMessage>
 {
 
-    int posX, posY, posZ;
+    BlockPos blockPos;
     int entityId;
     EnumHand hand;
     byte note;
@@ -25,9 +25,7 @@ public class ActiveReceiverMessage extends AbstractServerMessage<ActiveReceiverM
     
     public ActiveReceiverMessage(BlockPos pos, int entityId, EnumHand hand, byte note, byte volume)
     {
-        this.posX = pos.getX();
-        this.posY = pos.getY();
-        this.posZ = pos.getZ();
+        this.blockPos = pos;
         this.entityId = entityId;
         this.hand = hand;
         this.note = note;
@@ -37,9 +35,7 @@ public class ActiveReceiverMessage extends AbstractServerMessage<ActiveReceiverM
     @Override
     protected void read(PacketBuffer buffer) throws IOException
     {
-        posX = buffer.readInt();
-        posY = buffer.readInt();
-        posZ = buffer.readInt();
+        blockPos = BlockPos.fromLong(buffer.readLong());
         entityId = buffer.readInt();
         hand = EnumHand.values()[buffer.readByte()];
         note = buffer.readByte();
@@ -49,9 +45,7 @@ public class ActiveReceiverMessage extends AbstractServerMessage<ActiveReceiverM
     @Override
     protected void write(PacketBuffer buffer) throws IOException
     {
-        buffer.writeInt(posX);
-        buffer.writeInt(posY);
-        buffer.writeInt(posZ);
+        buffer.writeLong(blockPos.toLong());
         buffer.writeInt(entityId);
         buffer.writeByte(hand.ordinal());
         buffer.writeByte(note);
@@ -62,20 +56,19 @@ public class ActiveReceiverMessage extends AbstractServerMessage<ActiveReceiverM
     public void process(EntityPlayer player, Side side)
     {
         World world = player.getEntityWorld();
-        BlockPos pos = new BlockPos(posX, posY, posZ);
-        if (world.isBlockLoaded(pos))
+        if (world.isBlockLoaded(blockPos))
         {
             EntityPlayer personPlaying = (EntityPlayer) world.getEntityByID(entityId);
-            IBlockState state = world.getBlockState(pos);
+            IBlockState state = world.getBlockState(blockPos);
 
             if (state.getBlock() instanceof IActiveNoteReceiver)
             {
                 IActiveNoteReceiver instrument = (IActiveNoteReceiver) state.getBlock();
-                instrument.noteReceiver(world, pos, entityId, note, volume);
+                instrument.noteReceiver(world, blockPos, entityId, note, volume);
             } else if (entityId == player.getEntityId() && personPlaying.getHeldItem(hand).getItem() instanceof IActiveNoteReceiver)
             {
                 IActiveNoteReceiver instrument = (IActiveNoteReceiver) personPlaying.getHeldItem(hand).getItem();
-                instrument.noteReceiver(world, pos, entityId, note, volume);
+                instrument.noteReceiver(world, blockPos, entityId, note, volume);
             }
         }
     }
