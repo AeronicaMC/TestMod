@@ -40,7 +40,7 @@ public class ItemPull extends Item
 
         if (!worldIn.isRemote)
         {
-            EntityPull entityPull = new EntityPull(worldIn, playerIn);
+            EntityPull entityPull = new EntityPull(worldIn, playerIn, itemstack, playerIn.capabilities.isCreativeMode);
             entityPull.setHeadingFromThrower(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, 1.5F, 1.0F);
             worldIn.spawnEntity(entityPull);
         }

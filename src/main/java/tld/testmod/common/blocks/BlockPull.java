@@ -17,6 +17,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.Mirror;
@@ -28,6 +29,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import tld.testmod.Main;
 import tld.testmod.common.animation.OneShotBlock;
+import tld.testmod.init.ModItems;
 
 public class BlockPull extends Block
 {
@@ -127,6 +129,16 @@ public class BlockPull extends Block
         return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(POWERED, Boolean.valueOf(false));
     }
 
+    /*
+    * Get the Item that this Block should drop when harvested.
+    */
+   @Nullable
+   @Override
+   public Item getItemDropped(IBlockState state, Random rand, int fortune)
+   {
+       return state.getBlock() == this ? ModItems.ITEM_PULL : null;
+   }
+   
     /**
      * Called when a neighboring block was changed and marks that this state
      * should perform any checks during a neighbor change. Cases may include

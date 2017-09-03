@@ -4,6 +4,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.entity.projectile.EntityThrowable;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
@@ -19,6 +20,10 @@ import tld.testmod.init.ModBlocks;
 public class EntityPull extends EntityThrowable
 {
     
+    ItemStack stack;
+    boolean isCreative;
+    boolean stuckOne = false;
+    
     public EntityPull(World worldIn)
     {
         super(worldIn);
@@ -29,6 +34,13 @@ public class EntityPull extends EntityThrowable
         super(worldIn, throwerIn);
     }
 
+    public EntityPull(World worldIn, EntityLivingBase throwerIn, ItemStack stackIn, boolean isCreativeIn)
+    {
+        super(worldIn, throwerIn);
+        stack = stackIn;
+        isCreative = isCreativeIn;
+    }
+    
     public EntityPull(World worldIn, double x, double y, double z)
     {
         super(worldIn, x, y, z);
@@ -64,6 +76,8 @@ public class EntityPull extends EntityThrowable
         if (!this.world.isRemote)
         {
             this.placePull(this.world, this.getThrower(), new Vec3d(this.posX, this.posY, this.posZ));
+            if (!isCreative && stuckOne)
+                stack.grow(1);
             this.world.setEntityState(this, (byte)3);
             this.setDead();
         }
@@ -74,7 +88,8 @@ public class EntityPull extends EntityThrowable
         Vec3d posInBelow = posIn.addVector(0, -1.0D, 0);
         BlockPos pos = new BlockPos(posIn);
         IBlockState state = worldIn.getBlockState(pos);
-        boolean flag = state.getBlock().isAir(state, worldIn, pos) || state.getBlock().isLeaves(state, worldIn, pos);
+        boolean flag = (state.getBlock().isAir(state, worldIn, pos) || state.getBlock().isLeaves(state, worldIn, pos)) &&
+                !stack.isEmpty() && stack.getCount() > 0;
 
         if (flag)
         {
@@ -82,7 +97,12 @@ public class EntityPull extends EntityThrowable
             boolean flag2 = state2.getBlock() instanceof BlockPull;
             EnumFacing facing = flag2 ? state2.getValue(BlockPull.FACING) : thrower.getAdjustedHorizontalFacing();
             if (ModBlocks.PULL_ROPE.canPlaceBlockAt(worldIn, pos))
+            {
+                if (!isCreative)
+                    stack.shrink(1);
+                stuckOne = true;
                 worldIn.setBlockState(pos, ModBlocks.PULL_ROPE.getDefaultState().withProperty(BlockPull.FACING, facing).withProperty(BlockPull.POWERED, Boolean.valueOf(false)));
+            }
             this.placePull(worldIn, thrower, posInBelow);
         }
     }
