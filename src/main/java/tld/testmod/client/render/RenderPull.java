@@ -14,12 +14,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 import tld.testmod.common.entity.EntityPull;
+import tld.testmod.init.ModItems;
 
 public class RenderPull<T extends Entity> extends Render<T>
 {
 
     private static Minecraft mc = Minecraft.getMinecraft();
-    public static final IRenderFactory<EntityPull> FACTORY = (RenderManager manager) -> new RenderPull<EntityPull>(manager, Items.APPLE ,mc.getRenderItem());
+    public static final IRenderFactory<EntityPull> FACTORY = (RenderManager manager) -> new RenderPull<EntityPull>(manager, ModItems.ITEM_PULL ,mc.getRenderItem());
     protected final Item item;
     private final RenderItem itemRenderer;
     
