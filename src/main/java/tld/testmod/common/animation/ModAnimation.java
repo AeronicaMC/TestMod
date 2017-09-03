@@ -30,7 +30,7 @@ public enum ModAnimation
             lastWorld = world;
         }
         long diff = world.getTotalWorldTime() - timeOffset;
-        ModLogger.info("Animation#getWorldTime: World: %s, time: %d, offset %d, diff: %d", lastWorld, world.getTotalWorldTime(), timeOffset, diff);
+        //ModLogger.info("Animation#getWorldTime: World: %s, time: %d, offset %d, diff: %d", lastWorld, world.getTotalWorldTime(), timeOffset, diff);
         return (world.getTotalWorldTime() - timeOffset  + tickProgress) / 20;
     }
 
