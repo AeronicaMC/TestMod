@@ -93,6 +93,8 @@ public class CommonProxy
     }
     
     public void spawnTimpaniParticle(World world, double x, double y, double z) {}
+    
+    public void spawnRopeParticle(World world, double x, double y, double z) {}
  
     @Nullable
     public IAnimationStateMachine load(ResourceLocation location, ImmutableMap<String, ITimeValue> parameters)

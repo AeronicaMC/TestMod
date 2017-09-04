@@ -45,6 +45,7 @@ import tld.testmod.common.entity.EntityPull;
 import tld.testmod.common.entity.EntityTimpaniFx;
 import tld.testmod.common.entity.living.EntityGoldenSkeleton;
 import tld.testmod.common.entity.living.EntityTimpani;
+import tld.testmod.init.ModItems;
 
 public class ClientProxy extends CommonProxy
 {
@@ -181,6 +182,11 @@ public class ClientProxy extends CommonProxy
       Minecraft.getMinecraft().effectRenderer.addEffect(new EntityTimpaniFx(world, x, y, z, Items.BREAD, Items.BREAD.getMetadata(0)));
     }
 
+    @Override
+    public void spawnRopeParticle(World world, double x, double y, double z)
+    {
+        Minecraft.getMinecraft().effectRenderer.addEffect(new EntityTimpaniFx(world, x, y, z, ModItems.ITEM_PULL, ModItems.ITEM_PULL.getMetadata(0)));
+    }
 
     @Override
     public void init(FMLInitializationEvent event)

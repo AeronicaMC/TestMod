@@ -11,7 +11,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -59,8 +58,7 @@ public class EntityPull extends EntityThrowable
         {
             for (int i = 0; i < 8; ++i)
             {
-                //this.world.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D, new int[0]);
-                Main.proxy.spawnTimpaniParticle(world, this.posX, this.posY, this.posZ);
+                Main.proxy.spawnRopeParticle(world, this.posX, this.posY, this.posZ);
             }
         }
     }
