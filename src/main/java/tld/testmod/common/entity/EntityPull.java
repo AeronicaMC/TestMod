@@ -1,9 +1,13 @@
 package tld.testmod.common.entity;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntityBlaze;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
@@ -14,14 +18,16 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import tld.testmod.Main;
 import tld.testmod.common.blocks.BlockPull;
 import tld.testmod.init.ModBlocks;
+import tld.testmod.init.ModItems;
 
 public class EntityPull extends EntityThrowable
 {
     
-    ItemStack stack;
-    boolean isCreative;
+    ItemStack stackIn = ItemStack.EMPTY;
+    boolean isCreative = true;
     boolean stuckOne = false;
     
     public EntityPull(World worldIn)
@@ -37,8 +43,8 @@ public class EntityPull extends EntityThrowable
     public EntityPull(World worldIn, EntityLivingBase throwerIn, ItemStack stackIn, boolean isCreativeIn)
     {
         super(worldIn, throwerIn);
-        stack = stackIn;
-        isCreative = isCreativeIn;
+        this.stackIn = stackIn;
+        this.isCreative = isCreativeIn;
     }
     
     public EntityPull(World worldIn, double x, double y, double z)
@@ -53,7 +59,8 @@ public class EntityPull extends EntityThrowable
         {
             for (int i = 0; i < 8; ++i)
             {
-                this.world.spawnParticle(EnumParticleTypes.SNOWBALL, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D, new int[0]);
+                //this.world.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D, new int[0]);
+                Main.proxy.spawnTimpaniParticle(world, this.posX, this.posY, this.posZ);
             }
         }
     }
@@ -63,33 +70,65 @@ public class EntityPull extends EntityThrowable
     {
         if (result.entityHit != null)
         {
-            int i = 0;
-
-            if (result.entityHit instanceof EntityBlaze)
-            {
-                i = 3;
-            }
-
-            result.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), (float)i);
+            result.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), (float)1);
         }
 
         if (!this.world.isRemote)
         {
-            this.placePull(this.world, this.getThrower(), new Vec3d(this.posX, this.posY, this.posZ));
-            if (!isCreative && stuckOne)
-                stack.grow(1);
+            stuckOne = placePull(this.world, this.getThrower(), stackIn ,new Vec3d(this.posX, this.posY, this.posZ), isCreative);
+            if(stuckOne && !isCreative)
+                stackIn.grow(1);
             this.world.setEntityState(this, (byte)3);
             this.setDead();
         }
     }
 
-    private void placePull(World worldIn, EntityLivingBase thrower, Vec3d posIn)
+    private static boolean hasRope(EntityLivingBase thrower, boolean isCreative)
+    {
+        int ropeCount = 0;
+        if (isCreative || !(thrower instanceof EntityPlayer))
+            return true;
+        for (int i = 0; i < 36; i++) {
+            final ItemStack stack = ((EntityPlayer)thrower).inventory.mainInventory.get(i);
+            if (stack.isEmpty()) {
+                continue;
+            }
+            final Item item = stack.getItem();
+            if (item.equals(ModItems.ITEM_PULL)) {
+                ropeCount += stack.getCount();
+            }
+        }
+        return ropeCount > 0;
+    }
+    
+    private static void useRope(EntityLivingBase thrower, boolean isCreative)
+    {
+        if (isCreative || !(thrower instanceof EntityPlayer))
+            return;
+        for (int i = 0; i < 36; i++) {
+            final ItemStack stack = ((EntityPlayer)thrower).inventory.mainInventory.get(i);
+            if (stack.isEmpty()) {
+                continue;
+            }
+            final Item item = stack.getItem();
+            if (item.equals(ModItems.ITEM_PULL)) {
+                if (stack.getCount() > 0)
+                {
+                    stack.shrink(1);
+                    return;
+                }
+            }
+        }       
+    }
+    
+    private static boolean placePull(World worldIn, EntityLivingBase thrower, ItemStack stackIn, Vec3d posIn, boolean isCreative)
     {
         Vec3d posInBelow = posIn.addVector(0, -1.0D, 0);
         BlockPos pos = new BlockPos(posIn);
         IBlockState state = worldIn.getBlockState(pos);
+        boolean stuckOne = false;
         boolean flag = (state.getBlock().isAir(state, worldIn, pos) || state.getBlock().isLeaves(state, worldIn, pos)) &&
-                !stack.isEmpty() && stack.getCount() > 0;
+                hasRope((EntityPlayer) thrower, isCreative);
 
         if (flag)
         {
@@ -98,13 +137,20 @@ public class EntityPull extends EntityThrowable
             EnumFacing facing = flag2 ? state2.getValue(BlockPull.FACING) : thrower.getAdjustedHorizontalFacing();
             if (ModBlocks.PULL_ROPE.canPlaceBlockAt(worldIn, pos))
             {
-                if (!isCreative)
-                    stack.shrink(1);
+                useRope((EntityPlayer)thrower, isCreative);
                 stuckOne = true;
                 worldIn.setBlockState(pos, ModBlocks.PULL_ROPE.getDefaultState().withProperty(BlockPull.FACING, facing).withProperty(BlockPull.POWERED, Boolean.valueOf(false)));
             }
-            this.placePull(worldIn, thrower, posInBelow);
+            new Timer().schedule(new TimerTask() {
+
+                @Override
+                public void run() {
+                    placePull(worldIn, thrower, stackIn, posInBelow, isCreative);
+                }
+            }, 100);
+
         }
+        return stuckOne;
     }
 
 }

@@ -18,7 +18,7 @@ public class ItemPull extends Item
 
     public ItemPull()
     {
-        this.maxStackSize = 16;
+        this.maxStackSize = 64;
         this.setCreativeTab(Main.MODTAB);
     }
 
