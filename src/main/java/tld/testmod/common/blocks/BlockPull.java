@@ -210,12 +210,12 @@ public class BlockPull extends Block
 
     protected void playClickSound(@Nullable EntityPlayer player, World worldIn, BlockPos pos)
     {
-        worldIn.playSound(player, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.6F);
+        worldIn.playSound(player, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 0.033F, 0.65F);
     }
 
     protected void playReleaseSound(World worldIn, BlockPos pos)
     {
-        worldIn.playSound((EntityPlayer)null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_OFF, SoundCategory.BLOCKS, 0.3F, 0.5F);
+        worldIn.playSound((EntityPlayer)null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_OFF, SoundCategory.BLOCKS, 0.033F, 0.45F);
     }
 
     /**
