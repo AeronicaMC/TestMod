@@ -13,6 +13,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import tld.testmod.Main;
 import tld.testmod.ModLogger;
+import tld.testmod.common.items.ItemPull;
+import tld.testmod.common.items.ItemTuningFork;
 import tld.testmod.init.ModSoundEvents;
 
 public class OneShotBlock extends AnimBaseBlock
@@ -33,15 +35,29 @@ public class OneShotBlock extends AnimBaseBlock
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
+        /*
+         * Pull Rope - Do Nothing
+         * Tuning Fork - Increment Note
+         */
         if(!world.isRemote)
         {
             TileEntity te = world.getTileEntity(pos);
-            if(te instanceof OneShotTileEntity)
+            if(te instanceof OneShotTileEntity && !isRope(player, hand))
             {
-                ((OneShotTileEntity)te).click(player.isSneaking());
+                ((OneShotTileEntity)te).click(isTuningFork(player, hand));
             }
         }
-        return true;
+        return !isRope(player, hand);
+    }
+    
+    private boolean isRope(EntityPlayer player, EnumHand hand)
+    {
+        return (player.getHeldItem(hand).getItem() instanceof ItemPull);
+    }
+    
+    private boolean isTuningFork(EntityPlayer player, EnumHand hand)
+    {
+        return (player.getHeldItem(hand).getItem() instanceof ItemTuningFork);
     }
     
     @Override

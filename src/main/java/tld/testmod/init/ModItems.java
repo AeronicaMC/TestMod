@@ -17,6 +17,7 @@ import tld.testmod.common.animation.TestAnimItemBlock;
 import tld.testmod.common.items.HQItemTest;
 import tld.testmod.common.items.ItemPull;
 import tld.testmod.common.items.ItemRightClickTest;
+import tld.testmod.common.items.ItemTuningFork;
 import tld.testmod.common.items.VQItemTest;
 import tld.testmod.common.items.VQItemTest2;
 
@@ -34,6 +35,7 @@ public class ModItems
     public static final OneShotItemBlock ONE_SHOT = registerItem(new OneShotItemBlock(ModBlocks.ONE_SHOT), "one_shot");
     public static final TestAnimItemBlock TEST_ANIM = registerItem(new TestAnimItemBlock(ModBlocks.TEST_ANIM), "test_anim");
     public static final ItemPull ITEM_PULL = registerItem(new ItemPull(), "pull");
+    public static final ItemTuningFork TUNING_FORK = registerItem(new ItemTuningFork(), "tuning_fork");
     
     @Mod.EventBusSubscriber
     public static class RegistrationHandler {
@@ -57,6 +59,7 @@ public class ModItems
                     ONE_SHOT,
                     TEST_ANIM,
                     ITEM_PULL,
+                    TUNING_FORK,
             };
 
             final IForgeRegistry<Item> registry = event.getRegistry();
