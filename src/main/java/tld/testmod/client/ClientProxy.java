@@ -16,9 +16,6 @@ import net.minecraftforge.common.model.animation.IAnimationStateMachine;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 import tld.testmod.client.render.RenderEdgarAllenEntity;
@@ -26,7 +23,7 @@ import tld.testmod.client.render.RenderForgeAnimEntity;
 import tld.testmod.client.render.RenderForgeSpinEntity;
 import tld.testmod.client.render.RenderGoldenSkeleton;
 import tld.testmod.client.render.RenderOneShotEntity;
-import tld.testmod.client.render.RenderPull;
+import tld.testmod.client.render.RenderPullEntity;
 import tld.testmod.client.render.RenderTestAnimEntity;
 import tld.testmod.client.render.RenderTimpani;
 import tld.testmod.common.CommonProxy;
@@ -45,17 +42,29 @@ public class ClientProxy extends CommonProxy
 {
 
     @Override
-    public void preInit(FMLPreInitializationEvent event)
+    public void preInit()
     {
-        super.preInit(event);
+        super.preInit();
         RenderingRegistry.registerEntityRenderingHandler(EntityGoldenSkeleton.class, RenderGoldenSkeleton.FACTORY);
         RenderingRegistry.registerEntityRenderingHandler(EntityTimpani.class, RenderTimpani.FACTORY);
-        RenderingRegistry.registerEntityRenderingHandler(EntityPull.class, RenderPull.FACTORY);       
+        RenderingRegistry.registerEntityRenderingHandler(EntityPull.class, RenderPullEntity.FACTORY);       
         RenderingRegistry.registerEntityRenderingHandler(ForgeAnimEntity.class, RenderForgeAnimEntity.FACTORY);
         RenderingRegistry.registerEntityRenderingHandler(ForgeSpinEntity.class, RenderForgeSpinEntity.FACTORY);
         RenderingRegistry.registerEntityRenderingHandler(EdgarAllenAnimEntity.class, RenderEdgarAllenEntity.FACTORY);
         RenderingRegistry.registerEntityRenderingHandler(OneShotEntity.class, RenderOneShotEntity.FACTORY);
         RenderingRegistry.registerEntityRenderingHandler(TestAnimEntity.class, RenderTestAnimEntity.FACTORY);
+    }
+
+    @Override
+    public void init()
+    {
+        super.init();       
+    }
+
+    @Override
+    public void postInit()
+    {
+        super.postInit();       
     }
     
     @Override
@@ -69,18 +78,6 @@ public class ClientProxy extends CommonProxy
         Minecraft.getMinecraft().effectRenderer.addEffect(new EntityTimpaniFx(world, x, y, z, ModItems.ITEM_PULL, ModItems.ITEM_PULL.getMetadata(0)));
     }
 
-    @Override
-    public void init(FMLInitializationEvent event)
-    {
-        super.init(event);       
-    }
-
-    @Override
-    public void postInit(FMLPostInitializationEvent event)
-    {
-        super.postInit(event);       
-    }
-    
     @Override
     public Side getPhysicalSide() {return Side.CLIENT;}
 

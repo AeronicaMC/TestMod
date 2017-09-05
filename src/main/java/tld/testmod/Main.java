@@ -46,7 +46,7 @@ public class Main
     {
         ModLogger.setLogger(event.getModLog());
         PacketDispatcher.registerPackets();
-        proxy.preInit(event);
+        proxy.preInit();
         ModBlocks.registerTileEntities();
         MinecraftForge.EVENT_BUS.register(SpawnHandler.INSTANCE);
     }
@@ -54,7 +54,7 @@ public class Main
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
-        proxy.init(event);
+        proxy.init();
         EntityRegistry.registerModEntity(new ResourceLocation(MODID,  "test_skeleton"), EntityGoldenSkeleton.class, "test_skeleton", getNextModEntityId(), this, 64, 1, true, 0x000000, 0xE6BA50);
         EntityRegistry.registerModEntity(new ResourceLocation(MODID,  "mob_timpani"), EntityTimpani.class, "mob_timpani", getNextModEntityId(), this, 64, 1, true, 0x000000, 0xFF5121);
         
@@ -70,7 +70,7 @@ public class Main
     @EventHandler
     public void postInit(FMLPostInitializationEvent event)
     {
-        proxy.postInit(event);
+        proxy.postInit();
     }
 
     private int getNextModEntityId()

@@ -28,9 +28,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.animation.ITimeValue;
 import net.minecraftforge.common.model.animation.IAnimationStateMachine;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -40,16 +37,16 @@ import tld.testmod.common.world.WorldGenStageRegal;
 public class CommonProxy
 {
 	
-    public void preInit(FMLPreInitializationEvent event)
+    public void preInit()
     {
         GameRegistry.registerWorldGenerator(new WorldGenStageRegal(), 0);
 	}
 
-    public void init(FMLInitializationEvent event)
+    public void init()
     {
     }
 
-    public void postInit(FMLPostInitializationEvent event)
+    public void postInit()
     {
     }
 
