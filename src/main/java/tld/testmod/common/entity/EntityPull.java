@@ -126,9 +126,9 @@ public class EntityPull extends EntityThrowable
         IBlockState state = worldIn.getBlockState(pos);
         boolean stuckOne = false;
         boolean flag = (state.getBlock().isAir(state, worldIn, pos) || state.getBlock().isLeaves(state, worldIn, pos)) &&
-                hasRope((EntityPlayer) thrower, isCreative);
+                hasRope((EntityPlayer) thrower, isCreative) && pos.getY() > 0 && pos.getY() < worldIn.getHeight();
 
-        if (flag)
+        if (flag && thrower != null)
         {
             IBlockState state2 = worldIn.getBlockState(pos.up());
             boolean flag2 = state2.getBlock() instanceof BlockPull;
