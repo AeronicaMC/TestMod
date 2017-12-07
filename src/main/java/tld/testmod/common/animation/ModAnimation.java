@@ -8,7 +8,7 @@ public enum ModAnimation
 
     INSTANCE;
     static long timeOffset;
-    static int lastWorldHashCode;
+    static int lastDimension = Integer.MAX_VALUE;
     
     /**
      * Get the global world time for the current tick, in seconds.
@@ -23,14 +23,14 @@ public enum ModAnimation
      */
     public static float getWorldTime(World world, float tickProgress)
     {
-        int worldHashCode = world.hashCode();
-        if (worldHashCode != lastWorldHashCode)
+        int dimension = world.provider.getDimension();
+        if (dimension != lastDimension)
         {
             timeOffset = world.getTotalWorldTime();
-            lastWorldHashCode = worldHashCode;
+            lastDimension = dimension;
         }
         //long diff = world.getTotalWorldTime() - timeOffset;
-        //ModLogger.info("Animation#getWorldTime: World: %s, time: %d, offset %d, diff: %d", lastWorldHashCode, world.getTotalWorldTime(), timeOffset, diff);
+        //ModLogger.info("Animation#getWorldTime: Dimension: %d, time: %d, offset %d, diff: %d", lastDimension, world.getTotalWorldTime(), timeOffset, diff);
         return (world.getTotalWorldTime() - timeOffset  + tickProgress) / 20;
     }
 
