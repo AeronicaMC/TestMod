@@ -8,11 +8,11 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.animation.Animation;
 import net.minecraftforge.client.model.pipeline.VertexLighterSmoothAo;
 import net.minecraftforge.common.animation.Event;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 import tld.testmod.Main;
-import tld.testmod.common.animation.ModAnimation;
 import tld.testmod.common.animation.OneShotEntity;
 
 public class RenderOneShotEntity extends RenderLiving<OneShotEntity>
@@ -29,7 +29,7 @@ public class RenderOneShotEntity extends RenderLiving<OneShotEntity>
             @Override
             public void render(Entity entity, float limbSwing, float limbSwingSpeed, float timeAlive, float yawHead, float rotationPitch, float scale)
             {
-                float time = ((short)entity.getEntityWorld().getTotalWorldTime() + ModAnimation.getPartialTickTime());
+                float time = ((short)entity.getEntityWorld().getTotalWorldTime() + Animation.getPartialTickTime());
                 super.render(entity, limbSwing, limbSwingSpeed, time, yawHead, rotationPitch, scale);
             }
             @Override

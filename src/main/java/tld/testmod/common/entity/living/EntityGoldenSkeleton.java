@@ -19,6 +19,7 @@ import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityWolf;
@@ -34,7 +35,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.stats.AchievementList;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -216,15 +216,14 @@ public class EntityGoldenSkeleton extends EntityMob implements IRangedAttackMob
     {
         super.onDeath(cause);
 
-        if (cause.getImmediateSource() instanceof EntityArrow && cause.getTrueSource() instanceof EntityPlayer)
+        if (cause.getTrueSource() instanceof EntityCreeper)
         {
-            EntityPlayer entityplayer = (EntityPlayer)cause.getTrueSource();
-            double d0 = entityplayer.posX - this.posX;
-            double d1 = entityplayer.posZ - this.posZ;
+            EntityCreeper entitycreeper = (EntityCreeper)cause.getTrueSource();
 
-            if (d0 * d0 + d1 * d1 >= 2500.0D)
+            if (entitycreeper.getPowered() && entitycreeper.ableToCauseSkullDrop())
             {
-                entityplayer.addStat(AchievementList.SNIPE_SKELETON);
+                entitycreeper.incrementDroppedSkulls();
+                this.entityDropItem(new ItemStack(Items.SKULL, 1, 0), 0.0F);
             }
         }
     }
@@ -305,7 +304,7 @@ public class EntityGoldenSkeleton extends EntityMob implements IRangedAttackMob
         double d1 = target.getEntityBoundingBox().minY + (double)(target.height / 3.0F) - entityarrow.posY;
         double d2 = target.posZ - this.posZ;
         double d3 = (double)MathHelper.sqrt(d0 * d0 + d2 * d2);
-        entityarrow.setThrowableHeading(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float)(14 - this.world.getDifficulty().getDifficultyId() * 4));
+        entityarrow.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float)(14 - this.world.getDifficulty().getDifficultyId() * 4));
         this.playSound(SoundEvents.ENTITY_SKELETON_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
         this.world.spawnEntity(entityarrow);
     }

@@ -13,6 +13,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.animation.Animation;
 import net.minecraftforge.common.animation.Event;
 import net.minecraftforge.common.animation.ITimeValue;
 import net.minecraftforge.common.animation.TimeValues.VariableValue;
@@ -82,9 +83,9 @@ public class OneShotTileEntity extends TileEntity
     {
         if(this.getWorld().isRemote && asm != null)
         {
-            float time = ModAnimation.getWorldTime(world, ModAnimation.getPartialTickTime());
+            float time = Animation.getWorldTime(world, Animation.getPartialTickTime());
             long ltime = (long)this.getWorld().getTotalWorldTime();
-            float pticks = ModAnimation.getPartialTickTime();
+            float pticks = Animation.getPartialTickTime();
             //float time = (System.nanoTime() / 100000 ) +Minecraft.getMinecraft().getRenderPartialTicks();
             //float time = Animation.getWorldTime(getWorld(), Minecraft.getMinecraft().getRenderPartialTicks());
             clickTime.setValue(time);

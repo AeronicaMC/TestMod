@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntitySlime;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
@@ -188,7 +189,7 @@ public class EntityTimpani extends EntitySlime
     }
 
     @Override
-    protected SoundEvent getHurtSound()
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
         return this.isSmallSlime() ? ModSoundEvents.ENTITY_TINY_TIMPANI_HURT : ModSoundEvents.ENTITY_TIMPANI_HURT;
     }

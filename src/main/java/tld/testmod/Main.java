@@ -21,7 +21,6 @@ import tld.testmod.common.entity.living.EntityGoldenSkeleton;
 import tld.testmod.common.entity.living.EntityTimpani;
 import tld.testmod.common.handlers.SpawnHandler;
 import tld.testmod.init.ModBlocks;
-import tld.testmod.init.ModSoundEvents;
 import tld.testmod.network.PacketDispatcher;
 
 @Mod(modid = Main.MODID, name = Main.MODNAME, version = Main.VERSION)
@@ -39,7 +38,6 @@ public class Main
     public static CommonProxy proxy;
     
     public static final CreativeTabs MODTAB  = new ModTab();
-    public static final ModSoundEvents MSE_INSTANCE = ModSoundEvents.getInstance();
     
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)

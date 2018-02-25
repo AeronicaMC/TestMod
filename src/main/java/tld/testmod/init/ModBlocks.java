@@ -11,7 +11,7 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.common.registry.IForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistry;
 import tld.testmod.Main;
 import tld.testmod.common.animation.EdgarAllenBlockLever;
 import tld.testmod.common.animation.EdgarAllenTileEntity;
@@ -123,7 +123,4 @@ public class ModBlocks
         GameRegistry.registerTileEntity(tileEntityClass, Main.prependModID(name));
     }
 
-    private static void registerTileEntity(Class<? extends TileEntity> tileEntityClass, String name, String legacyName) {
-        GameRegistry.registerTileEntityWithAlternatives(tileEntityClass, Main.prependModID(name), Main.prependModID(legacyName));
-    }
 }
