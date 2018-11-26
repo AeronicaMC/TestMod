@@ -141,18 +141,12 @@ public class TestAnimTileEntity extends TileEntity
         this.previousRedstoneState = previousRedstoneState;
         syncToClient();
     }
-    
-    /**
-     * @return the pitch
-     */
+
     public boolean getOpenState()
     {
         return openState;
     }
 
-    /**
-     * @param pitch the pitch to set
-     */
     public void setOpenState(boolean openState)
     {
         this.openState = openState;
