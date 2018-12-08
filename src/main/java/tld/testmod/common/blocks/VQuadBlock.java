@@ -115,7 +115,7 @@ public abstract class VQuadBlock extends Block
     @Override
     public IBlockState getStateFromMeta(int meta)
     {
-        EnumFacing enumfacing = EnumFacing.getHorizontal(meta>>2);
+        EnumFacing enumfacing = EnumFacing.byHorizontalIndex(meta>>2);
         return this.getDefaultState().withProperty(PART, VQuadBlock.EnumPartType.values()[meta & 3]).withProperty(FACING, enumfacing);
     }
 

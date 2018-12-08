@@ -286,7 +286,7 @@ public class BlockPull extends Block
      * Called When an Entity Collided with the Block
      */
     @Override
-    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
+    public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
     {
         if (!worldIn.isRemote)
         {
@@ -377,7 +377,7 @@ public class BlockPull extends Block
     @Override
     public IBlockState getStateFromMeta(int meta)
     {
-        EnumFacing enumfacing = EnumFacing.getHorizontal(meta & 3);
+        EnumFacing enumfacing = EnumFacing.byHorizontalIndex(meta & 3);
         return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(POWERED, Boolean.valueOf((meta & 8) > 0));
     }
 

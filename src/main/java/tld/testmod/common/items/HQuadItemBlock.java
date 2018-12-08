@@ -50,7 +50,7 @@ public class HQuadItemBlock extends Item implements IPlaceableBounding
             if (!flagFL) posFL = posFL.up();
 
             int i = MathHelper.floor((double) (playerIn.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-            EnumFacing enumfacing = EnumFacing.getHorizontal(i);
+            EnumFacing enumfacing = EnumFacing.byHorizontalIndex(i);
             /**get the next blocks. */
             BlockPos posFR = posFL.offset(enumfacing.rotateY());
             BlockPos posBL = posFL.offset(enumfacing);
@@ -100,7 +100,7 @@ public class HQuadItemBlock extends Item implements IPlaceableBounding
         if (!flagFL) posFL = posFL.up();
 
         int i = MathHelper.floor((double) (playerIn.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-        EnumFacing enumfacing = EnumFacing.getHorizontal(i);
+        EnumFacing enumfacing = EnumFacing.byHorizontalIndex(i);
         /**get the next blocks. */
         BlockPos posFR = posFL.offset(enumfacing.rotateY());
         BlockPos posBL = posFL.offset(enumfacing);
@@ -132,7 +132,7 @@ public class HQuadItemBlock extends Item implements IPlaceableBounding
     {
         BlockPos pos = posIn;
         int i = MathHelper.floor((double) (playerIn.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-        EnumFacing enumfacing = EnumFacing.getHorizontal(i);
+        EnumFacing enumfacing = EnumFacing.byHorizontalIndex(i);
         
         Block block = worldIn.getBlockState(pos).getBlock();
         

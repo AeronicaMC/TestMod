@@ -72,7 +72,7 @@ public class ModItems
         
     private static <T extends Item> T registerItem(T item, String name) {
         item.setRegistryName(name.toLowerCase());
-        item.setUnlocalizedName(item.getRegistryName().toString());
+        item.setTranslationKey(item.getRegistryName().toString());
         return item;
     }
 

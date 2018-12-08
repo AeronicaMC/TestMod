@@ -121,7 +121,7 @@ public class EntityPull extends EntityThrowable
     
     private static boolean placePull(World worldIn, EntityLivingBase thrower, ItemStack stackIn, Vec3d posIn, boolean isCreative)
     {
-        Vec3d posInBelow = posIn.addVector(0, -1.0D, 0);
+        Vec3d posInBelow = posIn.add(0, -1.0D, 0);
         BlockPos pos = new BlockPos(posIn);
         IBlockState state = worldIn.getBlockState(pos);
         boolean stuckOne = false;

@@ -49,7 +49,7 @@ public class VQuadItemBlock extends Item implements IPlaceableBounding
             if (!flagLL) posLL = posLL.up();
             
             int i = MathHelper.floor((double) (playerIn.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-            EnumFacing enumfacing = EnumFacing.getHorizontal(i);
+            EnumFacing enumfacing = EnumFacing.byHorizontalIndex(i);
             
             BlockPos posLR = posLL.offset(enumfacing.rotateY());
             BlockPos posUL = posLL.up();
@@ -95,7 +95,7 @@ public class VQuadItemBlock extends Item implements IPlaceableBounding
 
         /**determine the direction the player is facing */
         int i = MathHelper.floor((double) (playerIn.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-        EnumFacing enumfacing = EnumFacing.getHorizontal(i);
+        EnumFacing enumfacing = EnumFacing.byHorizontalIndex(i);
         /**get the next blocks. */
         BlockPos posLR = posLL.offset(enumfacing.rotateY());
         BlockPos posUL = posLL.up();
@@ -125,7 +125,7 @@ public class VQuadItemBlock extends Item implements IPlaceableBounding
     {
         BlockPos pos = posIn;
         int i = MathHelper.floor((double) (playerIn.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-        EnumFacing enumfacing = EnumFacing.getHorizontal(i);
+        EnumFacing enumfacing = EnumFacing.byHorizontalIndex(i);
         
         Block block = worldIn.getBlockState(pos).getBlock();
         

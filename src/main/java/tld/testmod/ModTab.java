@@ -16,14 +16,14 @@ public class ModTab extends CreativeTabs
 
     @Override
     @SideOnly(Side.CLIENT)
-    public String getTranslatedTabLabel()
+    public String getTranslationKey()
     {
         return Main.MODNAME;    
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public ItemStack getTabIconItem()
+    public ItemStack createIcon()
     {
         return new ItemStack(Items.APPLE);
     }
