@@ -16,7 +16,7 @@ public class ForgeAnimBlock extends AnimBaseBlock
     public ForgeAnimBlock()
     {
         super(Material.WOOD);
-        setCreativeTab(Main.MODTAB);
+        setCreativeTab(Main.MOD_TAB);
     }
 
     @Override

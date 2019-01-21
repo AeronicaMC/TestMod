@@ -20,9 +20,9 @@ public class ForgeItemAnimationHolder implements ICapabilityProvider
 
     private final VariableValue cycleLength = new VariableValue(4);
 
-    private final IAnimationStateMachine asm = Main.proxy.load(new ResourceLocation(Main.MODID, "asms/block/forge_engine.json"), ImmutableMap.<String, ITimeValue>of(
+    private final IAnimationStateMachine asm = Main.proxy.load(new ResourceLocation(Main.MOD_ID, "asms/block/forge_engine.json"), ImmutableMap.<String, ITimeValue>of(
         "cycle_length", cycleLength
-    ));
+                                                                                                                                                                     ));
 
     @Override
     public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)

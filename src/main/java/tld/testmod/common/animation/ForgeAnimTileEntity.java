@@ -30,10 +30,10 @@ public class ForgeAnimTileEntity extends TileEntity
     
     public ForgeAnimTileEntity()
     {
-        asm = Main.proxy.load(new ResourceLocation(Main.MODID, "asms/block/forge_engine.json"), ImmutableMap.<String, ITimeValue>of(
+        asm = Main.proxy.load(new ResourceLocation(Main.MOD_ID, "asms/block/forge_engine.json"), ImmutableMap.<String, ITimeValue>of(
                 "cycle_length", cycleLength,
                 "click_time", clickTime
-            ));
+                                                                                                                                    ));
     }
 
     public void handleEvents(float time, Iterable<Event> pastEvents)

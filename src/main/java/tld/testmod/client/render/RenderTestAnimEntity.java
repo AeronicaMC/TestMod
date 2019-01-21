@@ -16,7 +16,7 @@ import tld.testmod.common.animation.TestAnimEntity;
 public class RenderTestAnimEntity extends RenderLiving<TestAnimEntity>
 {
     
-    private static final ResourceLocation location = new ModelResourceLocation(new ResourceLocation(Main.MODID, "test_anim"), "entity");
+    private static final ResourceLocation location = new ModelResourceLocation(new ResourceLocation(Main.MOD_ID, "test_anim"), "entity");
     public static final IRenderFactory<TestAnimEntity> FACTORY = (RenderManager manager) -> new RenderTestAnimEntity(manager);
     
     @SuppressWarnings("deprecation")

@@ -16,7 +16,7 @@ public class ForgeSpinItemBlock extends ItemBlock
     {
         super(block);
         setHasSubtypes(false);
-        setCreativeTab(Main.MODTAB);
+        setCreativeTab(Main.MOD_TAB);
     }
 
     @Override

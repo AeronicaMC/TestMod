@@ -6,7 +6,7 @@ import tld.testmod.Main;
 public class ModLootTables
 {
     
-    public static final ResourceLocation STAGE_REGAL_CHEST_LOOT_TABLE = new ResourceLocation(Main.MODID, "chests/stage_regal_chest");
+    public static final ResourceLocation STAGE_REGAL_CHEST_LOOT_TABLE = new ResourceLocation(Main.MOD_ID, "chests/stage_regal_chest");
     
     private ModLootTables() {}
     

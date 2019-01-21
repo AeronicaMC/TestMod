@@ -16,7 +16,7 @@ import tld.testmod.common.animation.ForgeAnimEntity;
 public class RenderForgeAnimEntity extends RenderLiving<ForgeAnimEntity>
 {
     
-    private static final ResourceLocation location = new ModelResourceLocation(new ResourceLocation(Main.MODID, "forge_anim_test"), "entity");
+    private static final ResourceLocation location = new ModelResourceLocation(new ResourceLocation(Main.MOD_ID, "forge_anim_test"), "entity");
     public static final IRenderFactory<ForgeAnimEntity> FACTORY = (RenderManager manager) -> new RenderForgeAnimEntity(manager);
     
     @SuppressWarnings("deprecation")

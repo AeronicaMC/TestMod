@@ -20,7 +20,7 @@ public class TestAnimBlock extends AnimBaseBlock
     public TestAnimBlock()
     {
         super(Material.WOOD);
-        this.setCreativeTab(Main.MODTAB);
+        this.setCreativeTab(Main.MOD_TAB);
     }
 
     @Override

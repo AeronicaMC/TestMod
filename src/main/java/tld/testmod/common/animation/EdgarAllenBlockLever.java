@@ -23,7 +23,7 @@ public class EdgarAllenBlockLever extends AnimBaseBlock
     public EdgarAllenBlockLever()
     {
         super(Material.WOOD);
-        setCreativeTab(Main.MODTAB);
+        setCreativeTab(Main.MOD_TAB);
     }
 
     @Override

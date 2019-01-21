@@ -23,7 +23,7 @@ public class OneShotBlock extends AnimBaseBlock
     public OneShotBlock()
     {
         super(Material.WOOD);
-        setCreativeTab(Main.MODTAB);
+        setCreativeTab(Main.MOD_TAB);
     }
 
     @Override

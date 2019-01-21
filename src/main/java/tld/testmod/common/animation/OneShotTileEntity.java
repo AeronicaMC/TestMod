@@ -37,10 +37,10 @@ public class OneShotTileEntity extends TileEntity
     
     public OneShotTileEntity()
     {
-        asm = Main.proxy.load(new ResourceLocation(Main.MODID, "asms/block/one_shot.json"), ImmutableMap.<String, ITimeValue>of(
+        asm = Main.proxy.load(new ResourceLocation(Main.MOD_ID, "asms/block/one_shot.json"), ImmutableMap.<String, ITimeValue>of(
                 "click_time", clickTime,
                 "cycle_length", cycleLength
-            ));
+                                                                                                                                ));
     }
     
     /* (non-Javadoc)

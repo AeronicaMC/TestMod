@@ -8,7 +8,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import tld.testmod.Main;
 
-@ObjectHolder(Main.MODID)
+@ObjectHolder(Main.MOD_ID)
 public class ModSoundEvents {
     
     public static final SoundEvent ENTITY_TINY_TIMPANI_SQUISH = registerSound("entity.tiny.timpani.squish");
@@ -25,15 +25,15 @@ public class ModSoundEvents {
      * Register a {@link SoundEvent}.
      * 
      * @author Choonster
-     * @param soundName The SoundEvent's name without the [MODID] prefix
+     * @param soundName The SoundEvent's name without the [MOD_ID] prefix
      * @return The SoundEvent
      */
     private static SoundEvent registerSound(String soundName) {
-        final ResourceLocation soundID = new ResourceLocation(Main.MODID, soundName);
+        final ResourceLocation soundID = new ResourceLocation(Main.MOD_ID, soundName);
         return new SoundEvent(soundID).setRegistryName(soundID);
     }
     
-    @Mod.EventBusSubscriber(modid = Main.MODID)
+    @Mod.EventBusSubscriber(modid = Main.MOD_ID)
     public static class RegistrationHandler {
         @SubscribeEvent
         public static void registerSoundEvents(final RegistryEvent.Register<SoundEvent> event) {

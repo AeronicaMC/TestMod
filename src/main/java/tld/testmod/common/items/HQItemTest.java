@@ -10,7 +10,7 @@ public class HQItemTest extends HQuadItemBlock
     {
         super(blockIn);
         setMaxStackSize(1);
-        setCreativeTab(Main.MODTAB);
+        setCreativeTab(Main.MOD_TAB);
     }
 
 }

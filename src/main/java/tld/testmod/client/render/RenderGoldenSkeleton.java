@@ -16,7 +16,7 @@ import tld.testmod.common.entity.living.EntityGoldenSkeleton;
 @SideOnly(Side.CLIENT)
 public class RenderGoldenSkeleton extends RenderBiped<EntityGoldenSkeleton>
 {
-    private static final ResourceLocation SKELETON_TEXTURES = new ResourceLocation(Main.MODID, "textures/entity/skeleton/test_skeleton.png");
+    private static final ResourceLocation SKELETON_TEXTURES = new ResourceLocation(Main.MOD_ID, "textures/entity/skeleton/test_skeleton.png");
     
     public static final IRenderFactory<EntityGoldenSkeleton> FACTORY = (RenderManager manager) -> new RenderGoldenSkeleton(manager);
 

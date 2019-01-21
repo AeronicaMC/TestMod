@@ -5,7 +5,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableMap;
 
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -36,9 +35,9 @@ public class TestAnimTileEntity extends TileEntity
     
     public TestAnimTileEntity()
     {
-        asm = Main.proxy.load(new ResourceLocation(Main.MODID, "asms/block/test_anim.json"), ImmutableMap.<String, ITimeValue>of(
+        asm = Main.proxy.load(new ResourceLocation(Main.MOD_ID, "asms/block/test_anim.json"), ImmutableMap.<String, ITimeValue>of(
                 "click_time", clickTime
-            ));
+                                                                                                                                 ));
     }
     
     /* (non-Javadoc)

@@ -10,7 +10,6 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.animation.Animation;
 import net.minecraftforge.common.animation.Event;
 import net.minecraftforge.common.animation.ITimeValue;
 import net.minecraftforge.common.animation.TimeValues.VariableValue;
@@ -18,7 +17,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.model.animation.CapabilityAnimation;
 import net.minecraftforge.common.model.animation.IAnimationStateMachine;
 import tld.testmod.Main;
-import tld.testmod.ModLogger;
 
 /*
  * https://github.com/EdgarAllen/ForgeAnimationSystemTests
@@ -33,9 +31,9 @@ public class EdgarAllenAnimEntity extends EntityLiving
     {
         super(world);
         setSize(1, 1);
-        asm = Main.proxy.load(new ResourceLocation(Main.MODID, "asms/block/edgar_allen_block_lever.json"), ImmutableMap.<String, ITimeValue>of(
+        asm = Main.proxy.load(new ResourceLocation(Main.MOD_ID, "asms/block/edgar_allen_block_lever.json"), ImmutableMap.<String, ITimeValue>of(
                 "click_time", clickTime
-        ));
+                                                                                                                                               ));
     }
 
     public void handleEvents(float time, Iterable<Event> pastEvents)

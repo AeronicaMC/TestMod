@@ -16,7 +16,7 @@ import tld.testmod.common.animation.EdgarAllenAnimEntity;
 public class RenderEdgarAllenEntity extends RenderLiving<EdgarAllenAnimEntity>
 {
     
-    private static final ResourceLocation location = new ModelResourceLocation(new ResourceLocation(Main.MODID, "edgar_allen_block_lever"), "entity");
+    private static final ResourceLocation location = new ModelResourceLocation(new ResourceLocation(Main.MOD_ID, "edgar_allen_block_lever"), "entity");
     public static final IRenderFactory<EdgarAllenAnimEntity> FACTORY = (RenderManager manager) -> new RenderEdgarAllenEntity(manager);
     
     @SuppressWarnings("deprecation")

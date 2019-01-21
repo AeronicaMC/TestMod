@@ -33,9 +33,9 @@ public class EdgarAllenTileEntity extends TileEntity
     
     public EdgarAllenTileEntity()
     {
-        asm = Main.proxy.load(new ResourceLocation(Main.MODID, "asms/block/edgar_allen_block_lever.json"), ImmutableMap.<String, ITimeValue>of(
+        asm = Main.proxy.load(new ResourceLocation(Main.MOD_ID, "asms/block/edgar_allen_block_lever.json"), ImmutableMap.<String, ITimeValue>of(
                 "click_time", clickTime
-            ));
+                                                                                                                                               ));
     }
 
     public void handleEvents(float time, Iterable<Event> pastEvents)

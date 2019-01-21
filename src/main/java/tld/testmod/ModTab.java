@@ -11,14 +11,14 @@ public class ModTab extends CreativeTabs
 
     public ModTab()
     {
-        super(Main.MODID);
+        super(Main.MOD_ID);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public String getTranslationKey()
     {
-        return Main.MODNAME;    
+        return Main.MOD_NAME;
     }
 
     @Override

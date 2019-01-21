@@ -23,9 +23,9 @@ public class EdgarAllenItemAnimationHolder implements ICapabilityProvider
 
     private final VariableValue clickTime = new VariableValue(Float.NEGATIVE_INFINITY);
 
-    private final IAnimationStateMachine asm = Main.proxy.load(new ResourceLocation(Main.MODID, "asms/block/edgar_allen_block_lever.json"), ImmutableMap.<String, ITimeValue>of(
+    private final IAnimationStateMachine asm = Main.proxy.load(new ResourceLocation(Main.MOD_ID, "asms/block/edgar_allen_block_lever.json"), ImmutableMap.<String, ITimeValue>of(
          "click_time", clickTime
-    ));
+                                                                                                                                                                                ));
 
     @Override
     public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)

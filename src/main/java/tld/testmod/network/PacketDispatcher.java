@@ -48,7 +48,7 @@ public class PacketDispatcher
      * packets. Since I will be adding wrapper methods, this field is private,
      * but you should make it public if you plan on using it directly.
      */
-    private static final SimpleNetworkWrapper dispatcher = NetworkRegistry.INSTANCE.newSimpleChannel(Main.MODID);
+    private static final SimpleNetworkWrapper dispatcher = NetworkRegistry.INSTANCE.newSimpleChannel(Main.MOD_ID);
 
     /**
      * Call this during pre-init or loading and register all of your packets

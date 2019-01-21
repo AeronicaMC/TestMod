@@ -13,7 +13,7 @@ import tld.testmod.common.entity.living.EntityTimpani;
 public class RenderTimpani extends RenderLiving<EntityTimpani>
 {
 
-    private static final ResourceLocation MOB_TIMPANI_TEXTURE = new ResourceLocation(Main.MODID, "textures/entity/timpani/mob_timpani.png");
+    private static final ResourceLocation MOB_TIMPANI_TEXTURE = new ResourceLocation(Main.MOD_ID, "textures/entity/timpani/mob_timpani.png");
     
     public static final IRenderFactory<EntityTimpani> FACTORY = (RenderManager manager) -> new RenderTimpani(manager);
     

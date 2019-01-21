@@ -13,7 +13,7 @@ public class ForgeSpinBlock extends AnimBaseBlock
     public ForgeSpinBlock()
     {
         super(Material.WOOD);
-        setCreativeTab(Main.MODTAB);
+        setCreativeTab(Main.MOD_TAB);
     }
 
     @Override

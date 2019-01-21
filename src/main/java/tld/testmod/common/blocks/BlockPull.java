@@ -53,7 +53,7 @@ public class BlockPull extends Block
         super(Material.CARPET);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(POWERED, Boolean.valueOf(false)));
         this.setTickRandomly(true);
-        this.setCreativeTab(Main.MODTAB);
+        this.setCreativeTab(Main.MOD_TAB);
         this.rope = rope;
     }
 

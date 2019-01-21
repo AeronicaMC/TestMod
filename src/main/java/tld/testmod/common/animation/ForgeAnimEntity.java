@@ -28,9 +28,9 @@ public class ForgeAnimEntity extends EntityLiving
     {
         super(world);
         setSize(1, 1);
-        asm = Main.proxy.load(new ResourceLocation(Main.MODID, "asms/block/forge_engine.json"), ImmutableMap.<String, ITimeValue>of(
+        asm = Main.proxy.load(new ResourceLocation(Main.MOD_ID, "asms/block/forge_engine.json"), ImmutableMap.<String, ITimeValue>of(
             "cycle_length", cycleLength
-        ));
+                                                                                                                                    ));
     }
 
     public void handleEvents(float time, Iterable<Event> pastEvents)

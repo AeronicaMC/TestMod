@@ -19,7 +19,7 @@ public class EdgarAllenItemBlock extends ItemBlock
     {
         super(block);
         setHasSubtypes(false);
-        setCreativeTab(Main.MODTAB);
+        setCreativeTab(Main.MOD_TAB);
     }
 
     @Override

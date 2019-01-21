@@ -20,9 +20,9 @@ public class ForgeItemSpinHolder implements ICapabilityProvider
 
     private final VariableValue cycle = new VariableValue(0);
 
-    private final IAnimationStateMachine asm = Main.proxy.load(new ResourceLocation(Main.MODID, "asms/block/forge_spin_asm.json"), ImmutableMap.<String, ITimeValue>of(
+    private final IAnimationStateMachine asm = Main.proxy.load(new ResourceLocation(Main.MOD_ID, "asms/block/forge_spin_asm.json"), ImmutableMap.<String, ITimeValue>of(
         "cycle", cycle
-    ));
+                                                                                                                                                                       ));
 
     @Override
     public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)

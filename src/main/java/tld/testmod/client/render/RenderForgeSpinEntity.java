@@ -16,7 +16,7 @@ import tld.testmod.common.animation.ForgeSpinEntity;
 public class RenderForgeSpinEntity extends RenderLiving<ForgeSpinEntity>
 {
     
-    private static final ResourceLocation location = new ModelResourceLocation(new ResourceLocation(Main.MODID, "forge_spin_test"), "entity");
+    private static final ResourceLocation location = new ModelResourceLocation(new ResourceLocation(Main.MOD_ID, "forge_spin_test"), "entity");
     public static final IRenderFactory<ForgeSpinEntity> FACTORY = (RenderManager manager) -> new RenderForgeSpinEntity(manager);
     
     @SuppressWarnings("deprecation")

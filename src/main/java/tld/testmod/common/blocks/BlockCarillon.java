@@ -32,7 +32,7 @@ public class BlockCarillon extends Block implements IActiveNoteReceiver
     {
         super(Material.WOOD);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
-        this.setCreativeTab(Main.MODTAB);
+        this.setCreativeTab(Main.MOD_TAB);
     }
 
     /**

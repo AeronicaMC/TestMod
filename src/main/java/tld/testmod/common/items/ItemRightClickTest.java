@@ -15,7 +15,6 @@ import tld.testmod.Main;
 import tld.testmod.ModLogger;
 import tld.testmod.client.midi.IActiveNoteReceiver;
 import tld.testmod.client.midi.MidiUtils;
-import tld.testmod.init.ModSoundEvents;
 
 public class ItemRightClickTest extends Item implements IActiveNoteReceiver
 {
@@ -24,7 +23,7 @@ public class ItemRightClickTest extends Item implements IActiveNoteReceiver
     {
         setMaxStackSize(1);
         setHasSubtypes(false);
-        setCreativeTab(Main.MODTAB);
+        setCreativeTab(Main.MOD_TAB);
     }
 
     @Override

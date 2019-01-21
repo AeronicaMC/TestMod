@@ -28,9 +28,9 @@ public class TestAnimEntity extends EntityLiving
     {
         super(world);
         setSize(1, 1);
-        asm = Main.proxy.load(new ResourceLocation(Main.MODID, "asms/block/test_anim.json"), ImmutableMap.<String, ITimeValue>of(
+        asm = Main.proxy.load(new ResourceLocation(Main.MOD_ID, "asms/block/test_anim.json"), ImmutableMap.<String, ITimeValue>of(
                 "click_time", clickTime
-        ));
+                                                                                                                                 ));
     }
 
     public void handleEvents(float time, Iterable<Event> pastEvents)

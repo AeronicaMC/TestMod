@@ -18,7 +18,7 @@ import tld.testmod.common.animation.OneShotEntity;
 public class RenderOneShotEntity extends RenderLiving<OneShotEntity>
 {
     
-    private static final ResourceLocation location = new ModelResourceLocation(new ResourceLocation(Main.MODID, "one_shot"), "entity");
+    private static final ResourceLocation location = new ModelResourceLocation(new ResourceLocation(Main.MOD_ID, "one_shot"), "entity");
     public static final IRenderFactory<OneShotEntity> FACTORY = (RenderManager manager) -> new RenderOneShotEntity(manager);
     
     @SuppressWarnings("deprecation")

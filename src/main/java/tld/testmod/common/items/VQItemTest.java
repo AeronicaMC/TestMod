@@ -11,7 +11,7 @@ public class VQItemTest extends VQuadItemBlock
     {
         super(blockIn);
         setMaxStackSize(1);
-        setCreativeTab(Main.MODTAB);
+        setCreativeTab(Main.MOD_TAB);
     }
 
 }

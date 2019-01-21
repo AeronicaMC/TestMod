@@ -1,16 +1,7 @@
 package tld.testmod.common.world;
 
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Random;
-
-import net.minecraft.block.BlockAir;
-import net.minecraft.block.BlockCarpet;
-import net.minecraft.block.BlockChest;
-import net.minecraft.block.BlockSlab;
-import net.minecraft.block.IGrowable;
+import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -27,8 +18,8 @@ import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
@@ -40,6 +31,12 @@ import tld.testmod.common.entity.living.EntityGoldenSkeleton;
 import tld.testmod.common.entity.living.EntityTimpani;
 import tld.testmod.init.ModLootTables;
 
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Random;
+
+import static net.minecraft.init.Biomes.*;
+
 /**
  * {@link IWorldGenerator}
  * @see <a ref="https://www.reddit.com/r/feedthebeast/comments/5x0twz/investigating_extreme_worldgen_lag/">Reddit - investigating_extreme_worldgen_lag</a>
@@ -48,38 +45,35 @@ import tld.testmod.init.ModLootTables;
 public class WorldGenStageRegal implements IWorldGenerator
 {
 
-    public static final ResourceLocation STAGE_REGAL = new ResourceLocation(Main.prependModID("stage_regal"));
-    
-    /**
-     * {@link #generate(Random, int, int, World, IChunkGenerator, IChunkProvider)}
-     */
+    private static final ResourceLocation STAGE_REGAL = new ResourceLocation(Main.prependModID("stage_regal"));
+
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider)
     {
         if(!(world instanceof WorldServer))
             return;
         
-        WorldServer sWorld = (WorldServer) world;
+        WorldServer worldServer = (WorldServer) world;
         // https://www.reddit.com/r/feedthebeast/comments/5x0twz/investigating_extreme_worldgen_lag/
         int x = chunkX * 16 + 8; // The all important offset of +8
         int z = chunkZ * 16 + 8; // The all important offset of +8
 
         BlockPos xzPos = new BlockPos(x, 1, z);
-        Biome biome = sWorld.getBiomeForCoordsBody(xzPos);
-        if(biome != Biomes.HELL && biome != Biomes.VOID && biome != Biomes.ROOFED_FOREST
-                && biome != Biomes.MUSHROOM_ISLAND && biome != Biomes.MUSHROOM_ISLAND_SHORE
-                && biome != Biomes.RIVER && biome != Biomes.BEACH && sWorld.getVillageCollection().getNearestVillage(xzPos, 100) == null)
+        Biome biome = worldServer.getBiomeForCoordsBody(xzPos);
+        if(biome != HELL && biome != VOID && biome != ROOFED_FOREST
+                && biome != MUSHROOM_ISLAND && biome != MUSHROOM_ISLAND_SHORE
+                && biome != RIVER && biome != BEACH && worldServer.getVillageCollection().getNearestVillage(xzPos, 100) == null)
         {
             if(random.nextInt(2) == 0) {
                 for (int rotation = random.nextInt(2) * 2; rotation < Rotation.values().length; rotation++)
-                    if(generateStageAt(sWorld, rotation, random, x, z))
+                    if(generateStageAt(worldServer, rotation, random, x, z))
                         break;
             }
-        }       
+        }
     }
 
     @SuppressWarnings("static-access")
-    public static boolean generateStageAt(WorldServer world, int rotation, Random random, int xIn, int zIn)
+    private static boolean generateStageAt(WorldServer world, int rotation, Random random, int xIn, int zIn)
     {
         final PlacementSettings settings = new PlacementSettings().setRotation(Rotation.values()[rotation]);
         final Template template = world.getSaveHandler().getStructureTemplateManager().getTemplate(world.getMinecraftServer(), STAGE_REGAL);      
@@ -204,7 +198,7 @@ public class WorldGenStageRegal implements IWorldGenerator
                     worldIn.setBlockState(dataPos, chestState);
 
                     TileEntity tile = worldIn.getTileEntity(dataPos);
-                    if(tile != null && tile instanceof TileEntityLockableLoot)
+                    if(tile instanceof TileEntityLockableLoot)
                         ((TileEntityLockableLoot) tile).setLootTable(ModLootTables.STAGE_REGAL_CHEST_LOOT_TABLE, randomIn.nextLong());
                 }
                 else
