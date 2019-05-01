@@ -5,6 +5,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import tld.testmod.ModLogger;
+import tld.testmod.client.gui.util.GuiLabelMX;
 
 import java.io.IOException;
 
@@ -20,6 +21,7 @@ public class GuiChildTab extends GuiScreen
     private String childName;
     private GuiTextField textTest;
     private String cachedTextTest;
+    private GuiLabelMX labelCommon;
 
     public GuiChildTab(GuiTest guiTest)
     {
@@ -48,6 +50,7 @@ public class GuiChildTab extends GuiScreen
         textTest.setMaxStringLength(80);
         textTest.setEnabled(true);
         textTest.setFocused(true);
+        labelCommon = new GuiLabelMX(fontRenderer, 1, 5, bottom -40, width /3, fontRenderer.FONT_HEIGHT + 2, 0xAAAAFF);
         reloadState();
     }
 
@@ -74,6 +77,7 @@ public class GuiChildTab extends GuiScreen
     public void updateScreen()
     {
         textTest.updateCursorCounter();
+        this.labelCommon.setLabel(guiTest.textCommon.getText());
     }
 
     @Override
@@ -81,6 +85,7 @@ public class GuiChildTab extends GuiScreen
     {
         drawRect(5,bottom-1, width-5, bottom, -1);
         textTest.drawTextBox();
+        labelCommon.drawLabel(mc, mouseX, mouseY);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 

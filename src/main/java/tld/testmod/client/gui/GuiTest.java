@@ -5,6 +5,7 @@ package tld.testmod.client.gui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.GuiTextField;
 import tld.testmod.ModLogger;
 import tld.testmod.client.gui.util.GuiLabelMX;
 import tld.testmod.client.gui.util.IHooverText;
@@ -25,6 +26,10 @@ public class GuiTest extends GuiScreen
     private GuiChildTab[] childTabs = new GuiChildTab[maxTabs];
     private int activeChildIndex;
     private int cachedActiveChildIndex;
+
+    // Common Data
+    GuiTextField textCommon;
+    private String cachedTextCommon;
 
     public GuiTest(GuiScreen guiScreenParent)
     {
@@ -53,6 +58,8 @@ public class GuiTest extends GuiScreen
         labelTitle = new GuiLabelMX(fontRenderer, 1, titleX, titleTop, titleWidth, singleLineHeight, -1);
         labelTitle.setLabel("Gui Test");
 
+        textCommon = new GuiTextField(0, fontRenderer, padding, labelTitle.y + labelTitle.height + padding, width /3, fontRenderer.FONT_HEIGHT +2);
+
         for (int i=0; i<maxTabs; i++)
         {
             buttonList.add(new GuiButton(200 + i, 5 + 20 * i, middle - 25, 20, 20, String.format("%d", i + 1)));
@@ -67,11 +74,13 @@ public class GuiTest extends GuiScreen
         updateButtons();
         if (!isStateCached) return;
         activeChildIndex = cachedActiveChildIndex;
+        textCommon.setText(cachedTextCommon);
     }
 
     private void updateState()
     {
         cachedActiveChildIndex = activeChildIndex;
+        cachedTextCommon = textCommon.getText();
         updateButtons();
         isStateCached = true;
     }
@@ -90,6 +99,7 @@ public class GuiTest extends GuiScreen
     @Override
     public void updateScreen()
     {
+        textCommon.updateCursorCounter();
         childTabs[activeChildIndex].updateScreen();
     }
 
@@ -109,6 +119,8 @@ public class GuiTest extends GuiScreen
     protected void keyTyped(char typedChar, int keyCode) throws IOException
     {
         childTabs[activeChildIndex].keyTyped(typedChar, keyCode);
+        textCommon.textboxKeyTyped(typedChar, keyCode);
+        updateState();
         super.keyTyped(typedChar, keyCode);
     }
 
@@ -124,6 +136,7 @@ public class GuiTest extends GuiScreen
         drawDefaultBackground();
 
         labelTitle.drawLabel(mc, mouseX, mouseY);
+        textCommon.drawTextBox();
         drawRect(5,height/2, width-5, (height/2)+1, -1);
         super.drawScreen(mouseX, mouseY, partialTicks);
         childTabs[activeChildIndex].drawScreen(mouseX, mouseY, partialTicks);
@@ -143,6 +156,7 @@ public class GuiTest extends GuiScreen
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException
     {
+        textCommon.mouseClicked(mouseX, mouseY, mouseButton);
         super.mouseClicked(mouseX, mouseY, mouseButton);
     }
 
