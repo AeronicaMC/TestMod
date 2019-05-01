@@ -1,8 +1,6 @@
-< en_US.lang - English localization file >
 testmod.config.title=Test Mod
 entity.test_skeleton.name=Golden Skeleton
 entity.mob_timpani.name=Timpani of Doom
-
 block.testmod:block_hbqtest.name=Horizontal Quad
 block.testmod:block_vbqtest.name=Vertical Quad
 block.testmod:block_vbqtest2.name=Vertical Quad 2
@@ -12,7 +10,8 @@ item.testmod:block_vbqtest.name=Vertical Quad
 item.testmod:block_vbqtest2.name=Vertical Quad 2
 item.testmod:pull.name=Coiled Pull Rope
 item.testmod:tuning_fork.name=Tuning Fork
-
+item.testmod:gui_test.name=Gui Test
+item.mxtune:gui_test.help=Right-Click to open Gui under test
 tile.testmod:one_shot.name=Bell
 tile.testmod:test_anim.name=Test Anim
 tile.testmod:carillon.name=Carillon Console

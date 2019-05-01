@@ -9,16 +9,14 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import tld.testmod.common.CommonProxy;
-import tld.testmod.common.animation.EdgarAllenAnimEntity;
-import tld.testmod.common.animation.ForgeAnimEntity;
-import tld.testmod.common.animation.ForgeSpinEntity;
-import tld.testmod.common.animation.OneShotEntity;
-import tld.testmod.common.animation.TestAnimEntity;
+import tld.testmod.common.animation.*;
 import tld.testmod.common.entity.EntityPull;
 import tld.testmod.common.entity.living.EntityGoldenSkeleton;
 import tld.testmod.common.entity.living.EntityTimpani;
+import tld.testmod.common.handlers.GUIHandler;
 import tld.testmod.common.handlers.SpawnHandler;
 import tld.testmod.common.world.chunk.ModChunkCapability;
 import tld.testmod.init.ModBlocks;
@@ -55,6 +53,7 @@ public class Main
     public void init(FMLInitializationEvent event)
     {
         proxy.init();
+        NetworkRegistry.INSTANCE.registerGuiHandler(instance, GUIHandler.getInstance());
         EntityRegistry.registerModEntity(new ResourceLocation(MOD_ID, "test_skeleton"), EntityGoldenSkeleton.class, "test_skeleton", getNextModEntityId(), this, 64, 1, true, 0x000000, 0xE6BA50);
         EntityRegistry.registerModEntity(new ResourceLocation(MOD_ID, "mob_timpani"), EntityTimpani.class, "mob_timpani", getNextModEntityId(), this, 64, 1, true, 0x000000, 0xFF5121);
         

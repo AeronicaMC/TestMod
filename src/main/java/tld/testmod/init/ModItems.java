@@ -1,25 +1,16 @@
 package tld.testmod.init;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
-import tld.testmod.common.animation.EdgarAllenItemBlock;
-import tld.testmod.common.animation.ForgeAnimItemBlock;
-import tld.testmod.common.animation.ForgeSpinItemBlock;
-import tld.testmod.common.animation.OneShotItemBlock;
-import tld.testmod.common.animation.TestAnimItemBlock;
-import tld.testmod.common.items.HQItemTest;
-import tld.testmod.common.items.ItemPull;
-import tld.testmod.common.items.ItemRightClickTest;
-import tld.testmod.common.items.ItemTuningFork;
-import tld.testmod.common.items.VQItemTest;
-import tld.testmod.common.items.VQItemTest2;
+import tld.testmod.common.animation.*;
+import tld.testmod.common.items.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @SuppressWarnings("unused")
 public class ModItems
@@ -36,6 +27,7 @@ public class ModItems
     public static final TestAnimItemBlock TEST_ANIM = registerItem(new TestAnimItemBlock(ModBlocks.TEST_ANIM), "test_anim");
     public static final ItemPull ITEM_PULL = registerItem(new ItemPull(), "pull");
     public static final ItemTuningFork TUNING_FORK = registerItem(new ItemTuningFork(), "tuning_fork");
+    public static final ItemGuiTest ITEM_GUI_TEST = registerItem(new ItemGuiTest(), "gui_test");
     
     @Mod.EventBusSubscriber
     public static class RegistrationHandler {
@@ -60,6 +52,7 @@ public class ModItems
                     TEST_ANIM,
                     ITEM_PULL,
                     TUNING_FORK,
+                    ITEM_GUI_TEST,
             };
 
             final IForgeRegistry<Item> registry = event.getRegistry();
