@@ -3,6 +3,7 @@ package tld.testmod.client.gui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.GuiTextField;
 import tld.testmod.ModLogger;
 
 import java.io.IOException;
@@ -13,9 +14,12 @@ public class GuiChildTab extends GuiScreen
     private int top;
     private int bottom;
     private int childHeight;
+    private boolean isStateCached;
 
     // Tab content
     private String childName;
+    private GuiTextField textTest;
+    private String cachedTextTest;
 
     public GuiChildTab(GuiTest guiTest)
     {
@@ -40,18 +44,43 @@ public class GuiChildTab extends GuiScreen
     {
         buttonList.clear();
         buttonList.add(new GuiButton(1,(width / 2) - 75, top + 5,150, 20, childName));
+        textTest = new GuiTextField(0, fontRenderer, 5, bottom - 20, width /3 , fontRenderer.FONT_HEIGHT + 2);
+        textTest.setMaxStringLength(80);
+        textTest.setEnabled(true);
+        textTest.setFocused(true);
+        reloadState();
+    }
+
+    private void reloadState()
+    {
+        updateButtons();
+        if (!isStateCached) return;
+        textTest.setText(cachedTextTest);
+    }
+
+    private void updateState()
+    {
+        cachedTextTest = textTest.getText();
+        updateButtons();
+        isStateCached = true;
+    }
+
+    private void updateButtons()
+    {
+        // NOP
     }
 
     @Override
     public void updateScreen()
     {
-        // NOP
+        textTest.updateCursorCounter();
     }
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         drawRect(5,bottom-1, width-5, bottom, -1);
+        textTest.drawTextBox();
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
@@ -65,11 +94,22 @@ public class GuiChildTab extends GuiScreen
                 break;
             default:
         }
+        updateState();
+    }
+
+    @Override
+    protected void keyTyped(char typedChar, int keyCode) throws IOException
+    {
+        textTest.textboxKeyTyped(typedChar, keyCode);
+
+        updateState();
+        super.keyTyped(typedChar, keyCode);
     }
 
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException
     {
+        textTest.mouseClicked(mouseX, mouseY, mouseButton);
         super.mouseClicked(mouseX, mouseY, mouseButton);
     }
 

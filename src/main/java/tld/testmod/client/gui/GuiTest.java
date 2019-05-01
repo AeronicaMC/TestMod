@@ -106,6 +106,13 @@ public class GuiTest extends GuiScreen
     }
 
     @Override
+    protected void keyTyped(char typedChar, int keyCode) throws IOException
+    {
+        childTabs[activeChildIndex].keyTyped(typedChar, keyCode);
+        super.keyTyped(typedChar, keyCode);
+    }
+
+    @Override
     public boolean doesGuiPauseGame()
     {
         return false;
