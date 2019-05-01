@@ -31,6 +31,10 @@ public class GuiTest extends GuiScreen
         this.guiScreenParent = guiScreenParent;
         this.mc = Minecraft.getMinecraft();
         this.fontRenderer = mc.fontRenderer;
+        for (int i=0; i<maxTabs; i++)
+        {
+            childTabs[i] = new GuiChildTab(this);
+        }
     }
 
     @Override
@@ -52,7 +56,7 @@ public class GuiTest extends GuiScreen
         for (int i=0; i<maxTabs; i++)
         {
             buttonList.add(new GuiButton(200 + i, 5 + 20 * i, middle - 25, 20, 20, String.format("%d", i + 1)));
-            childTabs[i] = new GuiChildTab(this, middle, height - 5, height - 5 - middle, String.format("Child %d", i + 1));
+            childTabs[i].setLayout(middle, height - 5, height - 5 - middle, String.format("Child %d", i + 1));
             childTabs[i].initGui();
         }
         reloadState();

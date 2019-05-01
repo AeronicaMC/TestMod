@@ -15,13 +15,18 @@ public class GuiChildTab extends GuiScreen
     private int childHeight;
 
     // Tab content
-    private final String childName;
+    private String childName;
 
-    public GuiChildTab(GuiTest guiTest, int top, int bottom, int childHeight, String childName)
+    public GuiChildTab(GuiTest guiTest)
     {
         this.guiTest = guiTest;
         this.mc = guiTest.mc;
         this.fontRenderer = guiTest.mc.fontRenderer;
+
+    }
+
+    public void setLayout(int top, int bottom, int childHeight, String childName)
+    {
         this.width = guiTest.width;
         this.height = guiTest.height;
         this.top = top;
@@ -36,6 +41,7 @@ public class GuiChildTab extends GuiScreen
         buttonList.clear();
         buttonList.add(new GuiButton(1,(width / 2) - 75, top + 5,150, 20, childName));
     }
+
     @Override
     public void updateScreen()
     {
