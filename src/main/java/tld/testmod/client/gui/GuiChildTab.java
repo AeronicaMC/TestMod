@@ -7,6 +7,7 @@ import net.minecraft.client.gui.GuiTextField;
 import tld.testmod.ModLogger;
 import tld.testmod.client.gui.util.GuiLabelMX;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 
 public class GuiChildTab extends GuiScreen
@@ -31,7 +32,7 @@ public class GuiChildTab extends GuiScreen
 
     }
 
-    public void setLayout(int top, int bottom, int childHeight, String childName)
+    void setLayout(int top, int bottom, int childHeight, String childName)
     {
         this.width = guiTest.width;
         this.height = guiTest.height;
@@ -45,12 +46,12 @@ public class GuiChildTab extends GuiScreen
     public void initGui()
     {
         buttonList.clear();
-        buttonList.add(new GuiButton(1,(width / 2) - 75, top + 5,150, 20, childName));
-        textTest = new GuiTextField(0, fontRenderer, 5, bottom - 20, width /3 , fontRenderer.FONT_HEIGHT + 2);
+        buttonList.add(new GuiButton(1, (width / 2) - 75, top + 5, 150, 20, childName));
+        textTest = new GuiTextField(0, fontRenderer, 5, bottom - 20, width / 3, fontRenderer.FONT_HEIGHT + 2);
         textTest.setMaxStringLength(80);
         textTest.setEnabled(true);
         textTest.setFocused(true);
-        labelCommon = new GuiLabelMX(fontRenderer, 1, 5, bottom -40, width /3, fontRenderer.FONT_HEIGHT + 2, 0xAAAAFF);
+        labelCommon = new GuiLabelMX(fontRenderer, 1, 5, bottom - 40, width / 3, fontRenderer.FONT_HEIGHT + 2, 0xAAAAFF);
         reloadState();
     }
 
@@ -137,7 +138,7 @@ public class GuiChildTab extends GuiScreen
     }
 
     @Override
-    public void onResize(Minecraft mcIn, int w, int h)
+    public void onResize(@Nonnull Minecraft mcIn, int w, int h)
     {
         super.onResize(mcIn, w, h);
     }

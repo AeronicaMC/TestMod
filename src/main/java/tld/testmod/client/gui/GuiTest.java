@@ -22,8 +22,9 @@ public class GuiTest extends GuiScreen
     private GuiScreen guiScreenParent;
     private boolean isStateCached;
 
-    private int maxTabs = 12;
-    private GuiChildTab[] childTabs = new GuiChildTab[maxTabs];
+    private static final int MAX_TABS = 12;
+    private GuiChildTab[] childTabs = new GuiChildTab[MAX_TABS];
+    private static final int TAB_BTN_IDX = 200;
     private int activeChildIndex;
     private int cachedActiveChildIndex;
 
@@ -36,7 +37,7 @@ public class GuiTest extends GuiScreen
         this.guiScreenParent = guiScreenParent;
         this.mc = Minecraft.getMinecraft();
         this.fontRenderer = mc.fontRenderer;
-        for (int i=0; i<maxTabs; i++)
+        for (int i = 0; i< MAX_TABS; i++)
         {
             childTabs[i] = new GuiChildTab(this);
         }
@@ -58,11 +59,11 @@ public class GuiTest extends GuiScreen
         labelTitle = new GuiLabelMX(fontRenderer, 1, titleX, titleTop, titleWidth, singleLineHeight, -1);
         labelTitle.setLabel("Gui Test");
 
-        textCommon = new GuiTextField(0, fontRenderer, padding, labelTitle.y + labelTitle.height + padding, width /3, fontRenderer.FONT_HEIGHT +2);
+        textCommon = new GuiTextField(0, fontRenderer, padding, labelTitle.y + labelTitle.height + padding, width / 3, fontRenderer.FONT_HEIGHT +2);
 
-        for (int i=0; i<maxTabs; i++)
+        for (int i = 0; i< MAX_TABS; i++)
         {
-            buttonList.add(new GuiButton(200 + i, 5 + 20 * i, middle - 25, 20, 20, String.format("%d", i + 1)));
+            buttonList.add(new GuiButton(TAB_BTN_IDX + i, 5 + 20 * i, middle - 25, 20, 20, String.format("%d", i + 1)));
             childTabs[i].setLayout(middle, height - 5, height - 5 - middle, String.format("Child %d", i + 1));
             childTabs[i].initGui();
         }
@@ -87,13 +88,9 @@ public class GuiTest extends GuiScreen
 
     private void updateButtons()
     {
-        for (int i=0; i<maxTabs; i++)
-        {
-            if (activeChildIndex == i)
-                buttonList.get(i).enabled = false;
-            else
-                buttonList.get(i).enabled = true;
-        }
+        for (GuiButton button : buttonList)
+            if (button.id >= TAB_BTN_IDX && button.id < (MAX_TABS + TAB_BTN_IDX))
+                button.enabled = (activeChildIndex + TAB_BTN_IDX) != button.id;
     }
 
     @Override
@@ -106,11 +103,11 @@ public class GuiTest extends GuiScreen
     @Override
     protected void actionPerformed(GuiButton button) throws IOException
     {
-        if (button.id > 199 && button.id < 200 + maxTabs)
+        if (button.id >= TAB_BTN_IDX && button.id < TAB_BTN_IDX + MAX_TABS)
         {
-            this.activeChildIndex = button.id - 200;
+            this.activeChildIndex = button.id - TAB_BTN_IDX;
             this.childTabs[activeChildIndex].onResize(mc, width, height);
-            ModLogger.info("Tab: %d", button.id - 199);
+            ModLogger.info("Tab: %d", button.id - TAB_BTN_IDX - 1);
         }
         updateState();
     }
