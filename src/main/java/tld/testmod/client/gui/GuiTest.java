@@ -6,8 +6,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
+import org.lwjgl.input.Keyboard;
 import tld.testmod.ModLogger;
 import tld.testmod.client.gui.util.GuiLabelMX;
+import tld.testmod.client.gui.util.GuiSliderMX;
 import tld.testmod.client.gui.util.IHooverText;
 import tld.testmod.client.gui.util.ModGuiUtils;
 
@@ -32,6 +34,11 @@ public class GuiTest extends GuiScreen
     GuiTextField textCommon;
     private String cachedTextCommon;
 
+    // Tab limits - allow limiting the viewable tabs
+    private GuiSliderMX sliderViewableTabs;
+    private static final int MIN_TABS = 1;
+    private float cachedViewableTabCount;
+
     public GuiTest(GuiScreen guiScreenParent)
     {
         this.guiScreenParent = guiScreenParent;
@@ -41,6 +48,7 @@ public class GuiTest extends GuiScreen
         {
             childTabs[i] = new GuiChildTab(this);
         }
+        Keyboard.enableRepeatEvents(true);
     }
 
     @Override
@@ -60,6 +68,7 @@ public class GuiTest extends GuiScreen
         labelTitle.setLabel("Gui Test");
 
         textCommon = new GuiTextField(0, fontRenderer, padding, labelTitle.y + labelTitle.height + padding, width / 3, fontRenderer.FONT_HEIGHT +2);
+        sliderViewableTabs = new GuiSliderMX(0, padding, textCommon.y + textCommon.height + padding, width / 3, 20, "Num Tabs", (float) MAX_TABS, (float) MIN_TABS, (float) MAX_TABS, 1F);
 
         for (int i = 0; i< MAX_TABS; i++)
         {
@@ -67,21 +76,25 @@ public class GuiTest extends GuiScreen
             childTabs[i].setLayout(middle, height - 5, height - 5 - middle, String.format("Child %d", i + 1));
             childTabs[i].initGui();
         }
+        buttonList.add(sliderViewableTabs);
         reloadState();
     }
 
     private void reloadState()
     {
-        updateButtons();
         if (!isStateCached) return;
         activeChildIndex = cachedActiveChildIndex;
+        sliderViewableTabs.setValue(cachedViewableTabCount);
         textCommon.setText(cachedTextCommon);
+        updateButtons();
     }
 
     private void updateState()
     {
         cachedActiveChildIndex = activeChildIndex;
         cachedTextCommon = textCommon.getText();
+        cachedViewableTabCount = sliderViewableTabs.getValue();
+
         updateButtons();
         isStateCached = true;
     }
@@ -91,6 +104,14 @@ public class GuiTest extends GuiScreen
         for (GuiButton button : buttonList)
             if (button.id >= TAB_BTN_IDX && button.id < (MAX_TABS + TAB_BTN_IDX))
                 button.enabled = (activeChildIndex + TAB_BTN_IDX) != button.id;
+
+        for (GuiButton button : buttonList)
+            if (button.id >= TAB_BTN_IDX && button.id < (MAX_TABS + TAB_BTN_IDX))
+            {
+                button.visible = (button.id) < (sliderViewableTabs.getValue() + TAB_BTN_IDX);
+                if (activeChildIndex >= sliderViewableTabs.getValue())
+                    activeChildIndex = (int) sliderViewableTabs.getValue() - 1;
+            }
     }
 
     @Override
@@ -109,6 +130,8 @@ public class GuiTest extends GuiScreen
             this.childTabs[activeChildIndex].onResize(mc, width, height);
             ModLogger.info("Tab: %d", button.id - TAB_BTN_IDX - 1);
         }
+        if (button.id == 0)
+            updateState();
         updateState();
     }
 
@@ -144,6 +167,7 @@ public class GuiTest extends GuiScreen
     public void handleMouseInput() throws IOException
     {
         super.handleMouseInput();
+        updateState();
         childTabs[activeChildIndex].handleMouseInput();
     }
 
