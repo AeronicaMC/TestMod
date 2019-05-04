@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
+import net.minecraftforge.fml.client.config.GuiButtonExt;
 import tld.testmod.ModLogger;
 import tld.testmod.client.gui.util.GuiLabelMX;
 
@@ -46,7 +47,7 @@ public class GuiChildTab extends GuiScreen
     public void initGui()
     {
         buttonList.clear();
-        buttonList.add(new GuiButton(1, (width / 2) - 75, top + 5, 150, 20, childName));
+        buttonList.add(new GuiButtonExt(1, (width / 2) - 75, top + 5, 150, 20, childName));
         textTest = new GuiTextField(0, fontRenderer, 5, bottom - 20, width / 3, fontRenderer.FONT_HEIGHT + 2);
         textTest.setMaxStringLength(80);
         textTest.setEnabled(true);

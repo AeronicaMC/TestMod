@@ -6,10 +6,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
+import net.minecraftforge.fml.client.config.GuiButtonExt;
+import net.minecraftforge.fml.client.config.GuiSlider;
 import org.lwjgl.input.Keyboard;
 import tld.testmod.ModLogger;
 import tld.testmod.client.gui.util.GuiLabelMX;
-import tld.testmod.client.gui.util.GuiSliderMX;
 import tld.testmod.client.gui.util.IHooverText;
 import tld.testmod.client.gui.util.ModGuiUtils;
 
@@ -33,11 +34,13 @@ public class GuiTest extends GuiScreen
     // Common Data
     GuiTextField textCommon;
     private String cachedTextCommon;
+    private GuiSlider sliderCommon;
+    private double cachedSliderCommon = 33D;
 
     // Tab limits - allow limiting the viewable tabs
-    private GuiSliderMX sliderViewableTabs;
+    private GuiSlider sliderViewableTabs;
     private static final int MIN_TABS = 1;
-    private float cachedViewableTabCount;
+    private float cachedViewableTabCount = MAX_TABS;
 
     public GuiTest(GuiScreen guiScreenParent)
     {
@@ -68,14 +71,18 @@ public class GuiTest extends GuiScreen
         labelTitle.setLabel("Gui Test");
 
         textCommon = new GuiTextField(0, fontRenderer, padding, labelTitle.y + labelTitle.height + padding, width / 3, fontRenderer.FONT_HEIGHT +2);
-        sliderViewableTabs = new GuiSliderMX(0, padding, textCommon.y + textCommon.height + padding, width / 3, 20, "Num Tabs", (float) MAX_TABS, (float) MIN_TABS, (float) MAX_TABS, 1F);
+
+        sliderViewableTabs = new GuiSlider(1, padding, textCommon.y + textCommon.height + padding, width / 3, 20, "Num Tabs: ", "", (float) MIN_TABS, (float) MAX_TABS, cachedViewableTabCount, false, true);
+
+        sliderCommon = new GuiSlider(0, sliderViewableTabs.width + 5, sliderViewableTabs.y, width / 3, 20, "Background: ", "%", 0D, 100D, cachedSliderCommon, false, true);
 
         for (int i = 0; i< MAX_TABS; i++)
         {
-            buttonList.add(new GuiButton(TAB_BTN_IDX + i, 5 + 20 * i, middle - 25, 20, 20, String.format("%d", i + 1)));
+            buttonList.add(new GuiButtonExt(TAB_BTN_IDX + i, 5 + 20 * i, middle - 25, 20, 20, String.format("%d", i + 1)));
             childTabs[i].setLayout(middle, height - 5, height - 5 - middle, String.format("Child %d", i + 1));
             childTabs[i].initGui();
         }
+        buttonList.add(sliderCommon);
         buttonList.add(sliderViewableTabs);
         reloadState();
     }
@@ -85,6 +92,7 @@ public class GuiTest extends GuiScreen
         if (!isStateCached) return;
         activeChildIndex = cachedActiveChildIndex;
         sliderViewableTabs.setValue(cachedViewableTabCount);
+        sliderCommon.setValue(cachedSliderCommon);
         textCommon.setText(cachedTextCommon);
         updateButtons();
     }
@@ -93,7 +101,8 @@ public class GuiTest extends GuiScreen
     {
         cachedActiveChildIndex = activeChildIndex;
         cachedTextCommon = textCommon.getText();
-        cachedViewableTabCount = sliderViewableTabs.getValue();
+        cachedViewableTabCount = (float) sliderViewableTabs.getValue();
+        cachedSliderCommon = sliderCommon.getValue();
 
         updateButtons();
         isStateCached = true;
@@ -124,13 +133,13 @@ public class GuiTest extends GuiScreen
     @Override
     protected void actionPerformed(GuiButton button) throws IOException
     {
-        if (button.id >= TAB_BTN_IDX && button.id < TAB_BTN_IDX + MAX_TABS)
+        if ((button.id >= TAB_BTN_IDX) && (button.id < (TAB_BTN_IDX + MAX_TABS)))
         {
             this.activeChildIndex = button.id - TAB_BTN_IDX;
             this.childTabs[activeChildIndex].onResize(mc, width, height);
-            ModLogger.info("Tab: %d", button.id - TAB_BTN_IDX - 1);
+            ModLogger.info("Tab: %d", (button.id - TAB_BTN_IDX + 1));
         }
-        if (button.id == 0)
+        if (button.id == 0 || button.id == 1)
             updateState();
         updateState();
     }
@@ -153,7 +162,9 @@ public class GuiTest extends GuiScreen
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
-        drawDefaultBackground();
+        // drawDefaultBackground();
+        int color = (int) (sliderCommon.getValue() * 2.55D);
+        this.drawGradientRect(0, 0, this.width, this.height, 0xCC000000 , 0xCC000000 + (color/2 << 16) + (color/2 << 8) + color);
 
         labelTitle.drawLabel(mc, mouseX, mouseY);
         textCommon.drawTextBox();
