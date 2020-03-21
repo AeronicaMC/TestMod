@@ -15,6 +15,7 @@ import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.common.property.Properties;
 
+@SuppressWarnings("deprecation")
 public abstract class AnimBaseBlock extends Block
 {
 

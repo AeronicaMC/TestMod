@@ -1,40 +1,37 @@
 buildscript {
     repositories {
         jcenter()
-        maven { url = "https://files.minecraftforge.net/maven" }
+        maven {
+            name = "forge"
+            url = "https://files.minecraftforge.net/maven"
+        }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath "net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT"
     }
 }
-apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: "net.minecraftforge.gradle.forge"
 //Only edit below this line, the above code adds and enables the nessasary things for Forge to be setup.
+apply plugin: 'java'
 
-sourceCompatibility = targetCompatibility = "1.8" // Need this here so eclipse task generates correctly.
-compileJava {
-    sourceCompatibility = targetCompatibility = "1.8"
-}
+sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
 
-ext.buildProperties = file "build.properties"
-
-buildProperties.withReader {
-    def properties = new Properties()
-    properties.load(it)
-    ext.config = new ConfigSlurper().parse properties
-}
-
-version = "${config.modVersionMajor}.${config.modVersionMinor}.${config.modVersionRev}"
-group = "tld.testmod"
-archivesBaseName = "testmod-${config.minecraftVersion}"
+version = modVersion
+group = 'tld.testmod'
+archivesBaseName = "${modBaseName}-${minecraftVersion}"
 
 minecraft {
-    version = "${config.minecraftVersion}-${config.forgeVersion}"
-    runDir = "${config.runDir}"
-	mappings = "${config.forgeMappings}"
+    version = project.forgeVersion
+    runDir = "run"
+	mappings = "${project.forgeMappings}"
     
 	replaceIn "tld/testmod/Main.java"
     replace "{@VERSION}", project.version
-    replace "{@FORGE_VERSION}", "${config.minecraftVersion}-${config.forgeVersion}"
+    replace "{@FORGE_VERSION}", "${project.forgeVersion}"
+}
+
+repositories {
+    mavenCentral()
 }
 
 dependencies {
@@ -60,3 +57,5 @@ processResources
         exclude 'mcmod.info'
     }
 }
+
+//sourceSets { main { output.resourcesDir = output.classesDir } }
