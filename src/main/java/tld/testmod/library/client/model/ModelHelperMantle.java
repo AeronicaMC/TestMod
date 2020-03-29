@@ -22,7 +22,7 @@
 //
 // https://github.com/SlimeKnights/Mantle
 //
-package tld.testmod.library.client;
+package tld.testmod.library.client.model;
 
 import com.google.common.collect.ImmutableMap;
 
