@@ -13,8 +13,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import tld.testmod.Main;
 import tld.testmod.ModLogger;
-import tld.testmod.client.midi.IActiveNoteReceiver;
-import tld.testmod.client.midi.MidiUtils;
+import tld.testmod.library.client.midi.IActiveNoteReceiver;
+import tld.testmod.library.client.midi.MidiUtils;
 
 public class ItemRightClickTest extends Item implements IActiveNoteReceiver
 {

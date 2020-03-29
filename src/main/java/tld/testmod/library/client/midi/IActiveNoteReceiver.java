@@ -1,4 +1,4 @@
-package tld.testmod.client.midi;
+package tld.testmod.library.client.midi;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;

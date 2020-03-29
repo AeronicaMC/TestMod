@@ -46,7 +46,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import tld.testmod.client.render.RenderOneShotTileEntity;
-import tld.testmod.common.IVariant;
+import tld.testmod.library.IVariant;
 import tld.testmod.common.animation.EdgarAllenTileEntity;
 import tld.testmod.common.animation.ForgeAnimTileEntity;
 import tld.testmod.common.animation.ForgeSpinTileEntity;

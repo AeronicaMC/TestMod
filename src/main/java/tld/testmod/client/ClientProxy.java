@@ -11,6 +11,7 @@ import net.minecraft.util.IThreadListener;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.animation.ITimeValue;
 import net.minecraftforge.common.model.animation.IAnimationStateMachine;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -18,14 +19,7 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
-import tld.testmod.client.render.RenderEdgarAllenEntity;
-import tld.testmod.client.render.RenderForgeAnimEntity;
-import tld.testmod.client.render.RenderForgeSpinEntity;
-import tld.testmod.client.render.RenderGoldenSkeleton;
-import tld.testmod.client.render.RenderOneShotEntity;
-import tld.testmod.client.render.RenderPullEntity;
-import tld.testmod.client.render.RenderTestAnimEntity;
-import tld.testmod.client.render.RenderTimpani;
+import tld.testmod.client.render.*;
 import tld.testmod.common.CommonProxy;
 import tld.testmod.common.animation.EdgarAllenAnimEntity;
 import tld.testmod.common.animation.ForgeAnimEntity;
@@ -45,6 +39,7 @@ public class ClientProxy extends CommonProxy
     public void preInit()
     {
         super.preInit();
+        MinecraftForge.EVENT_BUS.register(new RenderEvents());
         RenderingRegistry.registerEntityRenderingHandler(EntityGoldenSkeleton.class, RenderGoldenSkeleton.FACTORY);
         RenderingRegistry.registerEntityRenderingHandler(EntityTimpani.class, RenderTimpani.FACTORY);
         RenderingRegistry.registerEntityRenderingHandler(EntityPull.class, RenderPullEntity.FACTORY);       

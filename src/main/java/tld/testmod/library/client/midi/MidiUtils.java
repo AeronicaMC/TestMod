@@ -1,4 +1,4 @@
-package tld.testmod.client.midi;
+package tld.testmod.library.client.midi;
 
 import javax.annotation.Nullable;
 import javax.sound.midi.MidiDevice;

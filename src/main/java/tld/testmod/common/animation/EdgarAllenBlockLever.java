@@ -30,7 +30,8 @@ public class EdgarAllenBlockLever extends AnimBaseBlock
     public TileEntity createTileEntity(World world, IBlockState state) {
         return new EdgarAllenTileEntity();
     }
-    
+
+    @Deprecated
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         return BASE_AABB;

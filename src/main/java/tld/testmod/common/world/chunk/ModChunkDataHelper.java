@@ -3,7 +3,7 @@ package tld.testmod.common.world.chunk;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
-import tld.testmod.common.Util;
+import tld.testmod.library.Util;
 
 import javax.annotation.Nullable;
 

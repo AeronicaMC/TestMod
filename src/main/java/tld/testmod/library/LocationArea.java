@@ -1,4 +1,4 @@
-package tld.testmod.common;
+package tld.testmod.library;
 
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;

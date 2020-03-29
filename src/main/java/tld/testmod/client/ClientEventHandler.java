@@ -17,7 +17,7 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
-import tld.testmod.common.LocationArea;
+import tld.testmod.library.LocationArea;
 import tld.testmod.common.items.IPlaceableBounding;
 
 /*

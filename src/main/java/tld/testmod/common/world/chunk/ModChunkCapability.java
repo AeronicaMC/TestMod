@@ -13,7 +13,7 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import tld.testmod.Main;
-import tld.testmod.common.Util;
+import tld.testmod.library.Util;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

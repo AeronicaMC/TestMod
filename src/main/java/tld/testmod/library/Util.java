@@ -1,4 +1,4 @@
-package tld.testmod.common;
+package tld.testmod.library;
 
 /*
  * This class was copied from https://github.com/JamiesWhiteShirt/clothesline

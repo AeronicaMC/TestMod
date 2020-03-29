@@ -13,7 +13,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import tld.testmod.common.LocationArea;
+import tld.testmod.library.LocationArea;
 import tld.testmod.common.blocks.HQuadBlock;
 
 public class HQuadItemBlock extends Item implements IPlaceableBounding

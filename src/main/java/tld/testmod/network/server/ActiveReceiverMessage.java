@@ -9,7 +9,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
-import tld.testmod.client.midi.IActiveNoteReceiver;
+import tld.testmod.library.client.midi.IActiveNoteReceiver;
 import tld.testmod.network.AbstractMessage.AbstractServerMessage;
 
 public class ActiveReceiverMessage extends AbstractServerMessage<ActiveReceiverMessage>
