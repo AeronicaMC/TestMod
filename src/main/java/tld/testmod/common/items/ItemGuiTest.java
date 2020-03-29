@@ -45,6 +45,6 @@ public class ItemGuiTest extends Item
     @Override
     public void addInformation(ItemStack stackIn, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
-        tooltip.add(TextFormatting.RESET + I18n.format("item.mxtune:gui_test.name"));
+        tooltip.add(TextFormatting.RESET + I18n.format("item.testmod:gui_test.name"));
     }
 }
