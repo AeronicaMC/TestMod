@@ -43,7 +43,7 @@ import net.minecraftforge.common.model.TRSRTransformation;
 
 import javax.vecmath.Vector3f;
 
-public class ModelHelper
+public class ModelHelperMantle
 {
     public static final IModelState DEFAULT_ITEM_STATE;
     public static final IModelState DEFAULT_TOOL_STATE;
