@@ -30,6 +30,7 @@ import tld.testmod.common.entity.EntityPull;
 import tld.testmod.common.entity.EntityTimpaniFx;
 import tld.testmod.common.entity.living.EntityGoldenSkeleton;
 import tld.testmod.common.entity.living.EntityTimpani;
+import tld.testmod.common.handlers.BakedModelHandler;
 import tld.testmod.init.ModItems;
 
 public class ClientProxy extends CommonProxy
@@ -39,7 +40,7 @@ public class ClientProxy extends CommonProxy
     public void preInit()
     {
         super.preInit();
-        MinecraftForge.EVENT_BUS.register(new RenderEvents());
+        MinecraftForge.EVENT_BUS.register(BakedModelHandler.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityGoldenSkeleton.class, RenderGoldenSkeleton.FACTORY);
         RenderingRegistry.registerEntityRenderingHandler(EntityTimpani.class, RenderTimpani.FACTORY);
         RenderingRegistry.registerEntityRenderingHandler(EntityPull.class, RenderPullEntity.FACTORY);       

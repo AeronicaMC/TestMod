@@ -28,6 +28,7 @@ public class ModItems
     public static final ItemPull ITEM_PULL = registerItem(new ItemPull(), "pull");
     public static final ItemTuningFork TUNING_FORK = registerItem(new ItemTuningFork(), "tuning_fork");
     public static final ItemGuiTest ITEM_GUI_TEST = registerItem(new ItemGuiTest(), "gui_test");
+    public static final ItemMultiTex ITEM_MULTI_TEX = registerItem(new ItemMultiTex(), "multitex");
     
     @Mod.EventBusSubscriber
     public static class RegistrationHandler {
@@ -53,6 +54,7 @@ public class ModItems
                     ITEM_PULL,
                     TUNING_FORK,
                     ITEM_GUI_TEST,
+                    ITEM_MULTI_TEX,
             };
 
             final IForgeRegistry<Item> registry = event.getRegistry();
