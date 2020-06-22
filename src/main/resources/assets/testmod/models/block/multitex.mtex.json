@@ -1,0 +1,8 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "testmod:items/multitex01",
+    "layer1": "testmod:items/multitex02",
+    "layer2": "testmod:items/multitex03"
+  }
+}
