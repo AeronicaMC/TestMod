@@ -50,8 +50,8 @@ public class ModelLoaderMultiTex implements ICustomModelLoader, JsonDeserializat
         while ((texture = modelBlock.textures.get("layer" + layer++)) != null) {
             builder.add(new ResourceLocation(texture));
         }
-        return new ItemLayerModel(modelBlock);
-        //return new ModelMultiTex(modelBlock, builder.build());
+        //return new ItemLayerModel(modelBlock);
+        return new ModelMultiTex(modelBlock);
     }
 
     @Override
