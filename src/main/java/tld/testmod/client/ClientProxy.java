@@ -44,7 +44,7 @@ public class ClientProxy extends CommonProxy
     {
         super.preInit();
         ModelLoaderRegistry.registerLoader(ModelLoaderMultiTex.INSTANCE);
-        MinecraftForge.EVENT_BUS.register(BakedModelHandler.INSTANCE);
+        //MinecraftForge.EVENT_BUS.register(BakedModelHandler.INSTANCE);
         RenderingRegistry.registerEntityRenderingHandler(EntityGoldenSkeleton.class, RenderGoldenSkeleton.FACTORY);
         RenderingRegistry.registerEntityRenderingHandler(EntityTimpani.class, RenderTimpani.FACTORY);
         RenderingRegistry.registerEntityRenderingHandler(EntityPull.class, RenderPullEntity.FACTORY);       

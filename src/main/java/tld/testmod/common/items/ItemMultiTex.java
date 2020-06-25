@@ -23,8 +23,9 @@ public class ItemMultiTex extends Item
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
         ItemStack itemstack = playerIn.getHeldItem(handIn);
+        itemstack.setItemDamage((itemstack.getItemDamage()+1)%2);
         playerIn.setActiveHand(handIn);
-        ModLogger.info("Right Clicked");
+        ModLogger.info("Right Clicked %s", itemstack.getItemDamage());
         return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
     }
 
