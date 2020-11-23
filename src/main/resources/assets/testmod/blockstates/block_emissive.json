@@ -1,0 +1,21 @@
+{
+  "forge_marker": 1,
+  "defaults":
+  {
+    "model": "forge:multi-layer",
+    "custom":
+    {
+      "base": "testmod:block_emissive#glow",
+      "Solid": "testmod:block_emissive#glow",
+      "Translucent": "testmod:block_emissive#overlay"
+    },
+    "transform": "forge:default-block"
+  },
+  "variants":
+  {
+    "normal": [{}],
+    "inventory": [{"model": "testmod:block_emissive_item"}],
+    "glow": [{ "model": "testmod:block_emissive_glow" }],
+    "overlay": [{ "model": "testmod:block_emissive_overlay" }]
+  }
+}

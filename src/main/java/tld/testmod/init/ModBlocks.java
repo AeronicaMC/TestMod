@@ -23,12 +23,7 @@ import tld.testmod.common.animation.OneShotBlock;
 import tld.testmod.common.animation.OneShotTileEntity;
 import tld.testmod.common.animation.TestAnimBlock;
 import tld.testmod.common.animation.TestAnimTileEntity;
-import tld.testmod.common.blocks.BlockCarillon;
-import tld.testmod.common.blocks.BlockPull;
-import tld.testmod.common.blocks.CarillionTileEntity;
-import tld.testmod.common.blocks.HQBTest;
-import tld.testmod.common.blocks.VQBTest;
-import tld.testmod.common.blocks.VQBTest2;
+import tld.testmod.common.blocks.*;
 
 @SuppressWarnings("unused")
 public class ModBlocks
@@ -46,6 +41,8 @@ public class ModBlocks
     public static final ItemBlock ITEM_PULL_ROPE = new ItemBlock(PULL_ROPE);
     public static final BlockCarillon CARILLON = registerBlock(new BlockCarillon(), "carillon");
     public static final ItemBlock ITEM_CARILLON = new ItemBlock(CARILLON);
+    public static final BlockEmissive BLOCK_EMISSIVE = registerBlock(new BlockEmissive(), "block_emissive");
+    public static final ItemBlock ITEM_EMISSIVE = new ItemBlock(BLOCK_EMISSIVE);
     
     private ModBlocks() {}
     
@@ -74,6 +71,7 @@ public class ModBlocks
                     TEST_ANIM,
                     PULL_ROPE,
                     CARILLON,
+                    BLOCK_EMISSIVE,
             };
 
             registry.registerAll(blocks);
@@ -89,6 +87,7 @@ public class ModBlocks
             final ItemBlock[] items = {
                     ITEM_PULL_ROPE,
                     ITEM_CARILLON,
+                    ITEM_EMISSIVE,
             };
 
             final IForgeRegistry<Item> registry = event.getRegistry();

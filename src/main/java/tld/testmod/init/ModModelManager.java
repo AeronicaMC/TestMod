@@ -46,6 +46,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import tld.testmod.client.render.RenderOneShotTileEntity;
+import tld.testmod.common.blocks.BlockEmissive;
 import tld.testmod.library.IVariant;
 import tld.testmod.common.animation.EdgarAllenTileEntity;
 import tld.testmod.common.animation.ForgeAnimTileEntity;
@@ -80,6 +81,11 @@ public class ModModelManager
                 {
                 }).build());
 
+        ModelLoader.setCustomStateMapper(ModBlocks.BLOCK_EMISSIVE, new StateMap.Builder().ignore(new IProperty[]
+                {
+                        BlockEmissive.POWERED,
+                }).build());
+
         registerItemModel(ModBlocks.BLOCK_VQBTEST);
         registerItemModel(ModBlocks.BLOCK_VQBTEST2);
         registerItemModel(ModBlocks.BLOCK_HQBTEST);
@@ -90,6 +96,7 @@ public class ModModelManager
         registerItemModel(ModBlocks.TEST_ANIM);
         registerItemModel(ModBlocks.ITEM_PULL_ROPE);
         registerItemModel(ModBlocks.ITEM_CARILLON);
+        registerItemModel(ModBlocks.ITEM_EMISSIVE);
     }
     
     public void registerTileRenderers() {
