@@ -22,12 +22,14 @@ import tld.testmod.common.world.chunk.ModChunkCapability;
 import tld.testmod.init.ModBlocks;
 import tld.testmod.network.PacketDispatcher;
 
-@Mod(modid = Main.MOD_ID, name = Main.MOD_NAME, version = Main.VERSION)
+@Mod(modid = Main.MOD_ID, name = Main.MOD_NAME, version = Main.VERSION, dependencies = Main.DEPENDENCIES)
 public class Main
 {
     public static final String MOD_ID = "testmod";
     static final String MOD_NAME = "Test Mod";
     public static final String VERSION = "{@VERSION}";
+    public static final String DEPENDENCIES = "required-after:forge@[14.23.5.2768,);"
+            + "required-after:aguilib@[0.1.0-alpha.0,);";
     private static int modEntityId = 0;
     
     @Mod.Instance(MOD_ID)
