@@ -35,8 +35,9 @@ repositories {
 }
 
 dependencies {
-    compile files ('../aguiLib/build/libs/aguilib-1.12.2-0.1.0-alpha.0-dev.jar')
-    runtime files ('../aguiLib/build/libs/aguilib-1.12.2-0.1.0-alpha.0.jar')
+    compile ('com.h2database:h2:1.4.200')
+    //compile files ('../aguiLib/build/libs/aguilib-1.12.2-0.1.0-alpha.0-dev.jar')
+    //runtime files ('../aguiLib/build/libs/aguilib-1.12.2-0.1.0-alpha.0.jar')
 }
 
 processResources
