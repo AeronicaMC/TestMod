@@ -52,6 +52,8 @@ public class FileHelper
     public static final String CLIENT_LIB_FOLDER = CLIENT_FOLDER + "/library";
     public static final String CLIENT_SERVER_CACHE_FOLDER = CLIENT_FOLDER + "/server_cache";
     public static final String SERVER_FOLDER = MOD_FOLDER;
+    public static final String SERVER_H2DB_FOLDER = MOD_FOLDER + "/h2db";
+    public static final String SERVER_H2DB_NAME = "data";
     public static final String SERVER_PLAY_LISTS_FOLDER = SERVER_FOLDER + "/playlists";
     public static final String SERVER_MUSIC_FOLDER = SERVER_FOLDER + "/music";
 

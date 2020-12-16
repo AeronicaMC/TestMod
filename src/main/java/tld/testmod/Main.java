@@ -17,6 +17,7 @@ import tld.testmod.common.entity.living.EntityTimpani;
 import tld.testmod.common.handlers.GUIHandler;
 import tld.testmod.common.handlers.SpawnHandler;
 import tld.testmod.common.storage.FileHelper;
+import tld.testmod.common.storage.ServerFileManager;
 import tld.testmod.common.world.chunk.ModChunkCapability;
 import tld.testmod.init.ModBlocks;
 import tld.testmod.network.PacketDispatcher;
@@ -27,8 +28,7 @@ public class Main
     public static final String MOD_ID = "testmod";
     static final String MOD_NAME = "Test Mod";
     public static final String VERSION = "{@VERSION}";
-    public static final String DEPENDENCIES = "required-after:forge@[14.23.5.2768,);"
-            + "required-after:aguilib@[0.1.0-alpha.0,);";
+    public static final String DEPENDENCIES = "required-after:forge@[14.23.5.2768,);";
     private static int modEntityId = 0;
     
     @Mod.Instance(MOD_ID)
@@ -77,12 +77,13 @@ public class Main
     public void onEvent(FMLServerStartingEvent event)
     {
         FileHelper.initServerStorage();
+        ServerFileManager.start();
     }
 
     @Mod.EventHandler
     public void onEvent(FMLServerStoppingEvent event)
     {
-
+        ServerFileManager.shutdown();
     }
 
     private int getNextModEntityId()
