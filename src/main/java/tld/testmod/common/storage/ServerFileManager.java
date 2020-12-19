@@ -8,10 +8,7 @@ import tld.testmod.common.utils.NBTHelper;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.UUID;
 
 import static tld.testmod.common.storage.FileHelper.*;
@@ -90,17 +87,22 @@ public class ServerFileManager
         try
         {
             Class.forName("org.h2.Driver").newInstance();
-            connexion = DriverManager.getConnection(h2URL, "sa", "");
-        } catch (InstantiationException | SQLException | IllegalAccessException | ClassNotFoundException e)
+            connexion = DriverManager.getConnection(h2URL, "sa", "T0ng!713cA9");
+        } catch (NullPointerException | InstantiationException | SQLException | IllegalAccessException | ClassNotFoundException e)
         {
             e.printStackTrace();
         }
         try
         {
-            Statement stmt = connexion.createStatement();
-            ModLogger.info("Create DB: %s", stmt.executeUpdate("CREATE TABLE IF NOT EXISTS TEST(ID INT PRIMARY KEY, NAME VARCHAR(255))"));
-            stmt = connexion.createStatement();
-            ModLogger.info("Create DB: %s", stmt.executeUpdate("INSERT INTO TEST VALUES(1, 'Hello')"));
+            PreparedStatement stmt = connexion.prepareStatement("SELECT * FROM TEST ;");
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next())
+            {
+                Long id = rs.getLong("ID");
+                String name = rs.getNString("NAME");
+                ModLogger.info("***** H2: ID:%d, NAME:%s", id, name);
+            }
+
         } catch (SQLException e)
         {
             e.printStackTrace();
