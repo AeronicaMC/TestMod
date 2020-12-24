@@ -8,38 +8,79 @@ buildscript {
     }
     dependencies {
         classpath "net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT"
+        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.3'
     }
 }
 apply plugin: "net.minecraftforge.gradle.forge"
 //Only edit below this line, the above code adds and enables the nessasary things for Forge to be setup.
 apply plugin: 'java'
+apply plugin: 'com.github.johnrengelman.shadow'
 
 sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
+compileJava {
+    sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
+}
 
 version = modVersion
 group = 'tld.testmod'
 archivesBaseName = "${modBaseName}-${minecraftVersion}"
 
-minecraft {
-    version = project.forgeVersion
-    runDir = "run"
-	mappings = "${project.forgeMappings}"
-    
-	replaceIn "tld/testmod/Main.java"
-    replace "{@VERSION}", project.version
-    replace "{@FORGE_VERSION}", "${project.forgeVersion}"
-}
-
 repositories {
     mavenCentral()
 }
 
+configurations {
+    shadow
+    compile.extendsFrom shadow
+}
+
+minecraft {
+    version = project.forgeVersion
+    runDir = "run"
+    mappings = "${project.forgeMappings}"
+
+    replaceIn "tld/testmod/Main.java"
+    replace "{@VERSION}", project.version
+    replace "{@FORGE_VERSION}", "${project.forgeVersion}"
+}
+
 dependencies {
-    compile 'com.h2database:h2:1.4.200'
-    compile 'com.gitblit.iciql:iciql:2.2.0'
+    shadow 'com.h2database:h2:1.4.200'
+    shadow 'com.gitblit.iciql:iciql:2.2.0'
     //compile files ('../aguiLib/build/libs/aguilib-1.12.2-0.1.0-alpha.0-dev.jar')
     //runtime files ('../aguiLib/build/libs/aguilib-1.12.2-0.1.0-alpha.0.jar')
 }
+
+shadowJar {
+    // only include compile time dependencies
+    configurations = [project.configurations.compile]
+    archiveName = tasks.jar.archiveName
+    // relocate 'de.johni0702.minecraft.gui', 'net.aeronica.shadowedlibs.de.johni0702.minecraft.gui'
+}
+
+reobfJar {
+    setJar(tasks.shadowJar.archivePath)
+}
+reobfJar.dependsOn shadowJar
+
+jar {
+    configurations.shadow.each { dep ->
+        from(project.zipTree(dep)){
+            exclude 'META-INF', 'META-INF/**'
+        }
+    }
+    manifest {[
+        "Specification-Title": "testmod",
+        "Specification-Vendor": "aeronica",
+        "Specification-Version": "1", // We are version 1 of ourselves
+        "Implementation-Title": project.name,
+        "Implementation-Version": "${version}",
+        "Implementation-Vendor" :"aeronica",
+        "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+    ]}
+}
+jar.dependsOn shadowJar
+//jar.enabled = false
 
 processResources
 {

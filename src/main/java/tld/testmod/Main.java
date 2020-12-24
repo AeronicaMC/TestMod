@@ -17,7 +17,7 @@ import tld.testmod.common.entity.living.EntityTimpani;
 import tld.testmod.common.handlers.GUIHandler;
 import tld.testmod.common.handlers.SpawnHandler;
 import tld.testmod.common.storage.FileHelper;
-import tld.testmod.common.storage.ServerFileManager;
+import tld.testmod.common.storage.ServerDataManager;
 import tld.testmod.common.world.chunk.ModChunkCapability;
 import tld.testmod.init.ModBlocks;
 import tld.testmod.network.PacketDispatcher;
@@ -77,13 +77,13 @@ public class Main
     public void onEvent(FMLServerStartingEvent event)
     {
         FileHelper.initServerStorage();
-        ServerFileManager.start();
+        ServerDataManager.start();
     }
 
     @Mod.EventHandler
     public void onEvent(FMLServerStoppingEvent event)
     {
-        ServerFileManager.shutdown();
+        ServerDataManager.shutdown();
     }
 
     private int getNextModEntityId()
