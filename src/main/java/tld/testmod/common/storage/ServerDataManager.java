@@ -140,7 +140,6 @@ public class ServerDataManager
         Reader reader = new InputStreamReader(in, StandardCharsets.UTF_8);
         ResultSet rs;
 
-        org.h2.Driver.load();
         try (Connection conn = DriverManager.getConnection(connUrl, user, password))
         {
             rs = RunScript.execute(conn, reader);
