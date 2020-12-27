@@ -52,6 +52,7 @@ dependencies {
     // shadow "org.antlr:antlr4-runtime:4.7.2" // use ANTLR version 4
     shadow 'com.h2database:h2:1.4.200'
     shadow 'com.gitblit.iciql:iciql:2.2.0'
+    shadow 'com.zaxxer:HikariCP:3.4.5'
     //compile files ('../aguiLib/build/libs/aguilib-1.12.2-0.1.0-alpha.0-dev.jar')
     //runtime files ('../aguiLib/build/libs/aguilib-1.12.2-0.1.0-alpha.0.jar')
 }
