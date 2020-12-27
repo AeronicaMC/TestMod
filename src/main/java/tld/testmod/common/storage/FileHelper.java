@@ -26,7 +26,6 @@ package tld.testmod.common.storage;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
@@ -48,17 +47,12 @@ import java.nio.file.Paths;
 
 public class FileHelper
 {
-    private static final String MOD_FOLDER = Main.MOD_ID;
-    private static final ResourceLocation DEFAULT_SQL = new ResourceLocation(Main.MOD_ID, "db/default.sql");
+    public static final String MOD_FOLDER = Main.MOD_ID;
     private static final String CLIENT_FOLDER = MOD_FOLDER;
     public static final String CLIENT_MML_FOLDER = CLIENT_FOLDER + "/import_folder";
     public static final String CLIENT_LIB_FOLDER = CLIENT_FOLDER + "/library";
     public static final String CLIENT_SERVER_CACHE_FOLDER = CLIENT_FOLDER + "/server_cache";
     public static final String SERVER_FOLDER = MOD_FOLDER;
-    public static final String SERVER_H2DB_FOLDER = MOD_FOLDER + "/h2db";
-    public static final String SERVER_H2DB_NAME = "data";
-    public static final String SERVER_H2DB_FILENAME = "data.mv.db";
-    public static final String SERVER_H2DB_URL = "jdbc:h2:" + "./" + SERVER_H2DB_FOLDER + "/" + SERVER_H2DB_NAME;
     public static final String SERVER_PLAY_LISTS_FOLDER = SERVER_FOLDER + "/playlists";
     public static final String SERVER_MUSIC_FOLDER = SERVER_FOLDER + "/music";
 
@@ -115,7 +109,7 @@ public class FileHelper
 
     public static URL getDefaultSqlScript()
     {
-        URL resource = Main.class.getResource("/assets/" + DEFAULT_SQL.getNamespace() + "/" + DEFAULT_SQL.getPath());
+        URL resource = Main.class.getResource("/assets/" + ServerDataManager.DEFAULT_SQL.getNamespace() + "/" + ServerDataManager.DEFAULT_SQL.getPath());
         ModLogger.info("default.sql path: %s", resource);
         return resource;
     }

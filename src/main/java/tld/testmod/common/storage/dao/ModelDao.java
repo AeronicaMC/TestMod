@@ -25,4 +25,7 @@ public interface ModelDao extends Dao
 
     @SqlStatement("update Tag set tagTitle = :title where tid =:id")
     boolean renameTagTitle(@Bind("id") long id, @Bind("title") String title);
+
+    @SqlStatement("update User set userName = :name where uid =:id")
+    boolean updateUserName(@Bind("id") long id, @Bind("name") String name);
 }

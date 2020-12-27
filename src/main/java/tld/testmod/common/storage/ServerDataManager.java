@@ -1,9 +1,17 @@
 package tld.testmod.common.storage;
 
+import com.iciql.Dao;
+import com.iciql.Db;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import org.h2.tools.RunScript;
+import tld.testmod.Main;
 import tld.testmod.ModLogger;
+import tld.testmod.common.storage.dao.ModelDao;
+import tld.testmod.common.storage.models.User;
 import tld.testmod.common.utils.ModRuntimeException;
 import tld.testmod.common.utils.NBTHelper;
 
@@ -24,17 +32,30 @@ import static tld.testmod.common.storage.FileHelper.*;
 
 public class ServerDataManager
 {
+    static final String SERVER_H2DB_FILENAME = "data.mv.db";
+    static final String SERVER_H2DB_NAME = "data";
     private static final String SERVER_ID_FILE = "server_id" + FileHelper.EXTENSION_DAT;
     private static final String FORMAT_UNABLE_TO_CREATE = "Unable to create folder: %s and/or file: %s";
     private static final String SERVER_ID_FILE_ERROR = "Delete the <world save>/mxtune/server_id" + FileHelper.EXTENSION_DAT + " file, then try loading the world again.";
+    static final ResourceLocation DEFAULT_SQL = new ResourceLocation(Main.MOD_ID, "db/default.sql");
     private static UUID serverID;
+    private static Connection connection = null;
+    private static final HikariConfig config = new HikariConfig();
+    private static HikariDataSource ds;
+
+
+    private static String dbH2DbFolder;
+    private static String dbH2DbUseDbUrl;
+    private static String dbH2DbCreateDbUrl;
 
     private ServerDataManager() { /* NOP */ }
 
     public static void start()
     {
         getOrGenerateServerID();
+        setupDbUrl();
         startH2();
+        TestConnection();
     }
 
     public static void shutdown()
@@ -84,45 +105,134 @@ public class ServerDataManager
         }
     }
 
+    private static void setupDbUrl()
+    {
+        dbH2DbFolder = MOD_FOLDER + "/h2db/" + getServerID().toString();
+        dbH2DbUseDbUrl = "jdbc:h2:" + "./" + dbH2DbFolder + "/" + SERVER_H2DB_NAME + ";AUTO_SERVER=TRUE;IFEXISTS=TRUE";
+        dbH2DbCreateDbUrl = "jdbc:h2:" + "./" + dbH2DbFolder + "/" + SERVER_H2DB_NAME;
+    }
+
+    private static String getDbH2DbFolder()
+    {
+        return dbH2DbFolder;
+    }
+
+    private static String getDbH2DbUseDbUrl()
+    {
+        return dbH2DbUseDbUrl;
+    }
+    private static String getDbH2DbCreateDbUrl()
+    {
+        return dbH2DbCreateDbUrl;
+    }
+
+    private static void setupHikariConfig()
+    {
+        config.setJdbcUrl(getDbH2DbUseDbUrl());
+        config.setUsername("owner");
+        config.setPassword("p455w0rd");
+        config.addDataSourceProperty("cachePrepStmts", "true");
+        config.addDataSourceProperty("prepStmtCacheSize", "250");
+        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+    }
+
     private static void startH2()
     {
+        setupHikariConfig();
         if (!dbCreateIfNotExists())
+        {
             throw new ModRuntimeException("Unable to create database");
+        }
+        try
+        {
+            connection = DriverManager.getConnection(getDbH2DbUseDbUrl(), "owner", "p455w0rd");
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        ds = new HikariDataSource(config);
+    }
+
+    public static Connection getConnection() throws SQLException {
+        return ds.getConnection();
+    }
+
+
+    private static void TestConnection()
+    {
+        Db db;
+        try
+        {
+            db = Db.open(ds.getConnection());
+            Dao dao = db.open(ModelDao.class);
+            ResultSet rs = db.executeQuery("SELECT * FROM USER ;");
+            for (User u : ((ModelDao) dao).getAllUsers())
+            {
+                ModLogger.info("***** H2: %s, %s", u.userName, u.uid.toString());
+            }
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public static void upsertUser(UUID uuid, String name)
+    {
+        Db db;
+        try
+        {
+            db = Db.open(ds.getConnection());
+            User user = new User();
+            user.uid = uuid;
+            user.userName = name;
+            db.upsert(user);
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     private static void stopH2()
     {
         ModLogger.info("***** H2: Stopping");
-
+        if (connection != null)
+        {
+            try
+            {
+                connection.close();
+            } catch (SQLException e)
+            {
+                e.printStackTrace();
+            }
+        }
     }
 
-    //TODO: MUST add SERVER ID to Path! ./modname/server/SERVERID/h2db/filename.mv.db
     private static boolean dbCreateIfNotExists()
     {
         boolean status = false;
-        Path path = getLocalDirectory(SERVER_H2DB_FOLDER);
+        Path path = getLocalDirectory(getDbH2DbFolder());
         Path dbFile = path.resolve(SERVER_H2DB_FILENAME);
-        ModLogger.info("***** H2: SERVER_H2DB_URL:       %s", SERVER_H2DB_URL);
-        ModLogger.info("***** H2: SERVER_H2DB_FOLDER:    %s", path);
+        ModLogger.info("***** H2: SERVER_H2DB_URL:       %s", getDbH2DbCreateDbUrl());
+        ModLogger.info("***** H2: getDbH2DbFolder():    %s", path);
         ModLogger.info("***** H2: getDefaultSqlScript(): %s", getDefaultSqlScript());
         if (!dbFile.toFile().exists())
         {
             ModLogger.info("Attempting to create database");
             try
             {
-                createDatabase(SERVER_H2DB_URL, "owner", "p455w0rd", getDefaultSqlScript());
-                ModLogger.info("***** H2: Created database %s", SERVER_H2DB_FOLDER, SERVER_H2DB_NAME);
+                createDatabase(getDbH2DbCreateDbUrl(), "owner", "p455w0rd", getDefaultSqlScript());
+                ModLogger.info("***** H2: Created database %s", getDbH2DbFolder(), SERVER_H2DB_NAME);
                 status = true;
             } catch (IOException | SQLException e)
             {
                 e.printStackTrace();
-                ModLogger.error("***** H2: Unable to create database ./%s./%s", SERVER_H2DB_FOLDER, SERVER_H2DB_NAME);
+                ModLogger.error("***** H2: Unable to create database ./%s./%s", getDbH2DbFolder(), SERVER_H2DB_NAME);
                 if (dbFile.toFile().exists())
                 {
                     if (dbFile.toFile().delete())
-                        ModLogger.info("***** H2: Deleted database file ./%s./%s", SERVER_H2DB_FOLDER, SERVER_H2DB_NAME);
+                        ModLogger.info("***** H2: Deleted database file ./%s./%s", getDbH2DbFolder(), SERVER_H2DB_NAME);
                     else
-                        ModLogger.warning("***** H2: Unable to delete database file ./%s./%s", SERVER_H2DB_FOLDER, SERVER_H2DB_NAME);
+                        ModLogger.warning("***** H2: Unable to delete database file ./%s./%s", getDbH2DbFolder(), SERVER_H2DB_NAME);
                 }
             }
         }
