@@ -22,6 +22,7 @@ import java.io.Reader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -42,7 +43,6 @@ public class ServerDataManager
     private static Connection connection = null;
     private static final HikariConfig config = new HikariConfig();
     private static HikariDataSource ds;
-
 
     private static String dbH2DbFolder;
     private static String dbH2DbUseDbUrl;
@@ -107,9 +107,10 @@ public class ServerDataManager
 
     private static void setupDbUrl()
     {
-        dbH2DbFolder = MOD_FOLDER + "/h2db/" + getServerID().toString();
-        dbH2DbUseDbUrl = "jdbc:h2:" + "./" + dbH2DbFolder + "/" + SERVER_H2DB_NAME + ";AUTO_SERVER=TRUE;IFEXISTS=TRUE";
-        dbH2DbCreateDbUrl = "jdbc:h2:" + "./" + dbH2DbFolder + "/" + SERVER_H2DB_NAME;
+        Path loc = Paths.get(getServerWorldFolder().toString(), MOD_FOLDER, "h2db");
+        dbH2DbFolder = loc.toString();
+        dbH2DbUseDbUrl = "jdbc:h2:async:" + dbH2DbFolder + "/" + SERVER_H2DB_NAME + ";IFEXISTS=TRUE";
+        dbH2DbCreateDbUrl = "jdbc:h2:async:" + dbH2DbFolder + "/" + SERVER_H2DB_NAME;
     }
 
     private static String getDbH2DbFolder()
@@ -126,7 +127,7 @@ public class ServerDataManager
         return dbH2DbCreateDbUrl;
     }
 
-    private static void setupHikariConfig()
+    private static void setupHikariCPConfig()
     {
         config.setJdbcUrl(getDbH2DbUseDbUrl());
         config.setUsername("owner");
@@ -138,7 +139,7 @@ public class ServerDataManager
 
     private static void startH2()
     {
-        setupHikariConfig();
+        setupHikariCPConfig();
         if (!dbCreateIfNotExists())
         {
             throw new ModRuntimeException("Unable to create database");
@@ -164,9 +165,9 @@ public class ServerDataManager
         try
         {
             db = Db.open(ds.getConnection());
-            Dao dao = db.open(ModelDao.class);
+            ModelDao dao = db.open(ModelDao.class);
             ResultSet rs = db.executeQuery("SELECT * FROM USER ;");
-            for (User u : ((ModelDao) dao).getAllUsers())
+            for (User u : dao.getAllUsers())
             {
                 ModLogger.info("***** H2: %s, %s", u.userName, u.uid.toString());
             }
@@ -210,11 +211,12 @@ public class ServerDataManager
     private static boolean dbCreateIfNotExists()
     {
         boolean status = false;
-        Path path = getLocalDirectory(getDbH2DbFolder());
+        Path path = Paths.get(getDbH2DbFolder(), "");
         Path dbFile = path.resolve(SERVER_H2DB_FILENAME);
-        ModLogger.info("***** H2: SERVER_H2DB_URL:       %s", getDbH2DbCreateDbUrl());
-        ModLogger.info("***** H2: getDbH2DbFolder():    %s", path);
-        ModLogger.info("***** H2: getDefaultSqlScript(): %s", getDefaultSqlScript());
+        ModLogger.info("***** H2: getDbH2DbCreateDbUrl(): %s", getDbH2DbCreateDbUrl());
+        ModLogger.info("***** H2: getDbH2DbFolder():      %s", path);
+        ModLogger.info("***** H2: getDefaultSqlScript():  %s", getDefaultSqlScript());
+        ModLogger.info("***** H2: dbFile:                 %s", dbFile);
         if (!dbFile.toFile().exists())
         {
             ModLogger.info("Attempting to create database");

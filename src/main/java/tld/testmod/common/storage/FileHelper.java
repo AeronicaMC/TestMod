@@ -75,6 +75,11 @@ public class FileHelper
         serverWorldFolder = Paths.get(chunkDir.getPath());
     }
 
+    static Path getServerWorldFolder()
+    {
+        return serverWorldFolder;
+    }
+
     private FileHelper() { /* NOP */ }
 
     public static PathMatcher getMmlMatcher(Path path)
