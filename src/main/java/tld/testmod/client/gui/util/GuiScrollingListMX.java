@@ -50,15 +50,15 @@ import java.util.List;
 public abstract class GuiScrollingListMX
 {
     private final Minecraft client;
-    protected final int listWidth;
-    protected final int listHeight;
-    protected final int screenWidth;
-    protected final int screenHeight;
-    protected final int top;
-    protected final int bottom;
-    protected final int right;
-    protected final int left;
-    protected final int slotHeight;
+    protected int listWidth;
+    protected int listHeight;
+    protected int screenWidth;
+    protected int screenHeight;
+    protected int top;
+    protected int bottom;
+    protected int right;
+    protected int left;
+    protected int slotHeight;
     private int scrollUpActionId;
     private int scrollDownActionId;
     protected int mouseX;
@@ -101,6 +101,24 @@ public abstract class GuiScrollingListMX
         this.screenHeight = screenHeight;
     }
 
+    public GuiScrollingListMX(Minecraft client)
+    {
+        this.client = client;
+    }
+
+    public void setLayout(int entryHeight, int width, int height, int top, int bottom, int left, int screenWidth, int screenHeight)
+    {
+        this.listWidth = width;
+        this.listHeight = height;
+        this.top = top;
+        this.bottom = bottom;
+        this.slotHeight = entryHeight;
+        this.left = left;
+        this.right = width + this.left;
+        this.screenWidth = screenWidth;
+        this.screenHeight = screenHeight;
+    }
+
     protected void setHighlightSelected(boolean state)
     {
         this.highlightSelected = state;
@@ -126,11 +144,16 @@ public abstract class GuiScrollingListMX
 
     protected abstract void elementClicked(int index, boolean doubleClick);
 
-    protected abstract boolean isSelected(int index);
+    public abstract boolean isSelected(int index);
 
     protected int getContentHeight()
     {
         return this.getSize() * this.slotHeight + this.headerHeight;
+    }
+
+    public boolean isHovering()
+    {
+        return mouseX >= left && mouseX <= left + listWidth && mouseY >= top && mouseY <= bottom && getSize() > 0;
     }
 
     protected abstract void drawBackground();
@@ -230,6 +253,8 @@ public abstract class GuiScrollingListMX
 
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
+        if (bottom - top < 0) return;
+
         this.mouseX = mouseX;
         this.mouseY = mouseY;
         this.drawBackground();

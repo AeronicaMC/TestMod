@@ -10,6 +10,7 @@ item.testmod:block_vbqtest.name=Vertical Quad
 item.testmod:block_vbqtest2.name=Vertical Quad 2
 item.testmod:pull.name=Coiled Pull Rope
 item.testmod:tuning_fork.name=Tuning Fork
+item.testmod:gui_db_test.name=Gui DB Test
 item.testmod:gui_test.name=Gui Test
 item.mxtune:gui_test.help=Right-Click to open Gui under test
 item.testmod:multitex.name=[deadbeef]

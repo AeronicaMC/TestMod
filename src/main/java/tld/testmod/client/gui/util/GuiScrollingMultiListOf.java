@@ -1,4 +1,3 @@
-
 package tld.testmod.client.gui.util;
 
 import net.minecraft.client.gui.GuiScreen;
@@ -9,7 +8,6 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
-import java.io.IOException;
 import java.util.*;
 
 /**
@@ -24,6 +22,22 @@ public abstract class GuiScrollingMultiListOf<E> extends GuiScrollingListOf<E>
     public <T extends GuiScreen> GuiScrollingMultiListOf(T gui, int entryHeight, int width, int height, int top, int bottom, int left)
     {
         super(gui, entryHeight, width, height, top, bottom, left);
+        setHighlightSelected(false);
+    }
+
+    public <T extends GuiScreen> GuiScrollingMultiListOf(T gui)
+    {
+        super(gui);
+        this.gui = gui;
+        this.mc = gui.mc;
+        setHighlightSelected(false);
+    }
+
+    @Override
+    public void setLayout(int entryHeight, int width, int height, int top, int bottom, int left)
+    {
+        super.setLayout(entryHeight, width, height, top, bottom, left, gui.width, gui.height);
+        this.entryHeight = entryHeight;
         setHighlightSelected(false);
     }
 
@@ -42,6 +56,11 @@ public abstract class GuiScrollingMultiListOf<E> extends GuiScrollingListOf<E>
             selectedDoubleClickedCallback(selectedIndex);
         else
             selectedClickedCallback(selectedIndex);
+    }
+
+    public void unSelectAll()
+    {
+        selectedRowIndexes.clear();
     }
 
     private void selectionToggle()
@@ -117,7 +136,7 @@ public abstract class GuiScrollingMultiListOf<E> extends GuiScrollingListOf<E>
     }
 
     @Override
-    public void keyTyped(char typedChar, int keyCode) throws IOException
+    public void keyTyped(char typedChar, int keyCode)
     {
         if (isPointInRegion() && Keyboard.isKeyDown(Keyboard.KEY_LCONTROL))
         {

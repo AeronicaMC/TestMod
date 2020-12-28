@@ -77,6 +77,11 @@ jar {
             exclude 'META-INF', 'META-INF/**'
         }
     }
+    manifest {
+        attributes(
+                'ContainedDeps': 'HikariCP-3.4.5.jar h2-1.4.200.jar iciql-2.2.0.jar'
+        )
+    }
 }
 jar.dependsOn shadowJar
 jar.enabled = true

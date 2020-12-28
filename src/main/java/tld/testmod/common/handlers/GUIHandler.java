@@ -3,6 +3,7 @@ package tld.testmod.common.handlers;
 
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import tld.testmod.client.gui.GuiDB;
@@ -36,7 +37,7 @@ public class GUIHandler implements IGuiHandler
         switch (guiID)
         {
             case GuiGuid.GUI_DB:
-                return new GuiDB(null);
+                return new GuiDB((Container) new ContainerDB(playerIn, worldIn));
 
             case GuiGuid.GUI_TEST:
                 return new GuiTest(null);
