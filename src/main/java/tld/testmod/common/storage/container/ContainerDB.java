@@ -4,8 +4,6 @@ import com.iciql.Db;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import tld.testmod.ModLogger;
 import tld.testmod.common.storage.dao.ModelDao;
 import tld.testmod.common.storage.models.User;

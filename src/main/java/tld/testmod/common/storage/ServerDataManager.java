@@ -1,13 +1,10 @@
 package tld.testmod.common.storage;
 
-import com.iciql.Dao;
 import com.iciql.Db;
-import com.iciql.util.Utils;
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
+import org.h2.jdbcx.JdbcConnectionPool;
 import org.h2.tools.RunScript;
 import tld.testmod.Main;
 import tld.testmod.ModLogger;
@@ -41,9 +38,7 @@ public class ServerDataManager
     private static final String SERVER_ID_FILE_ERROR = "Delete the <world save>/mxtune/server_id" + FileHelper.EXTENSION_DAT + " file, then try loading the world again.";
     static final ResourceLocation DEFAULT_SQL = new ResourceLocation(Main.MOD_ID, "db/default.sql");
     private static UUID serverID;
-    private static Connection connection = null;
-    private static final HikariConfig config = new HikariConfig();
-    private static HikariDataSource ds;
+    private static JdbcConnectionPool cp = null;
 
     private static String dbH2DbFolder;
     private static String dbH2DbUseDbUrl;
@@ -128,35 +123,26 @@ public class ServerDataManager
         return dbH2DbCreateDbUrl;
     }
 
-    private static void setupHikariCPConfig()
+    private static  JdbcConnectionPool createConnectionPool()
     {
-        config.setJdbcUrl(getDbH2DbUseDbUrl());
-        config.setUsername("owner");
-        config.setPassword("p455w0rd");
-        config.addDataSourceProperty("cachePrepStmts", "true");
-        config.addDataSourceProperty("prepStmtCacheSize", "250");
-        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+        JdbcConnectionPool jcp = JdbcConnectionPool.create(getDbH2DbUseDbUrl(), "owner", "p455w0rd");
+        ModLogger.info("***** H2: JCP MaxConnections:    %s", jcp.getMaxConnections());
+        ModLogger.info("***** H2: JCP ActiveConnections: %s", jcp.getActiveConnections());
+        ModLogger.info("***** H2: JCP LoginTimeout:      %s", jcp.getLoginTimeout());
+        return jcp;
     }
 
     private static void startH2()
     {
-        setupHikariCPConfig();
         if (!dbCreateIfNotExists())
         {
             throw new ModRuntimeException("Unable to create database");
         }
-        try
-        {
-            connection = DriverManager.getConnection(getDbH2DbUseDbUrl(), "owner", "p455w0rd");
-        } catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-        ds = new HikariDataSource(config);
+        cp = createConnectionPool();
     }
 
     public static Connection getConnection() throws SQLException {
-        return ds.getConnection();
+        return cp.getConnection();
     }
 
 
@@ -193,16 +179,8 @@ public class ServerDataManager
         private static void stopH2()
     {
         ModLogger.info("***** H2: Stopping");
-        if (connection != null)
-        {
-            try
-            {
-                connection.close();
-            } catch (SQLException e)
-            {
-                e.printStackTrace();
-            }
-        }
+        if (cp != null)
+            cp.dispose();
     }
 
     private static boolean dbCreateIfNotExists()
