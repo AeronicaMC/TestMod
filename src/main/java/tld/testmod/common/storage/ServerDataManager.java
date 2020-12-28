@@ -2,6 +2,7 @@ package tld.testmod.common.storage;
 
 import com.iciql.Dao;
 import com.iciql.Db;
+import com.iciql.util.Utils;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import net.minecraft.nbt.NBTTagCompound;
@@ -161,12 +162,9 @@ public class ServerDataManager
 
     private static void TestConnection()
     {
-        Db db;
-        try
+        try (Db db = Db.open(getConnection()))
         {
-            db = Db.open(ds.getConnection());
             ModelDao dao = db.open(ModelDao.class);
-            ResultSet rs = db.executeQuery("SELECT * FROM USER ;");
             for (User u : dao.getAllUsers())
             {
                 ModLogger.info("***** H2: %s, %s", u.userName, u.uid.toString());
@@ -177,12 +175,11 @@ public class ServerDataManager
         }
     }
 
-    public static void upsertUser(UUID uuid, String name)
+    public static void upSertUser(UUID uuid, String name)
     {
-        Db db;
-        try
+
+        try (Db db = Db.open(getConnection()))
         {
-            db = Db.open(ds.getConnection());
             User user = new User();
             user.uid = uuid;
             user.userName = name;
@@ -193,7 +190,7 @@ public class ServerDataManager
         }
     }
 
-    private static void stopH2()
+        private static void stopH2()
     {
         ModLogger.info("***** H2: Stopping");
         if (connection != null)
