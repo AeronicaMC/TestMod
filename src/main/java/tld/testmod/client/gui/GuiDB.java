@@ -2,7 +2,6 @@ package tld.testmod.client.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.inventory.Container;
@@ -90,14 +89,14 @@ public class GuiDB extends GuiContainer
     {
         if (button.enabled)
         {
-                switch (button.id)
-                {
-                    case 0:
-                    case 1:
-                    case 2:
-                        break;
-                    default:
-                }
+            switch (button.id)
+            {
+                case 0:
+                case 1:
+                case 2:
+                    break;
+                default:
+            }
         }
         // updateState();
         super.actionPerformed(button);
@@ -119,7 +118,7 @@ public class GuiDB extends GuiContainer
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         drawDefaultBackground();
-        userGuiScrollingList.drawScreen(mouseX, mouseY,partialTicks);
+        userGuiScrollingList.drawScreen(mouseX, mouseY, partialTicks);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
