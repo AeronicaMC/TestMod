@@ -38,6 +38,7 @@ run
 minecraft
 mc12_2
 lib
+mcmodsrepo
 !gradle
 !gradlew
 !gradlew.bat

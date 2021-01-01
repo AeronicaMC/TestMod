@@ -8,35 +8,38 @@ buildscript {
     }
     dependencies {
         classpath "net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT"
-        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.3'
     }
 }
-plugins {
-    id 'com.github.johnrengelman.shadow' version '1.2.3'
-    id 'java'
-}
-apply plugin: "net.minecraftforge.gradle.forge"
-//Only edit below this line, the above code adds and enables the nessasary things for Forge to be setup.
-apply plugin: 'com.github.johnrengelman.shadow'
-apply plugin: 'java'
 
-sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
-compileJava {
-    sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
+apply plugin: 'net.minecraftforge.gradle.forge'
+// Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
+apply plugin: 'maven-publish'
+
+// explicit package import needed to use the SignJar task
+// import net.minecraftforge.gradle.common.task.SignJar
+
+repositories {
+    jcenter()
+    maven {
+        url 'https://oss.sonatype.org/content/repositories/snapshots'
+    }
+    maven {
+        // location of the maven that hosts JEI files
+        name = "Progwml6 maven"
+        url = "http://dvs1.progwml6.com/files/maven"
+    }
+    maven {
+        // location of a maven mirror for JEI files, as a fallback
+        name = "ModMaven"
+        url = "modmaven.k-4u.nl"
+    }
 }
 
 version = modVersion
-group = 'tld.testmod'
+group = 'tld.testmod' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "${modBaseName}-${minecraftVersion}"
 
-repositories {
-    mavenCentral()
-}
-
-configurations {
-    shadow
-    compile.extendsFrom shadow
-}
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
 minecraft {
     version = project.forgeVersion
@@ -48,64 +51,135 @@ minecraft {
     replace "{@FORGE_VERSION}", "${project.forgeVersion}"
 }
 
+// See https://github.com/PaleoCrafter/Dependency-Extraction-Example/blob/library-embedding/build.gradle
+configurations {
+    embed
+    compile.extendsFrom embed
+}
+
 dependencies {
-    // shadow "org.antlr:antlr4-runtime:4.7.2" // use ANTLR version 4
-    shadow 'com.h2database:h2:1.4.200'
-    shadow 'com.gitblit.iciql:iciql:2.2.0'
-    //compile files ('../aguiLib/build/libs/aguilib-1.12.2-0.1.0-alpha.0-dev.jar')
-    //runtime files ('../aguiLib/build/libs/aguilib-1.12.2-0.1.0-alpha.0.jar')
+    // Specify the version of Minecraft to use, If this is any group other then 'net.minecraft' it is assumed
+    // that the dep is a ForgeGradle 'patcher' dependency. And it's patches will be applied.
+    // The userdev artifact is a special name and will get all sorts of transformations applied to it.
+
+    embed 'com.h2database:h2:1.4.200'
+    embed 'com.gitblit.iciql:iciql:2.2.0'
+    // compile against the JEI API but do not include it at runtime
+    //compileOnly fg.deobf("mezz.jei:jei_1.12.2:4.15.0.293:api")
+    // at runtime, use the full JEI jar
+    //runtimeOnly fg.deobf("mezz.jei:jei_1.12.2:4.15.0.293")
+
+    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
+    // http://www.gradle.org/docs/current/userguide/dependency_management.html
+
 }
 
-shadowJar {
-    // only include compile time dependencies
-    configurations = [project.configurations.compile]
-    archiveName = tasks.jar.archiveName
-    // relocate 'org.antlr.v4.runtime', 'net.aeronica.shadowedlibs.org.antlr.v4.runtime'
-    // relocate 'com.iciql', 'shadow.iciql'
-    // relocate 'org.h2', 'shadow.h2'
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+    options.compilerArgs.addAll(['-Xlint:unchecked', '-Xlint:deprecation'])
 }
 
-reobfJar {
-    setJar(tasks.shadowJar.archivePath)
-}
-reobfJar.dependsOn shadowJar
-
-jar {
-    configurations.shadow.each { dep ->
-        from(project.zipTree(dep)){
-            exclude 'META-INF', 'META-INF/**'
+// Custom task to generate the metadata files required for our dependencies
+task generateMetaFiles {
+    // Code for execution after the whole buildscript was parsed and loaded
+    doLast {
+        // Clear the dependencyMeta directory since we don't want old dependencies to still be listed in there
+        file("${buildDir}/dependencyMeta/").deleteDir()
+        configurations.embed.resolvedConfiguration.resolvedArtifacts.each {
+            // Create a meta file for each dependency in a specified directory
+            def metaFile = file("${buildDir}/dependencyMeta/${it.file.name}.meta")
+            metaFile.parentFile.mkdirs()
+            // Use the Gradle notation provided by the API ('group:artifact:version') for the meta file...
+            def artifactRef = it.moduleVersion.toString()
+            // ...and append the classifier if present
+            if (it.classifier != null) {
+                artifactRef += ":${it.classifier}"
+            }
+            // Write the artifact information to the meta file, to be used by the
+            metaFile.text = "Maven-Artifact: $artifactRef"
         }
     }
-//    manifest {
-//        attributes(
-//                // 'ContainedDeps': 'HikariCP-3.4.5.jar h2-1.4.200.jar iciql-2.2.0.jar'
-//        )
-//    }
 }
-jar.dependsOn shadowJar
-jar.enabled = true
 
-processResources
-{
+jar {
+    into('/META-INF/libraries') {
+        // Add all of the dependency JARs to the main JAR for later extraction
+        from configurations.embed
+        // Also include all dependency meta files
+        from "${buildDir}/dependencyMeta/"
+    }
+    manifest {
+        attributes([
+                'ContainedDeps': configurations.embed.collect { it.name }.join(' '),
+                "Specification-Title": "testmod",
+                "Specification-Vendor": "aeronica",
+                "Specification-Version": "1", // We are version 1 of ourselves
+                "Implementation-Title": project.name,
+                "Implementation-Version": "${version}",
+                "Implementation-Vendor" :"aeronica",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+        ])
+    }
+    dependsOn generateMetaFiles
+}
+
+// Example configuration to allow publishing using the maven-publish task
+// we define a custom artifact that is sourced from the reobfJar output task
+// and then declare that to be published
+// Note you'll need to add a repository here
+def reobfFile = file("$buildDir/reobfJar/output.jar")
+def reobfArtifact = artifacts.add('default', reobfFile) {
+    type 'jar'
+    builtBy 'reobfJar'
+}
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifact reobfArtifact
+        }
+    }
+    repositories {
+        maven {
+            url "file:///${project.projectDir}/mcmodsrepo"
+        }
+    }
+}
+
+processResources {
     // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
+    inputs.property 'version', version
+    inputs.property 'mcversion', project.minecraftVersion
 
     // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
-                
+
         // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+        expand 'version':project.version, 'mcversion':project.minecraftVersion
     }
-        
+
     // copy everything else, thats not the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
+
+    // Exclude the GIMP image files
+    exclude '**/*.xcf'
+
+    // Exclude the Cubik model files
+    exclude '**/*.bdc3D'
+
+    // Exclude the Paint.NET image files
+    exclude '**/*.pdn'
+
+    eachFile {
+        println "Processing: $it.name"
+        if (it.relativePath.segments[0] in ['META-INF'])
+            expand project.properties
+    }
 }
 
-task signJar(type: SignJar, dependsOn: reobfJar) {
+task signJar(type: SignJar, dependsOn: jar) {
     onlyIf {
         project.hasProperty("keyStore")
     }
@@ -118,7 +192,16 @@ task signJar(type: SignJar, dependsOn: reobfJar) {
     outputFile = jar.archivePath
 }
 
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives sourcesJar
+}
+
 build {
     dependsOn signJar
 }
-//sourceSets { main { output.resourcesDir = output.classesDir } }
+

@@ -22,8 +22,9 @@ import tld.testmod.common.world.chunk.ModChunkCapability;
 import tld.testmod.init.ModBlocks;
 import tld.testmod.network.PacketDispatcher;
 
-@Mod(modid = Main.MOD_ID,
-        name = Main.MOD_NAME, version = Main.VERSION, dependencies = Main.DEPENDENCIES,
+@Mod(
+        modid = Main.MOD_ID, version = Main.VERSION,
+        name = Main.MOD_NAME, dependencies = Main.DEPENDENCIES,
         certificateFingerprint = "999640c365a8443393a1a21df2c0ede9488400e9"
 )
 public class Main
