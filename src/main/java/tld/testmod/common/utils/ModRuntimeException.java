@@ -1,6 +1,5 @@
 package tld.testmod.common.utils;
 
-@SuppressWarnings("unused")
 public class ModRuntimeException extends RuntimeException
 {
     private static final long serialVersionUID = -7749888847279548143L;
