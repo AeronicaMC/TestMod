@@ -116,6 +116,7 @@ jar {
     }
     manifest {
         attributes([
+                'FMLAT': 'testmod_at.cfg',
                 'ContainedDeps': configurations.embed.collect { it.name }.join(' '),
                 "Specification-Title": "testmod",
                 "Specification-Vendor": "aeronica",
@@ -183,6 +184,8 @@ processResources {
         if (it.relativePath.segments[0] in ['META-INF'])
             expand project.properties
     }
+
+    rename '(.+_at.cfg)', 'META-INF/$1'
 }
 
 task signJar(type: SignJar, dependsOn: jar) {
