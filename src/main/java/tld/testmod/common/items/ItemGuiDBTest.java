@@ -28,7 +28,7 @@ public class ItemGuiDBTest extends Item
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
     {
-        if (!worldIn.isRemote)
+        if (worldIn.isRemote)
         {
                 playerIn.openGui(Main.instance, GuiGuid.GUI_DB, worldIn, playerIn.getPosition().getX(), playerIn.getPosition().getY(), playerIn.getPosition().getZ());
         }

@@ -2,29 +2,36 @@ package tld.testmod.client.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.inventory.Container;
+import net.minecraftforge.server.command.TextComponentHelper;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import tld.testmod.client.gui.util.GuiButtonMX;
+import tld.testmod.client.gui.util.GuiLabelMX;
 import tld.testmod.client.gui.util.GuiScrollingListOf;
+import tld.testmod.common.storage.capability.MusicDBHelper;
+import tld.testmod.common.storage.capability.RequestType;
 import tld.testmod.common.storage.models.User;
+import tld.testmod.network.PacketDispatcher;
+import tld.testmod.network.server.MusicDBServerRequest;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.util.UUID;
 
-public class GuiDB extends GuiContainer
+public class GuiDB extends GuiScreen
 {
     private final GuiScrollingListOf<User> userGuiScrollingList;
+    private GuiButtonMX buttonToggle;
+    private GuiLabelMX labelStatus;
 
     public GuiDB(Container container)
     {
-        super(container);
         this.mc = Minecraft.getMinecraft();
         this.fontRenderer = mc.fontRenderer;
-        xSize = width;
-        ySize = height;
         Keyboard.enableRepeatEvents(true);
 
         userGuiScrollingList = new GuiScrollingListOf<User>(this)
@@ -49,7 +56,7 @@ public class GuiDB extends GuiContainer
             @Override
             protected void selectedDoubleClickedCallback(int selectedIndex)
             {
-
+                toggleSession();
             }
         };
     }
@@ -59,8 +66,6 @@ public class GuiDB extends GuiContainer
     {
         super.initGui();
         buttonList.clear();
-        this.guiLeft = 0;
-        this.guiTop = 0;
         int guiListWidth = (width - 15) * 3 / 4;
         // Library List
         int entryHeight = mc.fontRenderer.FONT_HEIGHT + 2;
@@ -73,6 +78,7 @@ public class GuiDB extends GuiContainer
         int userListWidth = (width - 15) / 4;
 
         userGuiScrollingList.setLayout(entryHeight, userListWidth, listHeight, listTop, listBottom, left);
+        userGuiScrollingList.clear();
         User user01 = new User();
         user01.userName = "OneWill";
         user01.uid = UUID.randomUUID();
@@ -82,6 +88,11 @@ public class GuiDB extends GuiContainer
         user02.uid = UUID.randomUUID();
         userGuiScrollingList.add(user01);
         userGuiScrollingList.add(user02);
+
+        labelStatus = new GuiLabelMX(fontRenderer, 0, userGuiScrollingList.getRight()+5, userGuiScrollingList.getTop(), width - 5 - userGuiScrollingList.getRight(), 10,0xFFFFFF);
+        labelStatus.setLabel(String.format("Session open: %s", MusicDBHelper.isSessionOpen(mc.player)));
+        buttonToggle = new GuiButtonMX(0, userGuiScrollingList.getRight() + 5, labelStatus.y + labelStatus.height + 5, "Toggle");
+        addButton(buttonToggle);
     }
 
     @Override
@@ -92,6 +103,8 @@ public class GuiDB extends GuiContainer
             switch (button.id)
             {
                 case 0:
+                    toggleSession();
+                    break;
                 case 1:
                 case 2:
                     break;
@@ -105,6 +118,7 @@ public class GuiDB extends GuiContainer
     @Override
     public void updateScreen()
     {
+        labelStatus.setLabel(String.format("Session open: %s", MusicDBHelper.isSessionOpen(mc.player)));
         super.updateScreen();
     }
 
@@ -119,20 +133,8 @@ public class GuiDB extends GuiContainer
     {
         drawDefaultBackground();
         userGuiScrollingList.drawScreen(mouseX, mouseY, partialTicks);
+        labelStatus.drawLabel(mc, mouseX, mouseY);
         super.drawScreen(mouseX, mouseY, partialTicks);
-    }
-
-    @Override
-    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
-    {
-        super.drawGuiContainerForegroundLayer(mouseX, mouseY);
-
-    }
-
-    @Override
-    protected void drawGuiContainerBackgroundLayer(float v, int i, int i1)
-    {
-
     }
 
     @Override
@@ -166,5 +168,10 @@ public class GuiDB extends GuiContainer
         //clearOnMouseLeftClicked(search, mouseX, mouseY, mouseButton);
         super.mouseClicked(mouseX, mouseY, mouseButton);
         //updateState();
+    }
+
+    private void toggleSession()
+    {
+        PacketDispatcher.sendToServer(new MusicDBServerRequest(RequestType.TOGGLE));
     }
 }

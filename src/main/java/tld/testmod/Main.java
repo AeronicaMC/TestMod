@@ -18,6 +18,7 @@ import tld.testmod.common.handlers.GUIHandler;
 import tld.testmod.common.handlers.SpawnHandler;
 import tld.testmod.common.storage.FileHelper;
 import tld.testmod.common.storage.ServerDataManager;
+import tld.testmod.common.storage.capability.MusicDBCapability;
 import tld.testmod.common.world.chunk.ModChunkCapability;
 import tld.testmod.init.ModBlocks;
 import tld.testmod.network.PacketDispatcher;
@@ -47,8 +48,9 @@ public class Main
     public void preInit(FMLPreInitializationEvent event)
     {
         ModLogger.setLogger(event.getModLog());
-        ModChunkCapability.register();
         PacketDispatcher.registerPackets();
+        ModChunkCapability.register();
+        MusicDBCapability.register();
         proxy.preInit();
         ModBlocks.registerTileEntities();
         MinecraftForge.EVENT_BUS.register(SpawnHandler.INSTANCE);

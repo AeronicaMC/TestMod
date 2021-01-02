@@ -40,7 +40,8 @@ public class ForgeAnimTileEntity extends TileEntity
     {
         for(Event event : pastEvents)
         {
-            System.out.println("Event: " + event.event() + " " + event.offset() + " " + getPos() + " " + time);
+            // NOP
+            // System.out.println("Event: " + event.event() + " " + event.offset() + " " + getPos() + " " + time);
         }
     }
     

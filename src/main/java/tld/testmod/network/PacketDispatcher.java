@@ -12,7 +12,9 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 import tld.testmod.Main;
+import tld.testmod.network.client.SyncMusicDBMessage;
 import tld.testmod.network.server.ActiveReceiverMessage;
+import tld.testmod.network.server.MusicDBServerRequest;
 
 /**
  * 
@@ -57,11 +59,12 @@ public class PacketDispatcher
     public static final void registerPackets()
     {
         /** Packets handled on CLIENT */
-//        registerMessage(StopPlayMessage.class);
+        registerMessage(SyncMusicDBMessage.class);
 
         /** Packets handled on SERVER */
-        registerMessage(ActiveReceiverMessage.class);   
-        
+        registerMessage(ActiveReceiverMessage.class);
+        registerMessage(MusicDBServerRequest.class);
+
         /**
          * If you don't want to make a 'registerMessage' method, you can do it
          * directly:
