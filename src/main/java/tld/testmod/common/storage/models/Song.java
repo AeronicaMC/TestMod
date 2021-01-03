@@ -1,5 +1,9 @@
 package tld.testmod.common.storage.models;
 
+import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryo.KryoSerializable;
+import com.esotericsoftware.kryo.io.Input;
+import com.esotericsoftware.kryo.io.Output;
 import com.iciql.Iciql;
 
 import java.util.UUID;
@@ -17,7 +21,7 @@ import java.util.UUID;
         deleteType = Iciql.ConstraintDeleteType.CASCADE,
         updateType = Iciql.ConstraintUpdateType.CASCADE
 )
-public class Song
+public class Song implements KryoSerializable
 {
     @Iciql.IQColumn(primaryKey = true, autoIncrement = true)
     public Long sid;
@@ -41,5 +45,24 @@ public class Song
     public String toString()
     {
         return "sid: " + sid + ", uid: " + uidOwner.toString() + ", '" + songTitle + "', " + "duration: " + duration;
+    }
+
+    @Override
+    public void write(Kryo kryo, Output output)
+    {
+        output.writeVarLong((sid != null) ? sid : 0L, true);
+        output.writeString(uidOwner.toString());
+        output.writeString(songTitle);
+        output.writeVarInt(duration, true);
+    }
+
+    @Override
+    public void read(Kryo kryo, Input input)
+    {
+        long sidTemp = input.readVarLong(true);
+        sid = (sidTemp != 0L) ? sidTemp : null;
+        uidOwner = UUID.fromString(input.readString());
+        songTitle = input.readString();
+        duration = input.readVarInt(true);
     }
 }
