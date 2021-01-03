@@ -31,7 +31,6 @@ public class User implements KryoSerializable
     {
         output.writeString(uid.toString());
         output.writeString(userName);
-        System.out.println("User.write");
     }
 
     @Override
@@ -39,6 +38,5 @@ public class User implements KryoSerializable
     {
         uid = UUID.fromString(input.readString());
         userName = input.readString();
-        System.out.println("User.read");
     }
 }
