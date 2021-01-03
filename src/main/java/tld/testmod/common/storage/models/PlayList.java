@@ -1,5 +1,9 @@
 package tld.testmod.common.storage.models;
 
+import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryo.KryoSerializable;
+import com.esotericsoftware.kryo.io.Input;
+import com.esotericsoftware.kryo.io.Output;
 import com.iciql.Iciql;
 
 import java.util.UUID;
@@ -16,7 +20,7 @@ import java.util.UUID;
         deleteType = Iciql.ConstraintDeleteType.CASCADE,
         updateType = Iciql.ConstraintUpdateType.CASCADE
 )
-public class PlayList
+public class PlayList implements KryoSerializable
 {
     @Iciql.IQColumn(primaryKey = true, autoIncrement = true)
     public Long pid;
@@ -31,5 +35,24 @@ public class PlayList
     public PlayList()
     {
         // default constructor required by iciql api
+    }
+
+    @Override
+    public void write(Kryo kryo, Output output)
+    {
+        output.writeVarLong((pid != null) ? pid : 0L, true);
+        output.writeString(uidOwner.toString());
+        output.writeString(playListName);
+        System.out.println("PlayList.write");
+    }
+
+    @Override
+    public void read(Kryo kryo, Input input)
+    {
+        long pidTemp = input.readVarLong(true);
+        pid = (pidTemp != 0L) ? pidTemp : null;
+        uidOwner = UUID.fromString(input.readString());
+        playListName = input.readString();
+        System.out.println("PlayList.read");
     }
 }

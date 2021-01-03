@@ -70,6 +70,7 @@ dependencies {
 
     embed 'com.h2database:h2:1.4.200'
     embed 'com.gitblit.iciql:iciql:2.2.0'
+    embed 'com.esotericsoftware:kryo:5.0.3'
     // compile against the JEI API but do not include it at runtime
     //compileOnly fg.deobf("mezz.jei:jei_1.12.2:4.15.0.293:api")
     // at runtime, use the full JEI jar
