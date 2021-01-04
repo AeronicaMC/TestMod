@@ -26,7 +26,7 @@ public class MusicDBHelper
     @CapabilityInject(IMusicDB.class)
     private static final Capability<IMusicDB> MUSIC_DB_CAP = MusicDBCapability.nonNullInjected();
 
-    private MusicDBHelper() { /** NOP **/}
+    private MusicDBHelper() { /* NOP */}
 
     public static boolean isSessionOpen(@Nullable EntityPlayer player)
     {
