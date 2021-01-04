@@ -3,8 +3,8 @@ package tld.testmod.network.client;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
-import de.javakaffee.kryoserializers.ArraysAsListSerializer;
-import de.javakaffee.kryoserializers.CollectionsEmptyListSerializer;
+import com.esotericsoftware.minlog.Log;
+import de.javakaffee.kryoserializers.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
@@ -23,9 +23,9 @@ import tld.testmod.network.AbstractMessage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 public class SyncMusicDBMessage extends AbstractMessage.AbstractClientMessage<SyncMusicDBMessage>
@@ -200,6 +200,7 @@ public class SyncMusicDBMessage extends AbstractMessage.AbstractClientMessage<Sy
 
     private void initKryo()
     {
+        Log.DEBUG();
         kryo = new Kryo();
         kryo.register(PlayList.class);
         kryo.register(Song.class);
@@ -210,5 +211,12 @@ public class SyncMusicDBMessage extends AbstractMessage.AbstractClientMessage<Sy
         kryo.register( Arrays.asList( new Tag[1] ).getClass(), new ArraysAsListSerializer());
         kryo.register( Arrays.asList( new User[1] ).getClass(), new ArraysAsListSerializer());
         kryo.register( Collections.EMPTY_LIST.getClass(), new CollectionsEmptyListSerializer());
+        kryo.register( Collections.EMPTY_MAP.getClass(), new CollectionsEmptyMapSerializer());
+        kryo.register( Collections.EMPTY_SET.getClass(), new CollectionsEmptySetSerializer());
+        kryo.register( Collections.singletonList( "" ).getClass(), new CollectionsSingletonListSerializer() );
+        kryo.register(Collections.singleton( new HashSet<Long>()).getClass(), new CollectionsSingletonSetSerializer());
+        kryo.register( Collections.singletonMap( "", "" ).getClass(), new CollectionsSingletonMapSerializer());
+        UnmodifiableCollectionsSerializer.registerSerializers( kryo );
+        SynchronizedCollectionsSerializer.registerSerializers( kryo );
     }
 }
