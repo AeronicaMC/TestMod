@@ -13,6 +13,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 import tld.testmod.Main;
 import tld.testmod.network.client.SyncMusicDBMessage;
+import tld.testmod.network.client.OpenGuiMessage;
 import tld.testmod.network.server.ActiveReceiverMessage;
 import tld.testmod.network.server.MusicDBServerRequest;
 
@@ -60,6 +61,7 @@ public class PacketDispatcher
     {
         /** Packets handled on CLIENT */
         registerMessage(SyncMusicDBMessage.class);
+        registerMessage(OpenGuiMessage.class);
 
         /** Packets handled on SERVER */
         registerMessage(ActiveReceiverMessage.class);

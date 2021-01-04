@@ -3,6 +3,8 @@ package tld.testmod.common.storage.dao;
 import com.iciql.Dao;
 import tld.testmod.common.storage.models.*;
 
+import java.util.UUID;
+
 public interface ModelDao extends Dao
 {
     @SqlQuery("select * from PlayList")
@@ -19,6 +21,15 @@ public interface ModelDao extends Dao
 
     @SqlQuery("select * from User")
     User[] getAllUsers();
+
+    @SqlQuery("select * from PlayList where uidOwner = :uid order by playListName")
+    PlayList[] getPlayLists(@Bind("uid") UUID uid);
+
+    @SqlQuery("select * from Song where uidOwner = :uid order by songTitle")
+    Song[] getSongs(@Bind("uid") UUID uid);
+
+    @SqlQuery("select * from Tag where uidOwner = :uid order by tagName")
+    Tag[] getTags(@Bind("uid") UUID uid);
 
     @SqlStatement("update Tag set tagName = :name where tid =:id")
     boolean renameTagName(@Bind("id") long id, @Bind("name") String name);

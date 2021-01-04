@@ -2,6 +2,10 @@ package tld.testmod.common.storage.capability;
 
 public enum SyncType
 {
-    ALL,
-    SESSION;
+    ALL_NBT,
+    SESSION_STATE,
+    PLAY_LISTS,
+    SONGS,
+    TAGS,
+    USERS;
 }

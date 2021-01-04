@@ -12,6 +12,7 @@ import org.lwjgl.input.Mouse;
 import tld.testmod.client.gui.util.GuiButtonMX;
 import tld.testmod.client.gui.util.GuiLabelMX;
 import tld.testmod.client.gui.util.GuiScrollingListOf;
+import tld.testmod.common.storage.capability.IMusicDB;
 import tld.testmod.common.storage.capability.MusicDBHelper;
 import tld.testmod.common.storage.capability.RequestType;
 import tld.testmod.common.storage.models.User;
@@ -20,6 +21,7 @@ import tld.testmod.network.server.MusicDBServerRequest;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.UUID;
 
 public class GuiDB extends GuiScreen
@@ -27,10 +29,12 @@ public class GuiDB extends GuiScreen
     private final GuiScrollingListOf<User> userGuiScrollingList;
     private GuiButtonMX buttonToggle;
     private GuiLabelMX labelStatus;
+    private IMusicDB musicDB;
 
-    public GuiDB(Container container)
+    public GuiDB()
     {
         this.mc = Minecraft.getMinecraft();
+        musicDB = MusicDBHelper.getImpl(mc.player);
         this.fontRenderer = mc.fontRenderer;
         Keyboard.enableRepeatEvents(true);
 
@@ -79,15 +83,13 @@ public class GuiDB extends GuiScreen
 
         userGuiScrollingList.setLayout(entryHeight, userListWidth, listHeight, listTop, listBottom, left);
         userGuiScrollingList.clear();
-        User user01 = new User();
-        user01.userName = "OneWill";
-        user01.uid = UUID.randomUUID();
 
-        User user02 = new User();
-        user02.userName = "TwoCan";
-        user02.uid = UUID.randomUUID();
-        userGuiScrollingList.add(user01);
-        userGuiScrollingList.add(user02);
+        if (musicDB != null)
+        {
+            User[] users = musicDB.getUsers();
+            if (users != null)
+                userGuiScrollingList.addAll(Arrays.asList(users));
+        }
 
         labelStatus = new GuiLabelMX(fontRenderer, 0, userGuiScrollingList.getRight()+5, userGuiScrollingList.getTop(), width - 5 - userGuiScrollingList.getRight(), 10,0xFFFFFF);
         labelStatus.setLabel(String.format("Session open: %s", MusicDBHelper.isSessionOpen(mc.player)));

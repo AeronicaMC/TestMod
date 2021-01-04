@@ -38,6 +38,6 @@ public class MusicDBServerRequest extends AbstractMessage.AbstractServerMessage<
                 MusicDBHelper.closeSession(player);
             else
                 MusicDBHelper.openSession(player);
-            MusicDBHelper.sync(player, SyncType.SESSION);
+            MusicDBHelper.sync(player, SyncType.SESSION_STATE);
     }
 }

@@ -36,7 +36,7 @@ public class GUIHandler implements IGuiHandler
         switch (guiID)
         {
             case GuiGuid.GUI_DB:
-                return new GuiDB(null);
+                return new GuiDB();
 
             case GuiGuid.GUI_TEST:
                 return new GuiTest(null);
