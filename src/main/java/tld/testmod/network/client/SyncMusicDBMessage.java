@@ -4,7 +4,6 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.minlog.Log;
-import de.javakaffee.kryoserializers.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
@@ -23,9 +22,6 @@ import tld.testmod.network.AbstractMessage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 
 public class SyncMusicDBMessage extends AbstractMessage.AbstractClientMessage<SyncMusicDBMessage>
@@ -36,21 +32,19 @@ public class SyncMusicDBMessage extends AbstractMessage.AbstractClientMessage<Sy
     private NBTTagCompound data;
     private boolean session;
     private byte[] byteBuffer;
-    private Kryo kryo;
+    private final Kryo kryo = kryoThreadPool.get();
 
-    private List<PlayList> playLists;
-    private List<Song> songs;
-    private List<Tag> tags;
-    private List<User> users;
+    // What's better Object[] array or List<Object> ?? Both are possible
+    private PlayList[] playLists;
+    private Song[] songs;
+    private Tag[] tags;
+    // private List<User> users;
+    private User[] users;
 
-    public SyncMusicDBMessage() {
-        /* Required by the PacketDispatcher */
-        initKryo();
-    }
+    public SyncMusicDBMessage() { /* Required by the PacketDispatcher */ }
 
     public SyncMusicDBMessage(IMusicDB musicDB, SyncType syncType)
     {
-        initKryo();
         this.syncType = syncType;
         switch (syncType)
         {
@@ -62,16 +56,17 @@ public class SyncMusicDBMessage extends AbstractMessage.AbstractClientMessage<Sy
                 this.session = musicDB.isSessionOpen();
                 break;
             case PLAY_LISTS:
-                playLists = Arrays.asList(musicDB.getPlaylists());
+                playLists = musicDB.getPlaylists();
                 break;
             case SONGS:
-                songs = Arrays.asList(musicDB.getSongs());
+                songs = musicDB.getSongs();
                 break;
             case TAGS:
-                tags = Arrays.asList(musicDB.getTags());
+                tags = musicDB.getTags();
                 break;
             case USERS:
-                users = Arrays.asList(musicDB.getUsers());
+                //users = Arrays.asList(musicDB.getUsers());
+                users = musicDB.getUsers();
                 break;
             default:
         }
@@ -90,16 +85,17 @@ public class SyncMusicDBMessage extends AbstractMessage.AbstractClientMessage<Sy
                 session = buffer.readBoolean();
                 break;
             case PLAY_LISTS:
-                playLists = readList(buffer, Arrays.asList( new PlayList[1] ).getClass());
+                playLists = readArray(buffer, PlayList[].class);
                 break;
             case SONGS:
-                songs = readList(buffer, Arrays.asList( new Song[1] ).getClass());
+                songs = readArray(buffer, Song[].class);
                 break;
             case TAGS:
-                tags = readList(buffer, Arrays.asList( new Tag[1] ).getClass());
+                tags = readArray(buffer, Tag[].class);
                 break;
             case USERS:
-                users = readList(buffer, Arrays.asList( new User[1] ).getClass());
+                //users = readList(buffer, Arrays.asList( new User[1] ).getClass());
+                users = readArray(buffer, User[].class);
                 break;
 
             default:
@@ -119,16 +115,16 @@ public class SyncMusicDBMessage extends AbstractMessage.AbstractClientMessage<Sy
                 buffer.writeBoolean(session);
                 break;
             case PLAY_LISTS:
-                writeList(buffer, playLists);
+                writeArray(buffer, playLists);
                 break;
             case SONGS:
-                writeList(buffer, songs);
+                writeArray(buffer, songs);
                 break;
             case TAGS:
-                writeList(buffer, tags);
+                writeArray(buffer, tags);
                 break;
             case USERS:
-                writeList(buffer, users);
+                writeArray(buffer, users);
                 break;
 
             default:
@@ -154,16 +150,16 @@ public class SyncMusicDBMessage extends AbstractMessage.AbstractClientMessage<Sy
                             musicDB.closeSession();
                         break;
                     case PLAY_LISTS:
-                        musicDB.setPlaylists((PlayList[]) playLists.toArray());
+                        musicDB.setPlaylists(playLists);
                         break;
                     case SONGS:
-                        musicDB.setSongs((Song[]) songs.toArray());
+                        musicDB.setSongs(songs);
                         break;
                     case TAGS:
-                        musicDB.setTags((Tag[]) tags.toArray());
+                        musicDB.setTags(tags);
                         break;
                     case USERS:
-                        musicDB.setUsers((User[]) users.toArray());
+                        musicDB.setUsers(users);
                         break;
 
                     default:
@@ -184,13 +180,12 @@ public class SyncMusicDBMessage extends AbstractMessage.AbstractClientMessage<Sy
         return list;
     }
 
-    @SuppressWarnings("all")
     private <T> void writeList(PacketBuffer buffer, List<T> list)
     {
         // Serialize data object to a byte array
         ByteArrayOutputStream bos = new ByteArrayOutputStream() ;
         Output output = new Output(bos) ;
-        kryo.writeObject(output, (List<T>)list);
+        kryo.writeObject(output, list);
 
         // Get the bytes of the serialized object
         byteBuffer = output.toBytes();
@@ -198,25 +193,46 @@ public class SyncMusicDBMessage extends AbstractMessage.AbstractClientMessage<Sy
         buffer.writeByteArray(byteBuffer);
     }
 
-    private void initKryo()
+    // At the moment I prefer the Object[] array generic methods. Their use is cleaner.
+    private <T> T[] readArray(PacketBuffer buffer, Class<T[]> clazz)
     {
-        Log.DEBUG();
-        kryo = new Kryo();
-        kryo.register(PlayList.class);
-        kryo.register(Song.class);
-        kryo.register(Tag.class);
-        kryo.register(User.class);
-        kryo.register( Arrays.asList( new PlayList[1] ).getClass(), new ArraysAsListSerializer());
-        kryo.register( Arrays.asList( new Song[1] ).getClass(), new ArraysAsListSerializer());
-        kryo.register( Arrays.asList( new Tag[1] ).getClass(), new ArraysAsListSerializer());
-        kryo.register( Arrays.asList( new User[1] ).getClass(), new ArraysAsListSerializer());
-        kryo.register( Collections.EMPTY_LIST.getClass(), new CollectionsEmptyListSerializer());
-        kryo.register( Collections.EMPTY_MAP.getClass(), new CollectionsEmptyMapSerializer());
-        kryo.register( Collections.EMPTY_SET.getClass(), new CollectionsEmptySetSerializer());
-        kryo.register( Collections.singletonList( "" ).getClass(), new CollectionsSingletonListSerializer() );
-        kryo.register(Collections.singleton( new HashSet<Long>()).getClass(), new CollectionsSingletonSetSerializer());
-        kryo.register( Collections.singletonMap( "", "" ).getClass(), new CollectionsSingletonMapSerializer());
-        UnmodifiableCollectionsSerializer.registerSerializers( kryo );
-        SynchronizedCollectionsSerializer.registerSerializers( kryo );
+        T[] array;
+        // Deserialize data object from a byte array
+        byteBuffer = buffer.readByteArray();
+        ByteArrayInputStream bis = new ByteArrayInputStream(byteBuffer) ;
+        Input input = new Input(bis);
+        array = kryo.readObject(input, clazz);
+        input.close();
+        return array;
     }
+
+    private <T> void writeArray(PacketBuffer buffer, T[] array)
+    {
+        // Serialize data object to a byte array
+        ByteArrayOutputStream bos = new ByteArrayOutputStream() ;
+        Output output = new Output(bos) ;
+        kryo.writeObject(output, array);
+
+        // Get the bytes of the serialized object
+        byteBuffer = output.toBytes();
+        output.close();
+        buffer.writeByteArray(byteBuffer);
+    }
+
+    static private final ThreadLocal<Kryo> kryoThreadPool = ThreadLocal.withInitial(() ->
+        {
+            // TODO: Remove Log.DEBUG or make Log.WARN for production use
+            Log.DEBUG();
+            Kryo kryo = new Kryo();
+            kryo.register(PlayList.class);
+            kryo.register(Song.class);
+            kryo.register(Tag.class);
+            kryo.register(User.class);
+            kryo.register(PlayList[].class);
+            kryo.register(Song[].class);
+            kryo.register(Tag[].class);
+            kryo.register(User[].class);
+            kryo.register(Object[].class);
+            return kryo;
+        });
 }
