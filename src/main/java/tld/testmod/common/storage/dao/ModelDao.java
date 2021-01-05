@@ -19,7 +19,7 @@ public interface ModelDao extends Dao
     @SqlQuery("select * from Tag")
     Tag[] getAllTags();
 
-    @SqlQuery("select * from User")
+    @SqlQuery("select * from User order by userName")
     User[] getAllUsers();
 
     @SqlQuery("select * from PlayList where uidOwner = :uid order by playListName")
