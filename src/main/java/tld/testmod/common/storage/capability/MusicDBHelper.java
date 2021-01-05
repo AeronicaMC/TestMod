@@ -5,6 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import tld.testmod.common.storage.dao.ModelDao;
 import tld.testmod.common.storage.models.PlayList;
 import tld.testmod.common.storage.models.PlayListEntry;
@@ -60,14 +61,15 @@ public class MusicDBHelper
      */
     public static void collectUserMusicData(EntityPlayer player, boolean sync)
     {
-        List<PlayListEntry> playListEntries = new ArrayList<>();
         IMusicDB musicDB = getImpl(player);
         if (musicDB != null && !player.world.isRemote)
         {
+            List<PlayListEntry> playListEntries = new ArrayList<>();
             UUID uid = player.getPersistentID();
             try (Db db = Db.open(getConnection()))
             {
                 ModelDao dao = db.open(ModelDao.class);
+                // Query playlists and their entries
                 musicDB.setPlaylists(dao.getPlayLists(uid));
                 for (PlayList playList : musicDB.getPlaylists())
                 {
@@ -75,9 +77,12 @@ public class MusicDBHelper
                 }
                 musicDB.setPlayListEntries(playListEntries.toArray(new PlayListEntry[0]));
                 playListEntries.clear();
+
                 musicDB.setSongs(dao.getSongs(uid));
                 musicDB.setTags(dao.getTags(uid));
-                musicDB.setUsers(dao.getAllUsers()); // TODO: In Production ONLY OP'd players get AllUsers
+
+                if (isPlayerOp(player) || player.isCreative())
+                    musicDB.setUsers(dao.getAllUsers()); // In MP ONLY or Creative OP'd players get AllUsers
             } catch (SQLException e)
             {
                 e.printStackTrace();
@@ -98,10 +103,19 @@ public class MusicDBHelper
             sync(player, SyncType.PLAY_LIST_ENTRIES);
             sync(player, SyncType.SONGS);
             sync(player, SyncType.TAGS);
-            sync(player, SyncType.USERS); // TODO: In Production ONLY OP'd players get AllUsers
+            sync(player, SyncType.USERS);
         }
     }
 
+    /**
+     * Useful only on server MP. Will always be false if called client side or in SP.
+     * @param player in question
+     * @return true if Op's
+     */
+    private static boolean isPlayerOp(EntityPlayer player)
+    {
+        return  (!player.world.isRemote) && (FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getOppedPlayers().getEntry(player.getGameProfile()) != null);
+    }
     public static void syncAll(EntityPlayer player)
     {
         sync(player, SyncType.ALL_NBT);
@@ -109,7 +123,6 @@ public class MusicDBHelper
 
     public static void sync(@Nullable EntityPlayer player, SyncType syncType)
     {
-        if ((player != null) && !player.world.isRemote)
-            PacketDispatcher.sendTo(new SyncMusicDBMessage(player.getCapability(MUSIC_DB_CAP, null), syncType), (EntityPlayerMP)player);
+        PacketDispatcher.sendTo(new SyncMusicDBMessage(player.getCapability(MUSIC_DB_CAP, null), syncType), (EntityPlayerMP)player);
     }
 }
