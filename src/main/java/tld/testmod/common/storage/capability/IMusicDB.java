@@ -1,10 +1,7 @@
 package tld.testmod.common.storage.capability;
 
 import scala.collection.$colon$plus;
-import tld.testmod.common.storage.models.PlayList;
-import tld.testmod.common.storage.models.Song;
-import tld.testmod.common.storage.models.Tag;
-import tld.testmod.common.storage.models.User;
+import tld.testmod.common.storage.models.*;
 
 import java.util.Set;
 
@@ -20,6 +17,8 @@ public interface IMusicDB
 
     PlayList[] getPlaylists();
 
+    PlayListEntry[] getPlayListEntries();
+
     Song[] getSongs();
 
     Tag[] getTags();
@@ -27,6 +26,8 @@ public interface IMusicDB
     User[] getUsers();
 
     void setPlaylists(PlayList[] playlists);
+
+    void setPlayListEntries(PlayListEntry[] playListEntries);
 
     void setSongs(Song[] songs);
 

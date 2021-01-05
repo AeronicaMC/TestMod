@@ -13,10 +13,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import tld.testmod.common.storage.capability.IMusicDB;
 import tld.testmod.common.storage.capability.MusicDBCapability;
 import tld.testmod.common.storage.capability.SyncType;
-import tld.testmod.common.storage.models.PlayList;
-import tld.testmod.common.storage.models.Song;
-import tld.testmod.common.storage.models.Tag;
-import tld.testmod.common.storage.models.User;
+import tld.testmod.common.storage.models.*;
 import tld.testmod.network.AbstractMessage;
 
 import java.io.ByteArrayInputStream;
@@ -36,6 +33,7 @@ public class SyncMusicDBMessage extends AbstractMessage.AbstractClientMessage<Sy
 
     // What's better Object[] array or List<Object> ?? Both are possible
     private PlayList[] playLists;
+    private PlayListEntry[] playListEntries;
     private Song[] songs;
     private Tag[] tags;
     // private List<User> users;
@@ -57,6 +55,9 @@ public class SyncMusicDBMessage extends AbstractMessage.AbstractClientMessage<Sy
                 break;
             case PLAY_LISTS:
                 playLists = musicDB.getPlaylists();
+                break;
+            case PLAY_LIST_ENTRIES:
+                playListEntries = musicDB.getPlayListEntries();
                 break;
             case SONGS:
                 songs = musicDB.getSongs();
@@ -87,6 +88,9 @@ public class SyncMusicDBMessage extends AbstractMessage.AbstractClientMessage<Sy
             case PLAY_LISTS:
                 playLists = readArray(buffer, PlayList[].class);
                 break;
+            case PLAY_LIST_ENTRIES:
+                playListEntries = readArray(buffer, PlayListEntry[].class);
+                break;
             case SONGS:
                 songs = readArray(buffer, Song[].class);
                 break;
@@ -97,7 +101,6 @@ public class SyncMusicDBMessage extends AbstractMessage.AbstractClientMessage<Sy
                 //users = readList(buffer, Arrays.asList( new User[1] ).getClass());
                 users = readArray(buffer, User[].class);
                 break;
-
             default:
         }
     }
@@ -117,6 +120,9 @@ public class SyncMusicDBMessage extends AbstractMessage.AbstractClientMessage<Sy
             case PLAY_LISTS:
                 writeArray(buffer, playLists);
                 break;
+            case PLAY_LIST_ENTRIES:
+                writeArray(buffer, playListEntries);
+                break;
             case SONGS:
                 writeArray(buffer, songs);
                 break;
@@ -126,7 +132,6 @@ public class SyncMusicDBMessage extends AbstractMessage.AbstractClientMessage<Sy
             case USERS:
                 writeArray(buffer, users);
                 break;
-
             default:
         }
     }
@@ -152,6 +157,9 @@ public class SyncMusicDBMessage extends AbstractMessage.AbstractClientMessage<Sy
                     case PLAY_LISTS:
                         musicDB.setPlaylists(playLists);
                         break;
+                    case PLAY_LIST_ENTRIES:
+                        musicDB.setPlayListEntries(playListEntries);
+                        break;
                     case SONGS:
                         musicDB.setSongs(songs);
                         break;
@@ -161,7 +169,6 @@ public class SyncMusicDBMessage extends AbstractMessage.AbstractClientMessage<Sy
                     case USERS:
                         musicDB.setUsers(users);
                         break;
-
                     default:
                 }
         }
@@ -225,10 +232,12 @@ public class SyncMusicDBMessage extends AbstractMessage.AbstractClientMessage<Sy
             Log.DEBUG();
             Kryo kryo = new Kryo();
             kryo.register(PlayList.class);
+            kryo.register(PlayListEntry.class);
             kryo.register(Song.class);
             kryo.register(Tag.class);
             kryo.register(User.class);
             kryo.register(PlayList[].class);
+            kryo.register(PlayListEntry[].class);
             kryo.register(Song[].class);
             kryo.register(Tag[].class);
             kryo.register(User[].class);

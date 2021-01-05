@@ -25,6 +25,9 @@ public interface ModelDao extends Dao
     @SqlQuery("select * from PlayList where uidOwner = :uid order by playListName")
     PlayList[] getPlayLists(@Bind("uid") UUID uid);
 
+    @SqlQuery("select * from PlayListEntry where pid = :pid")
+    PlayListEntry[] getPlayListEntries(@Bind("pid") long pid);
+
     @SqlQuery("select * from Song where uidOwner = :uid order by songTitle")
     Song[] getSongs(@Bind("uid") UUID uid);
 

@@ -7,6 +7,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import tld.testmod.common.storage.dao.ModelDao;
 import tld.testmod.common.storage.models.PlayList;
+import tld.testmod.common.storage.models.PlayListEntry;
 import tld.testmod.common.storage.models.Song;
 import tld.testmod.common.storage.models.Tag;
 import tld.testmod.common.utils.ModRuntimeException;
@@ -15,8 +16,7 @@ import tld.testmod.network.client.SyncMusicDBMessage;
 
 import javax.annotation.Nullable;
 import java.sql.SQLException;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 import static tld.testmod.common.storage.ServerDataManager.getConnection;
 
@@ -60,6 +60,7 @@ public class MusicDBHelper
      */
     public static void collectUserMusicData(EntityPlayer player, boolean sync)
     {
+        List<PlayListEntry> playListEntries = new ArrayList<>();
         IMusicDB musicDB = getImpl(player);
         if (musicDB != null && !player.world.isRemote)
         {
@@ -68,9 +69,15 @@ public class MusicDBHelper
             {
                 ModelDao dao = db.open(ModelDao.class);
                 musicDB.setPlaylists(dao.getPlayLists(uid));
+                for (PlayList playList : musicDB.getPlaylists())
+                {
+                    playListEntries.addAll(Arrays.asList(dao.getPlayListEntries(playList.pid)));
+                }
+                musicDB.setPlayListEntries(playListEntries.toArray(new PlayListEntry[0]));
+                playListEntries.clear();
                 musicDB.setSongs(dao.getSongs(uid));
                 musicDB.setTags(dao.getTags(uid));
-                musicDB.setUsers(dao.getAllUsers());
+                musicDB.setUsers(dao.getAllUsers()); // TODO: In Production ONLY OP'd players get AllUsers
             } catch (SQLException e)
             {
                 e.printStackTrace();
@@ -88,9 +95,10 @@ public class MusicDBHelper
         if (sync)
         {
             sync(player, SyncType.PLAY_LISTS);
+            sync(player, SyncType.PLAY_LIST_ENTRIES);
             sync(player, SyncType.SONGS);
             sync(player, SyncType.TAGS);
-            sync(player, SyncType.USERS);
+            sync(player, SyncType.USERS); // TODO: In Production ONLY OP'd players get AllUsers
         }
     }
 
