@@ -29,14 +29,16 @@ public class User implements KryoSerializable
     @Override
     public void write(Kryo kryo, Output output)
     {
-        output.writeString(uid.toString());
+        output.writeLong(uid.getMostSignificantBits());
+        output.writeLong(uid.getLeastSignificantBits());
         output.writeString(userName);
     }
 
     @Override
     public void read(Kryo kryo, Input input)
     {
-        uid = UUID.fromString(input.readString());
+        long msb = input.readLong();
+        uid = new UUID(msb, input.readLong());
         userName = input.readString();
     }
 }

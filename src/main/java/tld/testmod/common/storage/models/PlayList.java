@@ -41,7 +41,8 @@ public class PlayList implements KryoSerializable
     public void write(Kryo kryo, Output output)
     {
         output.writeVarLong((pid != null) ? pid : 0L, true);
-        output.writeString(uidOwner.toString());
+        output.writeLong(uidOwner.getMostSignificantBits());
+        output.writeLong(uidOwner.getLeastSignificantBits());
         output.writeString(playListName);
     }
 
@@ -50,7 +51,8 @@ public class PlayList implements KryoSerializable
     {
         long pidTemp = input.readVarLong(true);
         pid = (pidTemp != 0L) ? pidTemp : null;
-        uidOwner = UUID.fromString(input.readString());
+        long msb = input.readLong();
+        uidOwner = new UUID(msb, input.readLong());
         playListName = input.readString();
     }
 }

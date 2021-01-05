@@ -57,7 +57,8 @@ public class Tag implements KryoSerializable
     public void write(Kryo kryo, Output output)
     {
         output.writeVarLong((tid != null) ? tid : 0L, true);
-        output.writeString(uidOwner.toString());
+        output.writeLong(uidOwner.getMostSignificantBits());
+        output.writeLong(uidOwner.getLeastSignificantBits());
         output.writeVarLong((pid1 != null) ? pid1 : 0L, true);
         output.writeVarLong((pid2 != null) ? pid2 : 0L, true);
         output.writeVarLong((pid3 != null) ? pid3 : 0L, true);
@@ -70,7 +71,8 @@ public class Tag implements KryoSerializable
     {
         long tidTemp = input.readVarLong(true);
         tid = (tidTemp != 0L) ? tidTemp : null;
-        uidOwner = UUID.fromString(input.readString());
+        long msb = input.readLong();
+        uidOwner = new UUID(msb, input.readLong());
         long pid1Temp = input.readVarLong(true);
         pid1 = (pid1Temp != 0L) ? pid1Temp : null;
         long pid2Temp = input.readVarLong(true);

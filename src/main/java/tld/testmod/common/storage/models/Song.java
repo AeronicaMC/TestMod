@@ -51,7 +51,8 @@ public class Song implements KryoSerializable
     public void write(Kryo kryo, Output output)
     {
         output.writeVarLong((sid != null) ? sid : 0L, true);
-        output.writeString(uidOwner.toString());
+        output.writeLong(uidOwner.getMostSignificantBits());
+        output.writeLong(uidOwner.getLeastSignificantBits());
         output.writeString(songTitle);
         output.writeVarInt(duration, true);
     }
@@ -61,7 +62,8 @@ public class Song implements KryoSerializable
     {
         long sidTemp = input.readVarLong(true);
         sid = (sidTemp != 0L) ? sidTemp : null;
-        uidOwner = UUID.fromString(input.readString());
+        long msb = input.readLong();
+        uidOwner = new UUID(msb, input.readLong());
         songTitle = input.readString();
         duration = input.readVarInt(true);
     }
