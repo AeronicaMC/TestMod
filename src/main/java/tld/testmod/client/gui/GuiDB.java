@@ -12,6 +12,7 @@ import org.lwjgl.input.Mouse;
 import tld.testmod.client.gui.util.GuiButtonMX;
 import tld.testmod.client.gui.util.GuiLabelMX;
 import tld.testmod.client.gui.util.GuiScrollingListOf;
+import tld.testmod.client.gui.util.GuiTabButton;
 import tld.testmod.common.storage.capability.IMusicDB;
 import tld.testmod.common.storage.capability.MusicDBHelper;
 import tld.testmod.common.storage.capability.RequestType;
@@ -29,7 +30,8 @@ public class GuiDB extends GuiScreen
     private final GuiScrollingListOf<User> userGuiScrollingList;
     private GuiButtonMX buttonToggle;
     private GuiLabelMX labelStatus;
-    private IMusicDB musicDB;
+    private GuiTabButton tabButton;
+    private final IMusicDB musicDB;
 
     public GuiDB()
     {
@@ -63,6 +65,27 @@ public class GuiDB extends GuiScreen
                 toggleSession();
             }
         };
+
+        tabButton = new GuiTabButton(this) {
+            @Override
+            protected void drawSlot(int entryRight, int slotTop, int slotBuffer, Tessellator tess)
+            {
+                String trimmedName = fontRenderer.trimStringToWidth(tabName, elementWidth - 10);
+                fontRenderer.drawStringWithShadow(trimmedName, (float) left + 3, slotTop, highlightSelected ? 0xFFFF00 : 0xADD8E6);
+            }
+
+            @Override
+            protected void selectedClickedCallback(int selectedIndex)
+            {
+                toggleSession();
+            }
+
+            @Override
+            protected void selectedDoubleClickedCallback(int selectedIndex)
+            {
+                toggleSession();
+            }
+        };
     }
 
     @Override
@@ -78,11 +101,15 @@ public class GuiDB extends GuiScreen
         int listTop = titleTop + 25;
         int listHeight = height - titleTop - entryHeight - 2 - 10 - 25 - 25;
         int listBottom = listTop + listHeight;
+        int tabHeight = listTop - titleTop - 4;
         int statusTop = listBottom + 4;
         int userListWidth = (width - 15) / 4;
 
         userGuiScrollingList.setLayout(entryHeight, userListWidth, listHeight, listTop, listBottom, left);
         userGuiScrollingList.clear();
+
+        tabButton.setLayout(entryHeight, userListWidth, tabHeight, titleTop, userGuiScrollingList.getRight()+5);
+        tabButton.setTabName("Some Tab");
 
         if (musicDB != null)
         {
@@ -135,6 +162,7 @@ public class GuiDB extends GuiScreen
     {
         drawDefaultBackground();
         userGuiScrollingList.drawScreen(mouseX, mouseY, partialTicks);
+        tabButton.drawScreen(mouseX, mouseY, partialTicks);
         labelStatus.drawLabel(mc, mouseX, mouseY);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
@@ -160,6 +188,7 @@ public class GuiDB extends GuiScreen
         int mouseX = Mouse.getEventX() * width / mc.displayWidth;
         int mouseY = height - Mouse.getEventY() * height / mc.displayHeight - 1;
         userGuiScrollingList.handleMouseInput(mouseX, mouseY);
+        tabButton.handleMouseInput(mouseX, mouseY);
         super.handleMouseInput();
     }
 
