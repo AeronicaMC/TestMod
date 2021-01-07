@@ -3,34 +3,32 @@ package tld.testmod.client.gui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.inventory.Container;
-import net.minecraftforge.server.command.TextComponentHelper;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import tld.testmod.client.gui.util.GuiButtonMX;
 import tld.testmod.client.gui.util.GuiLabelMX;
 import tld.testmod.client.gui.util.GuiScrollingListOf;
-import tld.testmod.client.gui.util.GuiTabButton;
 import tld.testmod.common.storage.capability.IMusicDB;
 import tld.testmod.common.storage.capability.MusicDBHelper;
 import tld.testmod.common.storage.capability.RequestType;
-import tld.testmod.common.storage.models.User;
+import tld.testmod.common.storage.models.*;
 import tld.testmod.network.PacketDispatcher;
 import tld.testmod.network.server.MusicDBServerRequest;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.UUID;
 
 public class GuiDB extends GuiScreen
 {
-    private final GuiScrollingListOf<User> userGuiScrollingList;
+    private final GuiScrollingListOf<User> userGSL;
+    private final GuiScrollingListOf<PlayList> playListGSL;
+    private final GuiScrollingListOf<PlayListEntry> playListEntryGSL;
+    private final GuiScrollingListOf<Song> songGSL;
+    private final GuiScrollingListOf<Tag> tagGSL;
     private GuiButtonMX buttonToggle;
     private GuiLabelMX labelStatus;
-    private GuiTabButton tabButton;
     private final IMusicDB musicDB;
 
     public GuiDB()
@@ -40,8 +38,15 @@ public class GuiDB extends GuiScreen
         this.fontRenderer = mc.fontRenderer;
         Keyboard.enableRepeatEvents(true);
 
-        userGuiScrollingList = new GuiScrollingListOf<User>(this)
+        userGSL = new GuiScrollingListOf<User>(this)
         {
+            @Override
+            protected void selectedClickedCallback(int selectedIndex) { /* NOP */ }
+            @Override
+            protected void selectedDoubleClickedCallback(int selectedIndex)
+            {
+                toggleSession();
+            }
             @Override
             protected void drawSlot(int slotIdx, int entryRight, int slotTop, int slotBuffer, Tessellator tess)
             {
@@ -52,38 +57,82 @@ public class GuiDB extends GuiScreen
                     fontRenderer.drawStringWithShadow(trimmedName, (float) left + 3, slotTop, 0xADD8E6);
                 }
             }
+        };
+
+        playListGSL = new GuiScrollingListOf<PlayList>(this) {
+            @Override
+            protected void selectedClickedCallback(int selectedIndex)  { /* NOP */ }
 
             @Override
-            protected void selectedClickedCallback(int selectedIndex)
-            {
-
-            }
+            protected void selectedDoubleClickedCallback(int selectedIndex)  { /* NOP */ }
 
             @Override
-            protected void selectedDoubleClickedCallback(int selectedIndex)
+            protected void drawSlot(int slotIdx, int entryRight, int slotTop, int slotBuffer, Tessellator tess)
             {
-                toggleSession();
+                if (!isEmpty() && slotIdx >= 0 && slotIdx < size() && get(slotIdx) != null)
+                {
+                    PlayList playList = get(slotIdx);
+                    String trimmedName = fontRenderer.trimStringToWidth(playList.playListName, listWidth - 10);
+                    fontRenderer.drawStringWithShadow(trimmedName, (float) left + 3, slotTop, 0xADD8E6);
+                }
             }
         };
 
-        tabButton = new GuiTabButton(this) {
+        playListEntryGSL = new GuiScrollingListOf<PlayListEntry>(this) {
             @Override
-            protected void drawSlot(int entryRight, int slotTop, int slotBuffer, Tessellator tess)
-            {
-                String trimmedName = fontRenderer.trimStringToWidth(tabName, elementWidth - 10);
-                fontRenderer.drawStringWithShadow(trimmedName, (float) left + 3, slotTop, highlightSelected ? 0xFFFF00 : 0xADD8E6);
-            }
+            protected void selectedClickedCallback(int selectedIndex)  { /* NOP */ }
 
             @Override
-            protected void selectedClickedCallback(int selectedIndex)
-            {
-                toggleSession();
-            }
+            protected void selectedDoubleClickedCallback(int selectedIndex)  { /* NOP */ }
 
             @Override
-            protected void selectedDoubleClickedCallback(int selectedIndex)
+            protected void drawSlot(int slotIdx, int entryRight, int slotTop, int slotBuffer, Tessellator tess)
             {
-                toggleSession();
+                if (!isEmpty() && slotIdx >= 0 && slotIdx < size() && get(slotIdx) != null)
+                {
+                    PlayListEntry entry = get(slotIdx);
+                    String allIds = String.format("%02d, %02d, %02d" ,entry.eid, entry.pid, entry.sid);
+                    String trimmedName = fontRenderer.trimStringToWidth(allIds, listWidth - 10);
+                    fontRenderer.drawStringWithShadow(trimmedName, (float) left + 3, slotTop, 0xADD8E6);
+                }
+            }
+        };
+
+        songGSL = new GuiScrollingListOf<Song>(this) {
+            @Override
+            protected void selectedClickedCallback(int selectedIndex)  { /* NOP */ }
+
+            @Override
+            protected void selectedDoubleClickedCallback(int selectedIndex)  { /* NOP */ }
+
+            @Override
+            protected void drawSlot(int slotIdx, int entryRight, int slotTop, int slotBuffer, Tessellator tess)
+            {
+                if (!isEmpty() && slotIdx >= 0 && slotIdx < size() && get(slotIdx) != null)
+                {
+                    Song song = get(slotIdx);
+                    String trimmedName = fontRenderer.trimStringToWidth(song.songTitle, listWidth - 10);
+                    fontRenderer.drawStringWithShadow(trimmedName, (float) left + 3, slotTop, 0xADD8E6);
+                }
+            }
+        };
+
+        tagGSL = new GuiScrollingListOf<Tag>(this) {
+            @Override
+            protected void selectedClickedCallback(int selectedIndex)  { /* NOP */ }
+
+            @Override
+            protected void selectedDoubleClickedCallback(int selectedIndex)  { /* NOP */ }
+
+            @Override
+            protected void drawSlot(int slotIdx, int entryRight, int slotTop, int slotBuffer, Tessellator tess)
+            {
+                if (!isEmpty() && slotIdx >= 0 && slotIdx < size() && get(slotIdx) != null)
+                {
+                    Tag tag = get(slotIdx);
+                    String trimmedName = fontRenderer.trimStringToWidth(tag.tagName, listWidth - 10);
+                    fontRenderer.drawStringWithShadow(trimmedName, (float) left + 3, slotTop, 0xADD8E6);
+                }
             }
         };
     }
@@ -103,24 +152,37 @@ public class GuiDB extends GuiScreen
         int listBottom = listTop + listHeight;
         int tabHeight = listTop - titleTop - 4;
         int statusTop = listBottom + 4;
-        int userListWidth = (width - 15) / 4;
+        int userListWidth = (width - 25) / 4;
 
-        userGuiScrollingList.setLayout(entryHeight, userListWidth, listHeight, listTop, listBottom, left);
-        userGuiScrollingList.clear();
-
-        tabButton.setLayout(entryHeight, userListWidth, tabHeight, titleTop, userGuiScrollingList.getRight()+5);
-        tabButton.setTabName("Some Tab");
+        userGSL.setLayout(entryHeight, userListWidth, listHeight, listTop, listBottom, left);
+        userGSL.clear();
+        playListGSL.setLayout(entryHeight, userListWidth, listHeight/2 , listTop, listTop + (listHeight/2), userGSL.getRight() + 5);
+        playListGSL.clear();
+        playListEntryGSL.setLayout(entryHeight, userListWidth, listBottom - playListGSL.getBottom() - 5, playListGSL.getBottom() + 5, listBottom, userGSL.getRight() + 5);
+        playListEntryGSL.clear();
+        songGSL.setLayout(entryHeight, userListWidth, listHeight, listTop, listBottom, playListGSL.getRight() + 5);
+        songGSL.clear();
+        tagGSL.setLayout(entryHeight, userListWidth, listHeight, listTop, listBottom, songGSL.getRight() + 5);
+        tagGSL.clear();
 
         if (musicDB != null)
         {
             User[] users = musicDB.getUsers();
-            if (users != null)
-                userGuiScrollingList.addAll(Arrays.asList(users));
+            userGSL.addAll(Arrays.asList(users));
+            PlayList[] playLists = musicDB.getPlaylists();
+            playListGSL.addAll(Arrays.asList(playLists));
+            PlayListEntry[] playListEntries = musicDB.getPlayListEntries();
+            playListEntryGSL.addAll(Arrays.asList(playListEntries));
+            Song[] songs = musicDB.getSongs();
+            songGSL.addAll(Arrays.asList(songs));
+            Tag[] tags = musicDB.getTags();
+            tagGSL.addAll(Arrays.asList(tags));
         }
 
-        labelStatus = new GuiLabelMX(fontRenderer, 0, userGuiScrollingList.getRight()+5, userGuiScrollingList.getTop(), width - 5 - userGuiScrollingList.getRight(), 10,0xFFFFFF);
+        labelStatus = new GuiLabelMX(fontRenderer, 0, left, titleTop, userListWidth, 10, 0xFFFFFF);
         labelStatus.setLabel(String.format("Session open: %s", MusicDBHelper.isSessionOpen(mc.player)));
-        buttonToggle = new GuiButtonMX(0, userGuiScrollingList.getRight() + 5, labelStatus.y + labelStatus.height + 5, "Toggle");
+        buttonToggle = new GuiButtonMX(0, tagGSL.getLeft(), titleTop, "Toggle");
+        buttonToggle.setWidth(userListWidth);
         addButton(buttonToggle);
     }
 
@@ -161,8 +223,11 @@ public class GuiDB extends GuiScreen
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         drawDefaultBackground();
-        userGuiScrollingList.drawScreen(mouseX, mouseY, partialTicks);
-        tabButton.drawScreen(mouseX, mouseY, partialTicks);
+        userGSL.drawScreen(mouseX, mouseY, partialTicks);
+        playListGSL.drawScreen(mouseX, mouseY, partialTicks);
+        playListEntryGSL.drawScreen(mouseX, mouseY, partialTicks);
+        songGSL.drawScreen(mouseX, mouseY, partialTicks);
+        tagGSL.drawScreen(mouseX, mouseY, partialTicks);
         labelStatus.drawLabel(mc, mouseX, mouseY);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
@@ -170,7 +235,11 @@ public class GuiDB extends GuiScreen
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException
     {
-        userGuiScrollingList.keyTyped(typedChar, keyCode);
+        userGSL.keyTyped(typedChar, keyCode);
+        playListGSL.keyTyped(typedChar, keyCode);
+        playListEntryGSL.keyTyped(typedChar, keyCode);
+        songGSL.keyTyped(typedChar, keyCode);
+        tagGSL.keyTyped(typedChar, keyCode);
         // updateState();
         super.keyTyped(typedChar, keyCode);
     }
@@ -187,8 +256,11 @@ public class GuiDB extends GuiScreen
     {
         int mouseX = Mouse.getEventX() * width / mc.displayWidth;
         int mouseY = height - Mouse.getEventY() * height / mc.displayHeight - 1;
-        userGuiScrollingList.handleMouseInput(mouseX, mouseY);
-        tabButton.handleMouseInput(mouseX, mouseY);
+        userGSL.handleMouseInput(mouseX, mouseY);
+        playListGSL.handleMouseInput(mouseX, mouseY);
+        playListEntryGSL.handleMouseInput(mouseX, mouseY);
+        songGSL.handleMouseInput(mouseX, mouseY);
+        tagGSL.handleMouseInput(mouseX, mouseY);
         super.handleMouseInput();
     }
 
