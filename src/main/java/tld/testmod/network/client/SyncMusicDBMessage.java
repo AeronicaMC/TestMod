@@ -4,6 +4,7 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.minlog.Log;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
@@ -141,36 +142,39 @@ public class SyncMusicDBMessage extends AbstractMessage.AbstractClientMessage<Sy
     {
         if (player.hasCapability(MUSIC_DB_CAP, null))
         {
-            final IMusicDB musicDB = player.getCapability(MUSIC_DB_CAP, null);
-            if (musicDB != null)
-                switch (syncType)
+            Minecraft.getMinecraft().addScheduledTask(() ->
                 {
-                    case ALL_NBT:
-                        MUSIC_DB_CAP.readNBT(musicDB, null, data);
-                        break;
-                    case SESSION_STATE:
-                        if (session)
-                            musicDB.openSession();
-                        else
-                            musicDB.closeSession();
-                        break;
-                    case PLAY_LISTS:
-                        musicDB.setPlaylists(playLists);
-                        break;
-                    case PLAY_LIST_ENTRIES:
-                        musicDB.setPlayListEntries(playListEntries);
-                        break;
-                    case SONGS:
-                        musicDB.setSongs(songs);
-                        break;
-                    case TAGS:
-                        musicDB.setTags(tags);
-                        break;
-                    case USERS:
-                        musicDB.setUsers(users);
-                        break;
-                    default:
-                }
+                    final IMusicDB musicDB = player.getCapability(MUSIC_DB_CAP, null);
+                    if (musicDB != null)
+                        switch (syncType)
+                        {
+                            case ALL_NBT:
+                                MUSIC_DB_CAP.readNBT(musicDB, null, data);
+                                break;
+                            case SESSION_STATE:
+                                if (session)
+                                    musicDB.openSession();
+                                else
+                                    musicDB.closeSession();
+                                break;
+                            case PLAY_LISTS:
+                                musicDB.setPlaylists(playLists);
+                                break;
+                            case PLAY_LIST_ENTRIES:
+                                musicDB.setPlayListEntries(playListEntries);
+                                break;
+                            case SONGS:
+                                musicDB.setSongs(songs);
+                                break;
+                            case TAGS:
+                                musicDB.setTags(tags);
+                                break;
+                            case USERS:
+                                musicDB.setUsers(users);
+                                break;
+                            default:
+                        }
+                });
         }
     }
 

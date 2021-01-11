@@ -64,6 +64,7 @@ public class MusicDBHelper
         IMusicDB musicDB = getImpl(player);
         if (musicDB != null && !player.world.isRemote)
         {
+            musicDB.resetDbData();
             List<PlayListEntry> playListEntries = new ArrayList<>();
             UUID uid = player.getPersistentID();
             try (Db db = Db.open(getConnection()))

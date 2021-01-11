@@ -17,7 +17,7 @@ public class MusicDBImpl implements IMusicDB
     private final Set<Long> tagIDs = new HashSet<>();
 
     // OP Only
-    private User[] users;
+    private User[] users = new User[0];
 
     MusicDBImpl() { /* NOP */}
 
@@ -115,5 +115,18 @@ public class MusicDBImpl implements IMusicDB
     public Set<Long> getTagTDs()
     {
         return tagIDs;
+    }
+
+    @Override
+    public void resetDbData()
+    {
+        playLists = new PlayList[0];
+        playListIDs.clear();
+        playListEntries = new PlayListEntry[0];
+        songs = new Song[0];
+        songIDs.clear();
+        tags = new Tag[0];
+        tagIDs.clear();
+        users = new User[0];
     }
 }

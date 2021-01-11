@@ -40,4 +40,6 @@ public interface IMusicDB
     Set<Long> getSongIDs();
 
     Set<Long> getTagTDs();
+
+    void resetDbData();
 }
