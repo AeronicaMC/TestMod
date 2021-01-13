@@ -36,7 +36,6 @@ public class OpenGuiMessage extends AbstractMessage.AbstractClientMessage<OpenGu
     @Override
     public void process(EntityPlayer player, Side side)
     {
-        Minecraft.getMinecraft().addScheduledTask(
-                () -> player.openGui(Main.instance, guiId, player.world, 0, 0, 0));
+        player.openGui(Main.instance, guiId, player.world, 0, 0, 0);
     }
 }
